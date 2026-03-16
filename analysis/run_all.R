@@ -1,0 +1,6 @@
+source(here::here("analysis", "00_setup.R"))
+source(here::here("analysis", "01_primary_analysis.R"))
+source(here::here("analysis", "02_secondary_analysis.R"))
+source(here::here("analysis", "03_fp10_analysis.R"))
+source(here::here("analysis", "04_combined_analysis.R"))
+message("All analyses complete.")
