@@ -1,25 +1,13 @@
 source(here::here("analysis", "00_setup.R"))
 
-Lithium_SCMD <- read_excel(here("data", "secondary_care", "lithium-full.xlsx"))
-org_mapping <- read_excel(here("data", "secondary_care", "org-mapping.xlsx"))
+secondary_care <- read_csv(here("data", "secondary_care", "secondary_care.csv"), show_col_types = FALSE)
 
-Lithium_SCMD <- Lithium_SCMD %>%
-  left_join(org_mapping %>% select(ods_code, region), by = "ods_code") %>%
-  mutate(year_month = as.Date(year_month)) %>%
+Lithium_SCMD <- secondary_care %>%
   mutate(
-    total_mg = case_when(
-      ingredient_name == "Lithium carbonate" & quantity_basis == "tablet" ~ converted_quantity * strength_numerator_value,
-      TRUE ~ NA_real_
-    ),
-    mmol = case_when(
-      ingredient_name == "Lithium carbonate" ~ total_mg / 37.04,
-      ingredient_name == "Lithium citrate" & grepl("509", vmp_name) ~ (converted_quantity / 5) * 5.4,
-      ingredient_name == "Lithium citrate" & grepl("520", vmp_name) ~ (converted_quantity / 5) * 5.4,
-      ingredient_name == "Lithium citrate" & grepl("1.018", vmp_name) ~ (converted_quantity / 5) * 10.8,
-      TRUE ~ NA_real_
-    ),
-    DDD = mmol / 24,
-    year = format(as.Date(year_month), "%Y")
+    year_month = as.Date(Date),
+    year = format(year_month, "%Y"),
+    region = Region,
+    DDD = Value  # already in DDDs
   )
 
 Secondary_DDD_by_year <- Lithium_SCMD %>%

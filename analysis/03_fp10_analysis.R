@@ -116,7 +116,12 @@ New_Hospital_FP10_data <- Hospital_FP10_all %>%
     DDD = mmol / 24
   )
 
-org_mapping <- read_excel(here("data", "secondary_care", "org-mapping.xlsx"))
+secondary_care_trusts <- read_csv(here("data", "secondary_care", "secondary_care_trusts.csv"), show_col_types = FALSE)
+trust_mapping <- secondary_care_trusts %>%
+  mutate(trust_code_prefix = substr(`Trust Code`, 1, 3)) %>%
+  select(trust_code_prefix, region = Region) %>%
+  distinct(trust_code_prefix, .keep_all = TRUE)
+
 region_mapping <- c(
   "Y60" = "Midlands",
   "Y63" = "North East And Yorkshire",
@@ -137,12 +142,7 @@ region_mapping <- c(
 
 New_Hospital_FP10_data <- New_Hospital_FP10_data %>%
   mutate(trust_code_prefix = substr(HOSPITAL_TRUST_CODE, 1, 3)) %>%
-  left_join(
-    org_mapping %>%
-      select(ods_code, region) %>%
-      mutate(ods_prefix = substr(ods_code, 1, 3)),
-    by = c("trust_code_prefix" = "ods_prefix")
-  ) %>%
+  left_join(trust_mapping, by = "trust_code_prefix") %>%
   filter(trust_code_prefix != "Y99") %>%
   mutate(region = if_else(
     is.na(region) & trust_code_prefix %in% names(region_mapping),
