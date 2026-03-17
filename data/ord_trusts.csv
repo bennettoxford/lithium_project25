@@ -1,0 +1,535 @@
+ods_code,ods_name,successors,predecessors,ultimate_successors,legal_closed_date,operational_closed_date,legal_open_date,operational_open_date,postcode,region_code,region,icb_code,icb
+G6V2S,North London NHS Foundation Trust,NA,"RRP,TAF",NA,NA,NA,2024-11-01,2024-07-10,NW1 0PE,Y56,London,QMJ,NHS North Central London
+R0A,Manchester University NHS Foundation Trust,NA,"RW6,RM2,RW3",NA,NA,NA,2017-10-01,2017-08-02,M13 9WL,Y62,North West,QOP,NHS Greater Manchester
+R0B,South Tyneside And Sunderland NHS Foundation Trust,NA,"RLN,RE9",NA,NA,NA,2019-04-01,2019-03-13,SR4 7TP,Y63,North East And Yorkshire,QHM,NHS North East And North Cumbria
+R0C,Project Nightingale NHS Trust,NA,NA,NA,NA,2020-03-26,NA,2020-03-01,E16 1XL,NA,NA,NA,NA
+R0D,University Hospitals Dorset NHS Foundation Trust,NA,"RDZ,RD3",NA,NA,NA,2020-10-01,2020-08-12,BH15 2JB,Y58,South West,QVV,NHS Dorset
+R1A,Herefordshire And Worcestershire Health And Care NHS Trust,NA,RWQ,NA,NA,NA,2011-07-01,2011-06-22,WR5 1JR,Y60,Midlands,QGH,NHS Herefordshire And Worcestershire
+R1C,Solent NHS Trust,RW1,NA,RW1,2024-09-30,NA,2011-04-01,2011-04-01,SO19 8BR,Y59,South East,QRL,NHS Hampshire And Isle Of Wight
+R1D,Shropshire Community Health NHS Trust,NA,NA,NA,NA,NA,2011-07-01,2011-06-22,SY2 6FG,Y60,Midlands,QOC,"NHS Shropshire, Telford And Wrekin"
+R1E,Staffordshire And Stoke On Trent Partnership NHS Trust,RRE,NA,RRE,2018-05-31,NA,2011-09-01,2011-08-19,ST5 1QG,NA,NA,NA,NA
+R1F,Isle Of Wight NHS Trust,NA,NA,NA,NA,NA,NA,2012-04-01,PO30 5TG,Y59,South East,QRL,NHS Hampshire And Isle Of Wight
+R1G,Torbay And Southern Devon Health And Care NHS Trust,RA9,NA,RA9,2015-09-30,2020-09-30,2012-04-01,2012-03-20,TQ2 7TD,NA,NA,NA,NA
+R1H,Barts Health NHS Trust,NA,"RNH,RNJ,RGC",NA,NA,NA,2012-04-01,2012-03-20,E1 2ES,Y56,London,QMF,NHS North East London
+R1J,Gloucestershire Care Services NHS Trust,RTQ,5QH,RTQ,2019-09-30,NA,2013-03-22,2013-02-08,GL3 4AW,NA,NA,NA,NA
+R1K,London North West University Healthcare NHS Trust,NA,"RC3,RV8",NA,NA,NA,2014-10-01,2014-08-21,HA1 3UJ,Y56,London,QRV,NHS North West London
+R1L,Essex Partnership University NHS Foundation Trust,NA,"RRD,RWN",NA,NA,NA,2017-04-01,2017-01-25,SS11 7XX,Y61,East Of England,QH8,NHS Mid And South Essex
+RA0,Croydon And Surrey Downs Community NHS Trust,NA,NA,NA,NA,2002-03-31,NA,1991-04-01,CR9 2RS,NA,NA,NA,NA
+RA1,Epsom Health Care NHS Trust,NA,NA,NA,NA,1999-03-31,NA,1991-04-01,KT18 7EG,NA,NA,NA,NA
+RA2,Royal Surrey NHS Foundation Trust,NA,NA,NA,NA,NA,NA,1991-04-01,GU2 7XX,Y59,South East,QXU,NHS Surrey Heartlands
+RA3,Weston Area Health NHS Trust,RA7,NA,RA7,2020-03-31,NA,1991-04-01,1991-04-01,BS23 4TQ,NA,NA,NA,NA
+RA4,Yeovil District Hospital NHS Foundation Trust,RH5,NA,RH5,2023-03-31,NA,1991-04-01,1991-04-01,BA21 4AT,Y58,South West,QSL,NHS Somerset
+RA5,East Gloucestershire NHS Trust,NA,NA,NA,NA,2002-03-31,NA,1991-04-01,GL53 7AG,NA,NA,NA,NA
+RA6,Cornwall Community Healthcare NHS Trust,NA,NA,NA,NA,1993-03-31,NA,1991-04-01,PL26 6AA,NA,NA,NA,NA
+RA7,University Hospitals Bristol And Weston NHS Foundation Trust,NA,RA3,NA,NA,NA,NA,1991-04-01,BS1 3NU,Y58,South West,QUY,"NHS Bristol, North Somerset And South Gloucestershire"
+RA8,Trecare NHS Trust,NA,NA,NA,NA,1999-03-31,NA,1991-04-01,TR1 2SS,NA,NA,NA,NA
+RA9,Torbay And South Devon NHS Foundation Trust,NA,R1G,NA,NA,NA,NA,1991-04-01,TQ2 7AA,Y58,South West,QJK,NHS Devon
+RAB,The Freeman Group Of Hospitals NHS Trust,NA,NA,NA,NA,1998-03-31,NA,1991-04-01,NE7 7DN,NA,NA,NA,NA
+RAE,Bradford Teaching Hospitals NHS Foundation Trust,NA,NA,NA,NA,NA,NA,1991-04-01,BD9 6RJ,Y63,North East And Yorkshire,QWO,NHS West Yorkshire
+RAF,Northern General Hospital NHS Trust,NA,NA,NA,NA,2001-03-31,NA,1991-04-01,S5 7AU,NA,NA,NA,NA
+RAG,Doncaster Royal Infirmary And Montagu Hospital NHS Trust,NA,NA,NA,NA,2001-03-31,NA,1991-04-01,DN2 5LT,NA,NA,NA,NA
+RAJ,Mid And South Essex NHS Foundation Trust,NA,"RDD,RQ8",NA,NA,NA,NA,1991-04-01,SS0 0RY,Y61,East Of England,QH8,NHS Mid And South Essex
+RAK,Royal London Hospital And Associated Community Services NHS Trust,NA,NA,NA,NA,1994-03-31,NA,1991-04-01,E1 1BB,NA,NA,NA,NA
+RAL,Royal Free London NHS Foundation Trust,NA,"RAM,RAP,RVL",NA,NA,NA,NA,1991-04-01,NW3 2QG,Y56,London,QMJ,NHS North Central London
+RAM,"Royal National Throat, Nose And Ear Hospital NHS Trust",NA,NA,NA,NA,1996-03-31,NA,1991-04-01,WC1X 8DA,NA,NA,NA,NA
+RAN,Royal National Orthopaedic Hospital NHS Trust,NA,NA,NA,NA,NA,NA,1991-04-01,HA7 4LP,Y56,London,QRV,NHS North West London
+RAP,North Middlesex University Hospital NHS Trust,RAL,NA,RAL,2024-12-31,NA,1991-04-01,1991-04-01,N18 1QX,Y56,London,QMJ,NHS North Central London
+RAQ,North Hertfordshire NHS Trust,NA,NA,NA,NA,2000-03-31,NA,1991-04-01,SG1 4AB,NA,NA,NA,NA
+RAS,The Hillingdon Hospitals NHS Foundation Trust,NA,NA,NA,NA,NA,NA,1991-04-01,UB8 3NN,Y56,London,QRV,NHS North West London
+RAT,North East London NHS Foundation Trust,NA,"RDF,RG4,RG6",NA,NA,NA,NA,2001-04-01,RM13 8GQ,Y56,London,QMF,NHS North East London
+RAU,Central Middlesex Hospital NHS Trust,NA,NA,NA,NA,1999-03-31,NA,1991-04-01,NW10 7NS,NA,NA,NA,NA
+RAV,The Guys And Lewisham NHS Trust,NA,NA,NA,NA,1993-03-31,NA,1991-04-01,SE1 9RT,NA,NA,NA,NA
+RAX,Kingston And Richmond NHS Foundation Trust,NA,RY9,NA,NA,NA,NA,1991-04-01,KT2 7QB,Y56,London,QWE,NHS South West London
+RAZ,St Helier NHS Trust,NA,NA,NA,NA,1999-03-31,NA,1991-04-01,SM5 1AA,NA,NA,NA,NA
+RB4,Essex Ambulance Service NHS Trust,NA,NA,NA,2006-06-30,2009-03-31,1992-04-01,1992-04-01,CM1 7WS,NA,NA,NA,NA
+RB6,Mersey Regional Ambulance Service NHS Trust,NA,NA,NA,NA,2006-06-30,NA,1992-04-01,L6 4EG,NA,NA,NA,NA
+RB7,Staffordshire Ambulance Service NHS Trust,NA,NA,NA,2007-09-30,2009-03-31,1992-04-01,1992-04-01,ST16 2TQ,NA,NA,NA,NA
+RB8,South Yorkshire Ambulance Service NHS Trust,NA,NA,NA,NA,2006-06-30,NA,1992-04-01,S60 2BQ,NA,NA,NA,NA
+RBA,Taunton And Somerset NHS Foundation Trust,RH5,NA,RH5,2020-03-31,NA,1991-04-01,1991-04-01,TA1 5DA,NA,NA,NA,NA
+RBB,Royal National Hospital For Rheumatic Diseases NHS Foundation Trust,RD1,NA,RD1,2015-01-31,2021-09-30,1991-04-01,1991-04-01,BA1 1RL,NA,NA,NA,NA
+RBD,Dorset County Hospital NHS Foundation Trust,NA,NA,NA,NA,NA,NA,1991-04-01,DT1 2JY,Y58,South West,QVV,NHS Dorset
+RBF,Nuffield Orthopaedic Centre NHS Trust,RTH,NA,RTH,2011-11-01,NA,1991-04-01,1991-04-01,OX3 7LD,NA,NA,NA,NA
+RBG,First Community NHS Trust,NA,NA,NA,NA,2001-03-31,NA,1991-04-01,ST16 3NE,NA,NA,NA,NA
+RBH,The Foundation NHS Trust,NA,NA,NA,NA,2001-03-31,NA,1991-04-01,ST16 3AG,NA,NA,NA,NA
+RBJ,Rugby NHS Trust,NA,NA,NA,NA,1998-03-31,NA,1991-04-01,CV22 5PX,NA,NA,NA,NA
+RBK,Walsall Healthcare NHS Trust,NA,NA,NA,NA,NA,NA,1991-04-01,WS2 9PS,Y60,Midlands,QUA,NHS Black Country
+RBL,Wirral University Teaching Hospital NHS Foundation Trust,NA,NA,NA,NA,NA,NA,1991-04-01,CH49 5PE,Y62,North West,QYG,NHS Cheshire And Merseyside
+RBM,Royal Liverpool University Hospital NHS Trust,NA,NA,NA,NA,1995-03-31,NA,1991-04-01,L7 8XP,NA,NA,NA,NA
+RBN,Mersey And West Lancashire Teaching Hospitals NHS Trust,NA,RVY,NA,NA,NA,NA,1991-04-01,L35 5DR,Y62,North West,QYG,NHS Cheshire And Merseyside
+RBP,Chester And Halton Community NHS Trust,NA,NA,NA,NA,2002-03-31,NA,1991-04-01,WA7 4TH,NA,NA,NA,NA
+RBQ,Liverpool Heart And Chest Hospital NHS Foundation Trust,NA,NA,NA,NA,NA,NA,1991-04-01,L14 3PE,Y62,North West,QYG,NHS Cheshire And Merseyside
+RBR,Broadgreen Hospital NHS Trust,NA,NA,NA,NA,1995-03-31,NA,1991-04-01,L14 3LB,NA,NA,NA,NA
+RBS,Alder Hey Children's NHS Foundation Trust,NA,NA,NA,NA,NA,NA,1991-04-01,L12 2AP,Y62,North West,QYG,NHS Cheshire And Merseyside
+RBT,Mid Cheshire Hospitals NHS Foundation Trust,NA,NA,NA,NA,NA,NA,1991-04-01,CW1 4QJ,Y62,North West,QYG,NHS Cheshire And Merseyside
+RBU,Central Manchester Healthcare NHS Trust,NA,NA,NA,NA,2001-03-31,NA,1991-04-01,M13 9WL,NA,NA,NA,NA
+RBV,The Christie NHS Foundation Trust,NA,NA,NA,NA,NA,NA,1991-04-01,M20 4BX,Y62,North West,QOP,NHS Greater Manchester
+RBX,Lincolnshire Ambulance And Health Transport Service NHS Trust,NA,NA,NA,NA,2006-06-30,NA,1991-04-01,LN4 2HL,NA,NA,NA,NA
+RBZ,Northern Devon Healthcare NHS Trust,RH8,NA,RH8,2022-03-31,2023-01-31,1991-04-01,1991-04-01,EX31 4JB,NA,NA,NA,NA
+RC1,Bedford Hospital NHS Trust,RC9,EAA,RC9,2020-03-31,NA,1992-04-01,1992-04-01,MK42 9DJ,NA,NA,NA,NA
+RC3,Ealing Hospital NHS Trust,R1K,EKA,R1K,2014-09-30,NA,1992-04-01,1992-04-01,UB1 3HW,NA,NA,NA,NA
+RC4,East Hertfordshire NHS Trust,NA,NA,NA,NA,2000-03-31,NA,1992-04-01,AL7 4HQ,NA,NA,NA,NA
+RC5,Harefield Hospital NHS Trust,NA,NA,NA,NA,1998-03-31,NA,1992-04-01,UB9 6JH,NA,NA,NA,NA
+RC8,Horizon NHS Trust,NA,NA,NA,NA,2001-03-31,NA,1992-04-01,WD7 9HQ,NA,NA,NA,NA
+RC9,Bedfordshire Hospitals NHS Foundation Trust,NA,"EBA,RC1",NA,NA,NA,NA,1992-04-01,LU4 0DZ,Y61,East Of England,QHG,"NHS Bedfordshire, Luton And Milton Keynes"
+RCA,Northallerton Health Services NHS Trust,NA,NA,NA,NA,2002-03-31,NA,1992-04-01,DL6 1JG,NA,NA,NA,NA
+RCB,York And Scarborough Teaching Hospitals NHS Foundation Trust,NA,"BF1,RCC",NA,NA,NA,NA,1992-04-01,YO31 8HE,Y63,North East And Yorkshire,QOQ,NHS Humber And North Yorkshire
+RCC,Scarborough And North East Yorkshire Health Care NHS Trust,RCB,BG1,RCB,2012-06-30,NA,1992-04-01,1992-04-01,YO12 6QL,NA,NA,NA,NA
+RCD,Harrogate And District NHS Foundation Trust,NA,BH1,NA,NA,NA,NA,1992-04-01,HG2 7SX,Y63,North East And Yorkshire,QOQ,NHS Humber And North Yorkshire
+RCE,Bradford Community Health NHS Trust,NA,NA,NA,NA,2002-03-31,NA,1992-04-01,BD3 9LH,NA,NA,NA,NA
+RCF,Airedale NHS Foundation Trust,NA,BK1,NA,NA,NA,NA,1992-04-01,BD20 6TD,Y63,North East And Yorkshire,QWO,NHS West Yorkshire
+RCH,North Tees Health NHS Trust,NA,NA,NA,NA,1999-03-31,NA,1992-04-01,TS19 8PE,NA,NA,NA,NA
+RCJ,South Tees Hospitals NHS Trust,NA,NA,NA,NA,2002-03-31,NA,1992-04-01,TS5 5AZ,NA,NA,NA,NA
+RCK,The Royal Victoria Infirmary And Associated Hospitals NHS Trust,NA,NA,NA,NA,1998-03-31,NA,1992-04-01,NE1 4LP,NA,NA,NA,NA
+RCL,Allington NHS Trust,NA,NA,NA,NA,1999-03-31,NA,1992-04-01,IP4 9LE,NA,NA,NA,NA
+RCM,Hinchingbrooke Health Care NHS Trust,NA,NA,NA,NA,1995-03-31,NA,1992-04-01,PE18 8NT,NA,NA,NA,NA
+RCN,Barnsley Community And Priority Services NHS Trust,NA,NA,NA,NA,2002-03-31,NA,1992-04-01,S70 3RD,NA,NA,NA,NA
+RCP,Bassetlaw Hospital And Community Health Services NHS Trust,NA,NA,NA,NA,2001-03-31,NA,1992-04-01,S81 0JN,NA,NA,NA,NA
+RCS,Nottingham City Hospital NHS Trust,RX1,CHL,RX1,2006-03-31,2020-09-30,1992-04-01,1992-04-01,NG5 1PB,NA,NA,NA,NA
+RCT,Nottingham Community Health NHS Trust,NA,NA,NA,NA,2001-03-31,NA,1992-04-01,NG8 3EY,NA,NA,NA,NA
+RCU,Sheffield Children's NHS Foundation Trust,NA,CMF,NA,NA,NA,NA,1992-04-01,S10 2TH,Y63,North East And Yorkshire,QF7,NHS South Yorkshire
+RCV,Central Sheffield University Hospitals NHS Trust,NA,NA,NA,NA,2001-03-31,NA,1992-04-01,S10 2JF,NA,NA,NA,NA
+RCX,"The Queen Elizabeth Hospital, King's Lynn, NHS Foundation Trust",NA,DK1,NA,NA,NA,NA,1992-04-01,PE30 4ET,Y61,East Of England,QMM,NHS Norfolk And Waveney
+RCY,Ashford Hospital NHS Trust,NA,NA,NA,NA,1998-03-31,NA,1992-04-01,TW15 3AA,NA,NA,NA,NA
+RCZ,Barnet Community Healthcare NHS Trust,NA,NA,NA,NA,2001-03-31,NA,1992-04-01,EN5 5TS,NA,NA,NA,NA
+RD1,Royal United Hospitals Bath NHS Foundation Trust,NA,"RBB,JK1",NA,NA,NA,NA,1992-04-01,BA1 3NG,Y58,South West,QOX,"NHS Bath And North East Somerset, Swindon And Wiltshire"
+RD2,Bath And West Community NHS Trust,NA,NA,NA,NA,2001-03-31,NA,1992-04-01,BA2 5RP,NA,NA,NA,NA
+RD3,Poole Hospital NHS Foundation Trust,R0D,JA1,R0D,2020-09-30,NA,1992-04-01,1992-04-01,BH15 2JB,Y58,South West,QVV,NHS Dorset
+RD6,East Berkshire NHS Trust For People With Learning Disabilities,NA,NA,NA,NA,2001-03-31,NA,1992-04-01,RG12 7EP,NA,NA,NA,NA
+RD7,Heatherwood And Wexham Park Hospitals NHS Foundation Trust,RDU,KE1,RDU,2014-09-30,NA,1992-04-01,1992-04-01,SL2 4HL,NA,NA,NA,NA
+RD8,Milton Keynes University Hospital NHS Foundation Trust,NA,KM1,NA,NA,NA,NA,1992-04-01,MK6 5LD,Y61,East Of England,QHG,"NHS Bedfordshire, Luton And Milton Keynes"
+RD9,Milton Keynes Community Health NHS Trust,NA,NA,NA,NA,2000-09-30,NA,1992-04-01,MK6 5NG,NA,NA,NA,NA
+RDA,Parkside NHS Trust,NA,NA,NA,NA,2002-03-31,NA,1992-04-01,W10 6DZ,NA,NA,NA,NA
+RDB,South Bedfordshire Community Health Care NHS Trust,NA,NA,NA,NA,1999-03-31,NA,1992-04-01,LU1 3AN,NA,NA,NA,NA
+RDC,Wellhouse NHS Trust,NA,NA,NA,NA,1999-03-31,NA,1992-04-01,EN5 3DJ,NA,NA,NA,NA
+RDD,Basildon And Thurrock University Hospitals NHS Foundation Trust,RAJ,FAT,RAJ,2020-03-31,NA,1992-04-01,1992-04-01,SS16 5NL,NA,NA,NA,NA
+RDE,East Suffolk And North Essex NHS Foundation Trust,NA,"RGQ,FAG,FAH",NA,NA,NA,NA,1992-04-01,CO4 5JL,Y61,East Of England,QJG,NHS Suffolk And North East Essex
+RDF,Forest Healthcare NHS Trust,NA,NA,NA,NA,2001-03-31,NA,1992-04-01,E11 1NR,NA,NA,NA,NA
+RDG,Mid Essex Hospital Services NHS Trust,NA,NA,NA,NA,1995-03-31,NA,1992-04-01,CM1 7WE,NA,NA,NA,NA
+RDJ,North East Essex Mental Health NHS Trust,NA,NA,NA,NA,2001-03-31,NA,1992-04-01,CO4 5HG,NA,NA,NA,NA
+RDK,Southend Community Care Services NHS Trust,NA,NA,NA,NA,2000-03-31,NA,1992-04-01,SS4 1RB,NA,NA,NA,NA
+RDL,Eastbourne Hospitals NHS Trust,NA,NA,NA,NA,2002-03-31,NA,1992-04-01,BN21 2UD,NA,NA,NA,NA
+RDM,Hastings And Rother NHS Trust,NA,NA,NA,NA,2002-03-31,NA,1992-04-01,TN37 7PT,NA,NA,NA,NA
+RDQ,Ravensbourne NHS Trust,NA,NA,NA,NA,2001-03-31,NA,1992-04-01,BR6 7UA,NA,NA,NA,NA
+RDR,Sussex Community NHS Foundation Trust,NA,GA1,NA,NA,NA,NA,1992-04-01,BN2 3EW,Y59,South East,QNX,NHS Sussex
+RDT,Lambeth Healthcare NHS Trust,NA,NA,NA,NA,1999-03-31,NA,1992-04-01,SW9 7NT,NA,NA,NA,NA
+RDU,Frimley Health NHS Foundation Trust,NA,"HFP,RD7",NA,NA,NA,NA,1992-04-01,GU16 7UJ,Y59,South East,QNQ,NHS Frimley
+RDV,St Peter's Hospital NHS Trust,NA,NA,NA,NA,1998-03-31,NA,1992-04-01,KT16 0PZ,NA,NA,NA,NA
+RDX,Bath Mental Health Care NHS Trust,NA,NA,NA,NA,1999-03-31,NA,1992-04-01,BA1 3QE,NA,NA,NA,NA
+RDY,Dorset Healthcare University NHS Foundation Trust,NA,JA3,NA,NA,NA,NA,1992-04-01,BH17 0RB,Y58,South West,QVV,NHS Dorset
+RDZ,The Royal Bournemouth And Christchurch Hospitals NHS Foundation Trust,R0D,JA2,R0D,2020-09-30,NA,1992-04-01,1992-04-01,BH7 7DW,Y58,South West,QVV,NHS Dorset
+RE2,Gateshead Hospitals NHS Trust,NA,NA,NA,NA,1998-03-31,NA,1993-04-01,NE9 6SX,NA,NA,NA,NA
+RE4,South Tees Community And Mental Health NHS Trust,NA,NA,NA,NA,1999-03-31,NA,1993-04-01,TS4 3AF,NA,NA,NA,NA
+RE5,Westmorland Hospital NHS Trust,NA,NA,NA,NA,1998-03-31,NA,1993-04-01,LA9 7RG,NA,NA,NA,NA
+RE6,Cumbria Ambulance Service NHS Trust,NA,NA,NA,NA,2006-06-30,NA,1993-04-01,CA2 7AN,NA,NA,NA,NA
+RE7,West Cumbria Health Care NHS Trust,NA,NA,NA,NA,2001-03-31,NA,1993-04-01,CA28 8JG,NA,NA,NA,NA
+RE9,South Tyneside NHS Foundation Trust,R0B,AR3,R0B,2019-03-31,NA,1993-04-01,1993-04-01,NE34 0PL,NA,NA,NA,NA
+REA,Exeter And District Community Health Services NHS Trust,NA,NA,NA,NA,2001-03-31,NA,1992-04-01,EX2 7JU,NA,NA,NA,NA
+REB,Frenchay Healthcare NHS Trust,NA,NA,NA,NA,1999-03-31,NA,1992-04-01,BS16 1JE,NA,NA,NA,NA
+RED,Plymouth Community Services NHS Trust,NA,NA,NA,NA,2001-03-31,NA,1992-04-01,PL4 7QD,NA,NA,NA,NA
+REE,Southmead Health Services NHS Trust,NA,NA,NA,NA,1999-03-31,NA,1992-04-01,BS10 5NB,NA,NA,NA,NA
+REF,Royal Cornwall Hospitals NHS Trust,NA,LD1,NA,NA,NA,NA,1992-04-01,TR1 3LJ,Y58,South West,QT6,NHS Cornwall And The Isles Of Scilly
+REH,Herefordshire Community Health NHS Trust,NA,NA,NA,NA,2000-09-30,NA,1992-04-01,HR2 9RP,NA,NA,NA,NA
+REL,Walsgrave Hospital NHS Trust,NA,NA,NA,NA,1993-03-31,NA,1992-04-01,CV2 2DX,NA,NA,NA,NA
+REM,Liverpool University Hospitals NHS Foundation Trust,NA,"NJ1,RQ6",NA,NA,NA,NA,1992-04-01,L7 8XP,Y62,North West,QYG,NHS Cheshire And Merseyside
+REN,The Clatterbridge Cancer Centre NHS Foundation Trust,NA,NK2,NA,NA,NA,NA,1992-04-01,CH63 4JY,Y62,North West,QYG,NHS Cheshire And Merseyside
+REP,Liverpool Women's NHS Foundation Trust,NA,NF1,NA,NA,NA,NA,1992-04-01,L8 7SS,Y62,North West,QYG,NHS Cheshire And Merseyside
+REQ,Southport And Formby Hospitals Services NHS Trust,NA,NA,NA,NA,1999-03-31,NA,1992-04-01,PR8 6PN,NA,NA,NA,NA
+RER,St Helens And Knowsley Community Health NHS Trust,NA,NA,NA,NA,2002-03-31,NA,1992-04-01,WA10 2AP,NA,NA,NA,NA
+RES,North Mersey Community NHS Trust,NA,NA,NA,NA,2002-03-31,NA,1992-04-01,L9 7JP,NA,NA,NA,NA
+RET,The Walton Centre NHS Foundation Trust,NA,NJ3,NA,NA,NA,NA,1992-04-01,L9 7LJ,Y62,North West,QYG,NHS Cheshire And Merseyside
+REU,Burnley Health Care NHS Trust,NA,NA,NA,NA,2003-03-31,NA,1992-04-01,BB10 2PQ,NA,NA,NA,NA
+REV,Lancaster Acute Hospitals NHS Trust,NA,NA,NA,NA,1998-03-31,NA,1992-04-01,LA1 4RP,NA,NA,NA,NA
+REX,Oldham NHS Trust,NA,NA,NA,NA,2002-03-31,NA,1992-04-01,OL1 2PN,NA,NA,NA,NA
+REY,Wrightington Hospital NHS Trust,NA,NA,NA,NA,2001-03-31,NA,1992-04-01,WN6 9EP,NA,NA,NA,NA
+REZ,Rochdale Healthcare NHS Trust,NA,NA,NA,NA,2002-03-31,NA,1992-04-01,OL12 9QB,NA,NA,NA,NA
+RF2,Royal Hull Hospitals NHS Trust,NA,NA,NA,NA,1999-09-30,NA,1993-04-01,HU3 2JZ,NA,NA,NA,NA
+RF3,East Yorkshire Hospitals NHS Trust,NA,NA,NA,NA,1999-09-30,NA,1993-04-01,HU17 8BU,NA,NA,NA,NA
+RF4,"Barking, Havering And Redbridge University Hospitals NHS Trust",NA,"RG4,RG7",NA,NA,NA,NA,2001-04-01,RM7 0AG,Y56,London,QMF,NHS North East London
+RF6,North East Lincolnshire NHS Trust,NA,NA,NA,NA,2001-03-31,NA,1993-04-01,DN33 2BA,NA,NA,NA,NA
+RF7,Scunthorpe And Goole Hospitals NHS Trust,NA,NA,NA,NA,2001-03-31,NA,1993-04-01,DN15 7BH,NA,NA,NA,NA
+RFB,Leicester General Hospital NHS Trust,NA,NA,NA,NA,2000-03-31,NA,1993-04-01,LE5 4PW,NA,NA,NA,NA
+RFD,Leicester Royal Infirmary NHS Trust,NA,NA,NA,NA,2000-03-31,NA,1993-04-01,LE1 5WW,NA,NA,NA,NA
+RFF,Barnsley Hospital NHS Foundation Trust,NA,CJA,NA,NA,NA,NA,1993-04-01,S75 2EP,Y63,North East And Yorkshire,QF7,NHS South Yorkshire
+RFG,Rotherham Priority Health Services NHS Trust,NA,NA,NA,NA,2002-03-31,NA,1993-04-01,S65 1DW,NA,NA,NA,NA
+RFJ,Central Nottinghamshire Healthcare NHS Trust,NA,NA,NA,NA,2001-03-31,NA,1993-04-01,NG18 4HH,NA,NA,NA,NA
+RFK,"Queen's Medical Centre, Nottingham University Hospital NHS Trust",NA,NA,NA,NA,2006-03-31,NA,1993-04-01,NG7 2UH,NA,NA,NA,NA
+RFL,Glenfield Hospital NHS Trust,NA,NA,NA,NA,2000-03-31,NA,1993-04-01,LE3 9QP,NA,NA,NA,NA
+RFP,Derby City General Hospital NHS Trust,NA,NA,NA,NA,1998-03-31,NA,1993-04-01,DE22 3NE,NA,NA,NA,NA
+RFR,The Rotherham NHS Foundation Trust,NA,CLM,NA,NA,NA,NA,1993-04-01,S60 2UD,Y63,North East And Yorkshire,QF7,NHS South Yorkshire
+RFS,Chesterfield Royal Hospital NHS Foundation Trust,NA,CAB,NA,NA,NA,NA,1993-04-01,S44 5BL,Y60,Midlands,QJ2,NHS Derby And Derbyshire
+RFT,Bedford And Shires Health And Care NHS Trust,NA,NA,NA,NA,1999-03-31,NA,1993-04-01,MK40 2NR,NA,NA,NA,NA
+RFU,Bedfordshire And Hertfordshire Ambulance And Paramedic Service NHS Trust,NA,NA,NA,2006-06-30,2009-03-31,1993-04-01,1993-04-01,MK41 0RG,NA,NA,NA,NA
+RFW,West Middlesex University Hospital NHS Trust,RQM,EJW,RQM,2015-08-31,NA,1993-04-01,1993-04-01,TW7 6AF,NA,NA,NA,NA
+RFX,Hounslow And Spelthorne Community And Mental Health NHS Trust,NA,NA,NA,NA,2002-03-31,NA,1993-04-01,TW8 8DS,NA,NA,NA,NA
+RFY,Riverside Mental Health NHS Trust,NA,NA,NA,NA,1999-03-31,NA,1993-04-01,W6 8DW,NA,NA,NA,NA
+RFZ,Northwick Park And St Marks NHS Trust,NA,NA,NA,NA,1999-03-31,NA,1993-04-01,HA1 3UJ,NA,NA,NA,NA
+RG1,Mid Kent Healthcare NHS Trust,NA,NA,NA,NA,2000-03-31,NA,1993-04-01,ME16 9QQ,NA,NA,NA,NA
+RG2,Queen Elizabeth Hospital NHS Trust,NA,NA,NA,NA,2009-03-31,NA,1993-04-01,SE18 4QH,NA,NA,NA,NA
+RG3,Bromley Hospitals NHS Trust,NA,NA,NA,NA,2009-03-31,NA,1993-04-01,BR6 8ND,NA,NA,NA,NA
+RG4,Redbridge Health Care NHS Trust,NA,NA,NA,NA,2001-03-31,NA,1993-04-01,IG3 8YB,NA,NA,NA,NA
+RG6,Bhb Community Health Care NHS Trust,NA,NA,NA,NA,2001-03-31,NA,1993-04-01,RM12 6RS,NA,NA,NA,NA
+RG7,Havering Hospitals NHS Trust,NA,NA,NA,NA,2001-03-31,NA,1993-04-01,RM3 0BE,NA,NA,NA,NA
+RG8,Thameside Community Health Care NHS Trust,NA,NA,NA,NA,2000-03-31,NA,1993-04-01,RM16 2PX,NA,NA,NA,NA
+RG9,Chase Farm Hospitals NHS Trust,NA,NA,NA,NA,1999-03-31,NA,1993-04-01,EN2 8JL,NA,NA,NA,NA
+RGA,Calderdale Healthcare NHS Trust,NA,NA,NA,NA,2001-03-31,NA,1993-04-01,HX1 2YP,NA,NA,NA,NA
+RGB,Huddersfield Health Care Services NHS Trust,NA,NA,NA,NA,2001-03-31,NA,1993-04-01,HD3 3EA,NA,NA,NA,NA
+RGC,Whipps Cross University Hospital NHS Trust,R1H,RDF,R1H,2012-03-31,2022-09-30,2001-04-01,2001-04-01,E11 1NR,NA,NA,NA,NA
+RGD,Leeds And York Partnership NHS Foundation Trust,NA,BP4,NA,NA,NA,NA,1993-04-01,LS7 3JX,Y63,North East And Yorkshire,QWO,NHS West Yorkshire
+RGF,Wakefield And Pontefract Community Health NHS Trust,NA,NA,NA,NA,2002-03-31,NA,1993-04-01,WF1 3SP,NA,NA,NA,NA
+RGH,West Yorkshire Metropolitan Ambulance Service NHS Trust,NA,NA,NA,NA,2006-06-30,NA,1993-04-01,WF2 0XQ,NA,NA,NA,NA
+RGJ,East Suffolk Local Health Services NHS Trust,NA,NA,NA,NA,1999-03-31,NA,1993-04-01,IP3 8BL,NA,NA,NA,NA
+RGK,North West Anglia Health Care NHS Trust,NA,NA,NA,NA,2002-03-31,NA,1993-04-01,PE3 6AN,NA,NA,NA,NA
+RGL,Mid Anglia Community Health NHS Trust,NA,NA,NA,NA,1999-03-31,NA,1993-04-01,IP33 3ND,NA,NA,NA,NA
+RGM,Royal Papworth Hospital NHS Foundation Trust,NA,DH2,NA,NA,NA,NA,1993-04-01,CB2 0AY,Y61,East Of England,QUE,NHS Cambridgeshire And Peterborough
+RGN,North West Anglia NHS Foundation Trust,NA,"DP1,RQQ",NA,NA,NA,NA,1993-04-01,PE3 9GZ,Y61,East Of England,QUE,NHS Cambridgeshire And Peterborough
+RGP,James Paget University Hospitals NHS Foundation Trust,NA,DG1,NA,NA,NA,NA,1993-04-01,NR31 6LA,Y61,East Of England,QMM,NHS Norfolk And Waveney
+RGQ,Ipswich Hospital NHS Trust,RDE,DE1,RDE,2018-06-30,NA,1993-04-01,1993-04-01,IP4 5PD,NA,NA,NA,NA
+RGR,West Suffolk NHS Foundation Trust,NA,DW1,NA,NA,NA,NA,1993-04-01,IP33 2QZ,Y61,East Of England,QJG,NHS Suffolk And North East Essex
+RGS,Lifespan Health Care Cambridge NHS Trust,NA,NA,NA,NA,2002-03-31,NA,1993-04-01,CB1 5EE,NA,NA,NA,NA
+RGT,Cambridge University Hospitals NHS Foundation Trust,NA,DC1,NA,NA,NA,NA,1993-04-01,CB2 0QQ,Y61,East Of England,QUE,NHS Cambridgeshire And Peterborough
+RGU,Brighton Health Care NHS Trust,NA,NA,NA,NA,2002-03-31,NA,1993-04-01,BN2 5BE,NA,NA,NA,NA
+RGV,Thanet Health Care NHS Trust,NA,NA,NA,NA,1999-03-31,NA,1993-04-01,CT9 4AN,NA,NA,NA,NA
+RGW,Kent And Canterbury Hospitals NHS Trust,NA,NA,NA,NA,1999-03-31,NA,1993-04-01,CT1 3NG,NA,NA,NA,NA
+RGX,Eastbourne And County Healthcare NHS Trust,NA,NA,NA,NA,2002-03-31,NA,1993-04-01,BN27 4EP,NA,NA,NA,NA
+RGZ,Queen Mary's Sidcup NHS Trust,RYQ,GK2,RYQ,2009-03-31,2022-09-30,1993-04-01,1993-04-01,DA14 6LT,NA,NA,NA,NA
+RH1,Royal Berkshire Ambulance Service NHS Trust,NA,NA,NA,NA,2006-06-30,NA,1993-04-01,RG40 2NN,NA,NA,NA,NA
+RH2,South Buckinghamshire NHS Trust,NA,NA,NA,NA,2003-03-31,NA,1993-04-01,HP7 0JD,NA,NA,NA,NA
+RH3,Horton General Hospital NHS Trust,NA,NA,NA,NA,1998-03-31,NA,1993-04-01,OX16 9AL,NA,NA,NA,NA
+RH4,West Berkshire Priority Care Services NHS Trust,NA,NA,NA,NA,2001-03-31,NA,1993-04-01,RG30 4EJ,NA,NA,NA,NA
+RH5,Somerset NHS Foundation Trust,NA,"RBA,LL1,RA4",NA,NA,NA,NA,1993-04-01,TA1 5DA,Y58,South West,QSL,NHS Somerset
+RH6,Gloucestershire Royal NHS Trust,NA,NA,NA,NA,2002-03-31,NA,1993-04-01,GL1 3NN,NA,NA,NA,NA
+RH7,Severn NHS Trust,NA,NA,NA,NA,2002-03-31,NA,1993-04-01,GL1 1LY,NA,NA,NA,NA
+RH8,Royal Devon University Healthcare NHS Foundation Trust,NA,"LE1,RBZ",NA,NA,NA,NA,1993-04-01,EX2 5DW,Y58,South West,QJK,NHS Devon
+RHA,Nottinghamshire Healthcare NHS Foundation Trust,NA,"RFJ,RCP,RFG,T1003,RK6",NA,NA,NA,NA,2001-04-01,NG3 6AA,Y60,Midlands,QT1,NHS Nottingham And Nottinghamshire
+RHB,Camden And Islington Community Health Services NHS Trust,NA,NA,NA,NA,2002-03-31,NA,1993-04-01,NW1 0PE,NA,NA,NA,NA
+RHC,Enfield Community Care NHS Trust,NA,NA,NA,NA,2001-03-31,NA,1993-04-01,EN2 8JL,NA,NA,NA,NA
+RHE,Crawley Horsham NHS Trust,NA,NA,NA,NA,1998-03-31,NA,1993-04-01,RH11 7DH,NA,NA,NA,NA
+RHH,East Surrey Hospital And Community Healthcare NHS Trust,NA,NA,NA,NA,1998-03-31,NA,1993-04-01,RH1 5RH,NA,NA,NA,NA
+RHJ,Worthing Priority Care Services NHS Trust,NA,NA,NA,NA,2002-03-31,NA,1993-04-01,BN13 3EP,NA,NA,NA,NA
+RHM,University Hospital Southampton NHS Foundation Trust,NA,JD1,NA,NA,NA,NA,1993-04-01,SO16 6YD,Y59,South East,QRL,NHS Hampshire And Isle Of Wight
+RHN,Andover District Community Health Care NHS Trust,NA,NA,NA,NA,2000-03-31,NA,1993-04-01,SP10 3LB,NA,NA,NA,NA
+RHP,Dorset Ambulance NHS Trust,NA,NA,NA,NA,2006-06-30,NA,1993-04-01,BH24 2SP,NA,NA,NA,NA
+RHQ,Sheffield Teaching Hospitals NHS Foundation Trust,NA,"RAF,RCV",NA,NA,NA,NA,2001-04-01,S5 7AU,Y63,North East And Yorkshire,QF7,NHS South Yorkshire
+RHS,Southampton Community Health Services NHS Trust,NA,NA,NA,NA,2002-03-31,NA,1993-04-01,SO14 0YL,NA,NA,NA,NA
+RHU,Portsmouth Hospitals University NHS Trust,NA,JC1,NA,NA,NA,NA,1993-04-01,PO6 3LY,Y59,South East,QRL,NHS Hampshire And Isle Of Wight
+RHV,The Radcliffe Infirmary NHS Trust,NA,NA,NA,NA,1999-05-31,NA,1993-04-01,OX2 6HE,NA,NA,NA,NA
+RHW,Royal Berkshire NHS Foundation Trust,NA,KW1,NA,NA,NA,NA,1993-04-01,RG1 5AN,Y59,South East,QU9,"NHS Buckinghamshire, Oxfordshire And Berkshire West"
+RHX,Oxfordshire Learning Disability NHS Trust,RW1,KX6,RW1,2012-11-01,2020-09-30,1993-04-01,1993-04-01,OX3 7JH,NA,NA,NA,NA
+RHY,Two Shires Ambulance NHS Trust,NA,NA,NA,NA,2006-06-30,NA,1993-04-01,MK19 6JU,NA,NA,NA,NA
+RJ1,Guy's And St Thomas' NHS Foundation Trust,NA,"GN1,RAV,RT3",NA,NA,NA,NA,1993-04-01,SE1 7EH,Y56,London,QKK,NHS South East London
+RJ2,Lewisham And Greenwich NHS Trust,NA,RAV,NA,NA,NA,NA,1993-04-01,SE13 6LH,Y56,London,QKK,NHS South East London
+RJ3,North West London Mental Health NHS Trust,NA,NA,NA,NA,1999-03-31,NA,1993-04-01,NW10 0JQ,NA,NA,NA,NA
+RJ5,St Mary's NHS Trust,RYJ,EQM,RYJ,2007-09-30,2022-09-30,1993-04-01,1993-04-01,W2 1NY,NA,NA,NA,NA
+RJ6,Croydon Health Services NHS Trust,NA,HCA,NA,NA,NA,NA,1993-04-01,CR7 7YE,Y56,London,QWE,NHS South West London
+RJ7,St George's University Hospitals NHS Foundation Trust,NA,HGA,NA,NA,NA,NA,1993-04-01,SW17 0QT,Y56,London,QWE,NHS South West London
+RJ8,Cornwall Partnership NHS Foundation Trust,NA,"LD2,RA6,RA8",NA,NA,NA,NA,1993-04-01,PL31 2QN,Y58,South West,QT6,NHS Cornwall And The Isles Of Scilly
+RJ9,Westcountry Ambulance Services NHS Trust,NA,NA,NA,NA,2006-06-30,NA,1993-04-01,EX2 7HY,NA,NA,NA,NA
+RJB,Kidderminster Healthcare NHS Trust,NA,NA,NA,NA,2000-03-31,NA,1993-04-01,DY11 6RJ,NA,NA,NA,NA
+RJC,South Warwickshire University NHS Foundation Trust,NA,ML1,NA,NA,NA,NA,1993-04-01,CV34 5BW,Y60,Midlands,QWU,NHS Coventry And Warwickshire
+RJD,Mid Staffordshire NHS Foundation Trust,NA,MF1,NA,2017-10-31,2025-02-28,1993-04-01,1993-04-01,ST16 3SA,NA,NA,NA,NA
+RJE,University Hospitals Of North Midlands NHS Trust,NA,MG1,NA,NA,NA,NA,1993-04-01,ST4 6QG,Y60,Midlands,QNC,NHS Staffordshire And Stoke-on-trent
+RJF,Burton Hospitals NHS Foundation Trust,RTG,MH1,RTG,2018-06-30,NA,1993-04-01,1993-04-01,DE13 0RB,NA,NA,NA,NA
+RJH,Good Hope Hospital NHS Trust,NA,NA,NA,2007-04-07,2010-04-01,1993-04-01,1993-04-01,B75 7RR,NA,NA,NA,NA
+RJL,Northern Lincolnshire And Goole NHS Foundation Trust,NA,"RF6,RF7",NA,NA,NA,NA,2001-04-01,DN33 2BA,Y63,North East And Yorkshire,QOQ,NHS Humber And North Yorkshire
+RJM,Walsall Community Health NHS Trust,NA,NA,NA,NA,2002-03-31,NA,1993-04-01,WS4 2HT,NA,NA,NA,NA
+RJN,East Cheshire NHS Trust,NA,ND1,NA,NA,NA,NA,1993-04-01,SK10 3BL,Y62,North West,QYG,NHS Cheshire And Merseyside
+RJQ,Warrington Community Health Care NHS Trust,NA,NA,NA,NA,2002-03-31,NA,1993-04-01,WA2 8WA,NA,NA,NA,NA
+RJR,Countess Of Chester Hospital NHS Foundation Trust,NA,NA1,NA,NA,NA,NA,1993-04-01,CH2 1UL,Y62,North West,QYG,NHS Cheshire And Merseyside
+RJS,Halton General Hospital NHS Trust,NA,NA,NA,NA,2001-03-31,NA,1993-04-01,WA7 2DA,NA,NA,NA,NA
+RJT,Cheshire Community Healthcare NHS Trust,NA,NA,NA,NA,2002-03-31,NA,1993-04-01,CW5 5QU,NA,NA,NA,NA
+RJU,Chorley And South Ribble NHS Trust,NA,NA,NA,NA,2002-07-31,NA,1993-04-01,PR7 1PP,NA,NA,NA,NA
+RJV,West Lancashire NHS Trust,NA,NA,NA,NA,1999-03-31,NA,1993-04-01,L39 2AZ,NA,NA,NA,NA
+RJX,Calderstones Partnership NHS Foundation Trust,RW4,PE2,RW4,2016-06-30,2020-09-30,1993-04-01,1993-04-01,BB7 9PE,NA,NA,NA,NA
+RJY,Wigan And Leigh Health Services NHS Trust,NA,NA,NA,NA,2001-03-31,NA,1993-04-01,WN1 2NN,NA,NA,NA,NA
+RJZ,King's College Hospital NHS Foundation Trust,NA,GP1,NA,NA,NA,NA,1993-04-01,SE5 9RS,Y56,London,QKK,NHS South East London
+RK1,Pilgrim Health NHS Trust,NA,NA,NA,NA,2000-03-31,NA,1994-04-01,PE21 9QS,NA,NA,NA,NA
+RK2,Leicestershire Mental Health Service NHS Trust,NA,NA,NA,NA,1999-03-31,NA,1994-04-01,LE4 8PQ,NA,NA,NA,NA
+RK4,Lincoln District Healthcare NHS Trust,NA,NA,NA,NA,2001-03-31,NA,1994-04-01,LN1 1EJ,NA,NA,NA,NA
+RK5,Sherwood Forest Hospitals NHS Foundation Trust,NA,"RFJ,CGC",NA,NA,NA,NA,1994-04-01,NG17 4JL,Y60,Midlands,QT1,NHS Nottingham And Nottinghamshire
+RK6,Nottingham Healthcare NHS Trust,NA,NA,NA,NA,2001-03-31,NA,1994-04-01,NG3 6AA,NA,NA,NA,NA
+RK7,Community Health Sheffield NHS Trust,NA,NA,NA,NA,2003-03-31,NA,1994-04-01,S10 3TH,NA,NA,NA,NA
+RK8,Derbyshire Royal Infirmary NHS Trust,NA,NA,NA,NA,1998-03-31,NA,1994-04-01,DE1 2QY,NA,NA,NA,NA
+RK9,University Hospitals Plymouth NHS Trust,NA,LG1,NA,NA,NA,NA,1994-04-01,PL6 8DH,Y58,South West,QJK,NHS Devon
+RKA,West Midlands Ambulance Service NHS Trust,NA,NA,NA,NA,2006-06-30,NA,1993-04-01,DY5 1LX,NA,NA,NA,NA
+RKB,University Hospitals Coventry And Warwickshire NHS Trust,NA,"RBJ,REL,MS2",NA,NA,NA,NA,1993-04-01,CV2 2DX,Y60,Midlands,QWU,NHS Coventry And Warwickshire
+RKC,Warrington Hospital NHS Trust,NA,NA,NA,NA,2001-03-31,NA,1993-04-01,WA5 1QG,NA,NA,NA,NA
+RKD,Hampshire Ambulance Service NHS Trust,NA,NA,NA,NA,2006-06-30,NA,1993-04-01,SO22 5DH,NA,NA,NA,NA
+RKE,Whittington Health NHS Trust,NA,FBG,NA,NA,NA,NA,1993-04-01,N19 5NF,Y56,London,QMJ,NHS North Central London
+RKF,The Princess Royal Hospital NHS Trust,NA,NA,NA,NA,2003-09-30,NA,1993-04-01,TF1 6TF,NA,NA,NA,NA
+RKL,West London NHS Trust,NA,"RV2,T1001",NA,NA,NA,NA,2001-04-01,UB2 4SD,Y56,London,QRV,NHS North West London
+RKX,Community Health Care Service (north Derbyshire) NHS Trust,NA,NA,NA,NA,2002-03-31,NA,1994-04-01,S40 3HW,NA,NA,NA,NA
+RL1,The Robert Jones And Agnes Hunt Orthopaedic Hospital NHS Foundation Trust,NA,ME2,NA,NA,NA,NA,1994-04-01,SY10 7AG,Y60,Midlands,QOC,"NHS Shropshire, Telford And Wrekin"
+RL4,The Royal Wolverhampton NHS Trust,NA,MX1,NA,NA,NA,NA,1994-04-01,WV10 0QP,Y60,Midlands,QUA,NHS Black Country
+RL5,Hereford And Worcester Ambulance Service NHS Trust,NA,NA,NA,2006-06-30,2009-03-31,1994-04-01,1994-04-01,WR6 5JD,NA,NA,NA,NA
+RL6,Coventry And Warwickshire Ambulance NHS Trust,NA,NA,NA,2006-06-30,2009-03-31,1994-04-01,1994-04-01,CV32 5HH,NA,NA,NA,NA
+RL7,Birmingham Heartlands NHS Trust,NA,NA,NA,NA,1996-03-31,NA,1994-04-01,B9 5SS,NA,NA,NA,NA
+RLC,North Tyneside Health Care NHS Trust,NA,NA,NA,NA,1998-03-31,NA,1994-04-01,NE29 8NH,NA,NA,NA,NA
+RLF,North Lakeland Healthcare NHS Trust,NA,NA,NA,NA,2001-03-31,NA,1994-04-01,CA1 3SX,NA,NA,NA,NA
+RLG,Carlisle Hospitals NHS Trust,NA,NA,NA,NA,2001-03-31,NA,1994-04-01,CA2 7HY,NA,NA,NA,NA
+RLH,Priority Healthcare Wearside NHS Trust,NA,NA,NA,NA,2002-03-31,NA,1994-04-01,SR2 0NB,NA,NA,NA,NA
+RLK,Cheviot And Wansbeck NHS Trust,NA,NA,NA,NA,1998-03-31,NA,1994-04-01,NE63 0SA,NA,NA,NA,NA
+RLM,Northumberland Community Health NHS Trust,NA,NA,NA,NA,1998-03-31,NA,1994-04-01,NE61 2NH,NA,NA,NA,NA
+RLN,City Hospitals Sunderland NHS Foundation Trust,R0B,AT4,R0B,2019-03-31,2021-09-30,1994-04-01,1994-04-01,SR4 7TP,NA,NA,NA,NA
+RLQ,Wye Valley NHS Trust,NA,MB1,NA,NA,NA,NA,1994-04-01,HR1 2ER,Y60,Midlands,QGH,NHS Herefordshire And Worcestershire
+RLR,Worcester Royal Infirmary NHS Trust,NA,NA,NA,NA,2000-03-31,NA,1994-04-01,WR5 1HN,NA,NA,NA,NA
+RLT,George Eliot Hospital NHS Trust,NA,MK1,NA,NA,NA,NA,1994-04-01,CV10 7DJ,Y60,Midlands,QWU,NHS Coventry And Warwickshire
+RLU,Birmingham Women's NHS Foundation Trust,RQ3,MQ5,RQ3,2017-01-31,NA,1994-04-01,1994-04-01,B15 2TG,NA,NA,NA,NA
+RLW,City Hospital NHS Trust,NA,NA,NA,NA,2002-03-31,NA,1994-04-01,B18 7QH,NA,NA,NA,NA
+RLY,North Staffordshire Combined Healthcare NHS Trust,NA,MG6,NA,NA,NA,NA,1994-04-01,ST4 8HH,Y60,Midlands,QNC,NHS Staffordshire And Stoke-on-trent
+RLZ,Royal Shrewsbury Hospitals NHS Trust,NA,NA,NA,NA,2003-09-30,NA,1994-04-01,SY3 8XQ,NA,NA,NA,NA
+RM1,Norfolk And Norwich University Hospitals NHS Foundation Trust,NA,DN1,NA,NA,NA,NA,1994-04-01,NR4 7UY,Y61,East Of England,QMM,NHS Norfolk And Waveney
+RM2,University Hospital Of South Manchester NHS Foundation Trust,R0A,"PM1,PM2",R0A,2017-09-30,NA,1994-04-01,1994-04-01,M23 9LT,NA,NA,NA,NA
+RM3,Northern Care Alliance NHS Foundation Trust,NA,"RW6,PR1",NA,NA,NA,NA,1994-04-01,M6 8HD,Y62,North West,QOP,NHS Greater Manchester
+RM4,Trafford Healthcare NHS Trust,RW3,PU1,R0A,2012-03-31,2025-10-31,1994-04-01,1994-04-01,M41 5SL,NA,NA,NA,NA
+RM6,Northgate And Prudhoe NHS Trust,NA,NA,NA,NA,2006-03-31,NA,1994-04-01,NE61 3BP,NA,NA,NA,NA
+RM7,Gateshead Healthcare NHS Trust,NA,NA,NA,NA,1998-03-31,NA,1994-04-01,NE9 5AR,NA,NA,NA,NA
+RM8,Furness Hospitals NHS Trust,NA,NA,NA,NA,1998-03-31,NA,1994-04-01,LA14 4LF,NA,NA,NA,NA
+RM9,Alexandra Health Care NHS Trust,NA,NA,NA,NA,2000-03-31,NA,1994-04-01,B98 7UB,NA,NA,NA,NA
+RMA,Greater Manchester Ambulance Service NHS Trust,NA,NA,NA,2006-06-30,2009-03-31,1994-04-01,1994-04-01,M45 6AQ,NA,NA,NA,NA
+RMB,"Blackburn, Hyndburn And Ribble Valley Health Care NHS Trust",NA,NA,NA,NA,2003-03-31,NA,1994-04-01,BB2 3HH,NA,NA,NA,NA
+RMC,Bolton NHS Foundation Trust,NA,PH1,NA,NA,NA,NA,1994-04-01,BL4 0JR,Y62,North West,QOP,NHS Greater Manchester
+RMD,Lancashire Ambulance Service NHS Trust,NA,NA,NA,2006-06-30,2009-03-31,1994-04-01,1994-04-01,PR3 5LN,NA,NA,NA,NA
+RME,Communicare NHS Trust,NA,NA,NA,NA,2002-03-31,NA,1994-04-01,BB5 1LN,NA,NA,NA,NA
+RMF,Preston Acute Hospitals NHS Trust,NA,NA,NA,NA,2002-07-31,NA,1994-04-01,PR2 9HT,NA,NA,NA,NA
+RMG,Guild Community Healthcare NHS Trust,NA,NA,NA,NA,2002-03-31,NA,1994-04-01,PR1 6AS,NA,NA,NA,NA
+RMH,Mental Health Services Of Salford NHS Trust,NA,NA,NA,NA,2003-03-31,NA,1994-04-01,M25 3BL,NA,NA,NA,NA
+RMJ,Salford Community Health Care NHS Trust,NA,NA,NA,NA,2001-03-31,NA,1994-04-01,M5 4DG,NA,NA,NA,NA
+RMK,North Manchester Healthcare NHS Trust,NA,NA,NA,NA,2002-03-31,NA,1994-04-01,M8 5RB,NA,NA,NA,NA
+RML,"Blackpool, Wyre And Fylde Community Health Services NHS Trust",NA,NA,NA,NA,2002-03-31,NA,1994-04-01,PR4 3AL,NA,NA,NA,NA
+RMM,Community Healthcare Bolton NHS Trust,NA,NA,NA,NA,2002-03-31,NA,1994-04-01,BL1 1PP,NA,NA,NA,NA
+RMN,Bury Health Care NHS Trust,NA,NA,NA,NA,2002-03-31,NA,1994-04-01,BL9 7TD,NA,NA,NA,NA
+RMP,Tameside And Glossop Integrated Care NHS Foundation Trust,NA,PT1,NA,NA,NA,NA,1994-04-01,OL6 9RW,Y62,North West,QOP,NHS Greater Manchester
+RMQ,Tameside And Glossop Community And Priority Services NHS Trust,NA,NA,NA,NA,2002-03-31,NA,1994-04-01,OL6 9RW,NA,NA,NA,NA
+RMR,Blackpool Victoria Hospital NHS Trust,NA,NA,NA,NA,2002-03-31,NA,1994-04-01,FY3 8NR,NA,NA,NA,NA
+RMS,Stockport Acute Services NHS Trust,NA,NA,NA,NA,2000-03-31,NA,1994-04-01,SK2 7JE,NA,NA,NA,NA
+RMT,Stockport Healthcare NHS Trust,NA,NA,NA,NA,2000-03-31,NA,1994-04-01,SK2 7JE,NA,NA,NA,NA
+RMU,East Yorkshire Community Healthcare NHS Trust,NA,NA,NA,NA,1999-09-30,NA,1994-04-01,HU17 8BU,NA,NA,NA,NA
+RMV,Hull And Holderness Community Health NHS Trust,NA,NA,NA,NA,1999-09-30,NA,1994-04-01,HU2 8TD,NA,NA,NA,NA
+RMW,Dewsbury Health Care NHS Trust,NA,NA,NA,NA,2002-03-31,NA,1994-04-01,WF13 4HS,NA,NA,NA,NA
+RMY,Norfolk And Suffolk NHS Foundation Trust,NA,"RT6,DN3",NA,NA,NA,NA,1994-04-01,NR1 2DH,Y61,East Of England,QMM,NHS Norfolk And Waveney
+RMZ,East Anglian Ambulance NHS Trust,NA,NA,NA,2006-06-30,2009-03-31,1994-04-01,1994-04-01,NR6 5NA,NA,NA,NA,NA
+RN1,Winchester And Eastleigh Healthcare NHS Trust,RN5,"RHN,JE1,JE2",RN5,2012-01-09,NA,1994-04-01,1994-04-01,SO22 5DG,NA,NA,NA,NA
+RN3,Great Western Hospitals NHS Foundation Trust,NA,JH1,NA,NA,NA,NA,1994-04-01,SN3 6BB,Y58,South West,QOX,"NHS Bath And North East Somerset, Swindon And Wiltshire"
+RN4,Portsmouth Health Care NHS Trust,NA,NA,NA,NA,2002-03-31,NA,1994-04-01,PO4 8LD,NA,NA,NA,NA
+RN5,Hampshire Hospitals NHS Foundation Trust,NA,"JF1,RN1",NA,NA,NA,NA,1994-04-01,RG24 9NA,Y59,South East,QRL,NHS Hampshire And Isle Of Wight
+RN7,Dartford And Gravesham NHS Trust,NA,GF1,NA,NA,NA,NA,1994-04-01,DA2 8DA,Y59,South East,QKS,NHS Kent And Medway
+RN9,Lewisham And Guys Mental Health NHS Trust,NA,NA,NA,NA,1999-03-31,NA,1994-04-01,SE12 8RG,NA,NA,NA,NA
+RNA,The Dudley Group NHS Foundation Trust,NA,MT4,NA,NA,NA,NA,1994-04-01,DY1 2HQ,Y60,Midlands,QUA,NHS Black Country
+RNB,Coventry Healthcare NHS Trust,NA,NA,NA,NA,2002-03-31,NA,1994-04-01,CV1 2NJ,NA,NA,NA,NA
+RND,South Birmingham Mental Health NHS Trust,NA,NA,NA,NA,2003-03-31,NA,1994-04-01,B15 2TZ,NA,NA,NA,NA
+RNE,Sandwell Healthcare NHS Trust,NA,NA,NA,NA,2002-03-31,NA,1994-04-01,B71 4HJ,NA,NA,NA,NA
+RNF,Northern Birmingham Mental Health NHS Trust,NA,NA,NA,NA,2003-03-31,NA,1994-04-01,B23 6AL,NA,NA,NA,NA
+RNG,Premier Health NHS Trust,NA,NA,NA,NA,2001-03-31,NA,1994-04-01,WS13 6EF,NA,NA,NA,NA
+RNH,Newham University Hospital NHS Trust,R1H,FAB,R1H,2012-03-31,2022-09-30,1994-04-01,1994-04-01,E13 8SL,NA,NA,NA,NA
+RNJ,Barts And The London NHS Trust,R1H,"RAK,FBX,FAY,T05",R1H,2012-03-31,NA,1994-04-01,1994-04-01,E1 1BB,NA,NA,NA,NA
+RNK,Tavistock And Portman NHS Foundation Trust,NA,FBL,NA,NA,NA,NA,1994-04-01,NW3 5BA,Y56,London,QMJ,NHS North Central London
+RNL,North Cumbria University Hospitals NHS Trust,RNN,"RLG,RE7",RNN,2019-09-30,NA,2001-04-01,2001-04-01,CA2 7HY,NA,NA,NA,NA
+RNM,Newcastle City Health NHS Trust,NA,NA,NA,NA,2001-03-31,NA,1994-04-01,NE4 6BE,NA,NA,NA,NA
+RNN,North Cumbria Integrated Care NHS Foundation Trust,NA,"RLF,RE7,RNL",NA,NA,NA,NA,2001-04-01,CA2 7HY,Y63,North East And Yorkshire,QHM,NHS North East And North Cumbria
+RNP,"Newcastle, North Tyneside And Northumberland Mental Health NHS Trust",NA,NA,NA,NA,2006-03-31,NA,2001-04-01,NE61 2NU,NA,NA,NA,NA
+RNQ,Kettering General Hospital NHS Foundation Trust,NA,KK1,NA,NA,NA,NA,1994-04-01,NN16 8UZ,Y60,Midlands,QPM,NHS Northamptonshire
+RNR,Rockingham Forest NHS Trust,NA,NA,NA,NA,2001-03-31,NA,1994-04-01,NN15 7PW,NA,NA,NA,NA
+RNS,Northampton General Hospital NHS Trust,NA,KN1,NA,NA,NA,NA,1994-04-01,NN1 5BD,Y60,Midlands,QPM,NHS Northamptonshire
+RNT,Stoke Mandeville Hospital NHS Trust,NA,NA,NA,NA,2003-03-31,NA,1994-04-01,HP21 8AL,NA,NA,NA,NA
+RNU,Oxford Health NHS Foundation Trust,NA,KX7,NA,NA,NA,NA,1994-04-01,OX4 4XN,Y59,South East,QU9,"NHS Buckinghamshire, Oxfordshire And Berkshire West"
+RNW,Northampton Community Healthcare NHS Trust,NA,NA,NA,NA,2001-03-31,NA,1994-04-01,NN5 6UH,NA,NA,NA,NA
+RNX,Oxford Radcliffe Hospital NHS Trust,NA,NA,NA,NA,1998-03-31,NA,1994-04-01,OX3 9DU,NA,NA,NA,NA
+RNY,Oxfordshire Ambulance NHS Trust,NA,NA,NA,NA,2006-06-30,NA,1994-04-01,OX3 7LH,NA,NA,NA,NA
+RNZ,Salisbury NHS Foundation Trust,NA,JG1,NA,NA,NA,NA,1994-04-01,SP2 8BJ,Y58,South West,QOX,"NHS Bath And North East Somerset, Swindon And Wiltshire"
+RP1,Northamptonshire Healthcare NHS Foundation Trust,NA,"RNR,RNW",NA,NA,NA,NA,2001-04-01,NN15 7PW,Y60,Midlands,QPM,NHS Northamptonshire
+RP2,Haringey Health Care NHS Trust,NA,NA,NA,NA,2001-03-31,NA,1994-04-01,N15 3TH,NA,NA,NA,NA
+RP3,Mid Essex Community And Mental Health NHS Trust,NA,NA,NA,NA,2001-03-31,NA,1994-04-01,CM8 2TL,NA,NA,NA,NA
+RP4,Great Ormond Street Hospital For Children NHS Foundation Trust,NA,"T0101,T01",NA,NA,NA,NA,1994-04-01,WC1N 3JH,Y56,London,QMJ,NHS North Central London
+RP5,Doncaster And Bassetlaw Teaching Hospitals NHS Foundation Trust,NA,"RCP,RAG",NA,NA,NA,NA,2001-04-01,DN2 5LT,Y63,North East And Yorkshire,QF7,NHS South Yorkshire
+RP6,Moorfields Eye Hospital NHS Foundation Trust,NA,T03,NA,NA,NA,NA,1994-04-01,EC1V 2PD,Y56,London,QMJ,NHS North Central London
+RP7,Lincolnshire Partnership NHS Foundation Trust,NA,"RVP,RK4",NA,NA,NA,NA,2001-04-01,LN1 1FS,Y60,Midlands,QJM,NHS Lincolnshire
+RPA,Medway NHS Foundation Trust,NA,"GH1,GH2",NA,NA,NA,NA,1994-04-01,ME7 5NY,Y59,South East,QKS,NHS Kent And Medway
+RPC,Queen Victoria Hospital NHS Foundation Trust,NA,GJ2,NA,NA,NA,NA,1994-04-01,RH19 3DZ,Y59,South East,QNX,NHS Sussex
+RPD,Kent And Sussex Weald NHS Trust,NA,NA,NA,NA,2000-03-31,NA,1994-04-01,TN2 4QJ,NA,NA,NA,NA
+RPF,South Kent Hospitals NHS Trust,NA,NA,NA,NA,1999-03-31,NA,1994-04-01,TN24 0LZ,NA,NA,NA,NA
+RPG,Oxleas NHS Foundation Trust,NA,GK1,NA,NA,NA,NA,1994-04-01,DA2 7WG,Y56,London,QKK,NHS South East London
+RPH,Kent Ambulance NHS Trust,NA,NA,NA,NA,2006-06-30,NA,1994-04-01,ME17 4BG,NA,NA,NA,NA
+RPK,Sussex Weald And Downs NHS Trust,NA,NA,NA,NA,2002-03-31,NA,1994-04-01,PO19 4FX,NA,NA,NA,NA
+RPL,Worthing And Southlands Hospitals NHS Trust,RYR,HWS,RYR,2009-03-31,2020-09-30,1994-04-01,1994-04-01,BN11 2DH,NA,NA,NA,NA
+RPN,Kingston And District Community NHS Trust,NA,NA,NA,NA,2001-03-31,NA,1994-04-01,KT6 7QU,NA,NA,NA,NA
+RPQ,Surrey Ambulance Service NHS Trust,NA,NA,NA,NA,2006-06-30,NA,1994-04-01,SM7 2AS,NA,NA,NA,NA
+RPR,Royal West Sussex NHS Trust,RYR,HSR,RYR,2009-03-31,NA,1994-04-01,1994-04-01,PO19 6SE,NA,NA,NA,NA
+RPS,Mid Sussex NHS Trust,NA,NA,NA,NA,2002-03-31,NA,1994-04-01,RH16 4EX,NA,NA,NA,NA
+RPV,Riverside Community Health Care NHS Trust,NA,NA,NA,NA,2002-03-31,NA,1994-04-01,SW6 4UL,NA,NA,NA,NA
+RPW,St Albans And Hemel Hempstead NHS Trust,NA,NA,NA,NA,2000-03-31,NA,1994-04-01,AL3 5PN,NA,NA,NA,NA
+RPX,Royal Brompton Hospital NHS Trust,NA,NA,NA,NA,1998-03-31,NA,1994-04-01,SW3 6NP,NA,NA,NA,NA
+RPY,The Royal Marsden NHS Foundation Trust,NA,T06,NA,NA,NA,NA,1994-04-01,SW3 6JJ,Y56,London,QRV,NHS North West London
+RQ2,Sussex Ambulance Service NHS Trust,NA,NA,NA,NA,2006-06-30,NA,1995-04-01,BN7 2XW,NA,NA,NA,NA
+RQ3,Birmingham Women's And Children's NHS Foundation Trust,NA,"MQ6,RLU",NA,NA,NA,NA,1995-04-01,B4 6NH,Y60,Midlands,QHL,NHS Birmingham And Solihull
+RQ4,Black Country Mental Health NHS Trust,NA,NA,NA,NA,2003-03-31,NA,1995-04-01,B70 8NY,NA,NA,NA,NA
+RQ5,Wolverhampton Health Care NHS Trust,NA,NA,NA,NA,2003-03-31,NA,1995-04-01,WV1 4SA,NA,NA,NA,NA
+RQ6,Royal Liverpool And Broadgreen University Hospitals NHS Trust,REM,"RBM,RBR",REM,2019-09-30,NA,1995-04-01,1995-04-01,L7 8XP,NA,NA,NA,NA
+RQ7,The Manchester Children's Hospitals NHS Trust,NA,NA,NA,NA,2001-03-31,NA,1995-04-01,M27 4HA,NA,NA,NA,NA
+RQ8,Mid Essex Hospital Services NHS Trust,RAJ,"FBJ,RDG",RAJ,2020-03-31,NA,1995-04-01,1995-04-01,CM1 7ET,NA,NA,NA,NA
+RQ9,The Bethlem And Maudsley NHS Trust,NA,NA,NA,NA,1999-03-31,NA,1995-04-01,BR3 3BX,NA,NA,NA,NA
+RQJ,West Herts Community Health NHS Trust,NA,NA,NA,NA,2001-03-31,NA,1994-04-01,AL3 5TL,NA,NA,NA,NA
+RQK,Harrow And Hillingdon Healthcare NHS Trust,NA,NA,NA,NA,2002-03-31,NA,1994-04-01,HA4 9NJ,NA,NA,NA,NA
+RQL,Mount Vernon And Watford Hospitals NHS Trust,NA,NA,NA,NA,2000-03-31,NA,1994-04-01,WD1 8HB,NA,NA,NA,NA
+RQM,Chelsea And Westminster Hospital NHS Foundation Trust,NA,"ENA,RFW",NA,NA,NA,NA,1994-04-01,SW10 9NH,Y56,London,QRV,NHS North West London
+RQN,Hammersmith Hospitals NHS Trust,RYJ,"ENA,T07",RYJ,2007-09-30,NA,1994-04-01,1994-04-01,W12 0HS,NA,NA,NA,NA
+RQP,University College London Hospitals NHS Trust,NA,NA,NA,NA,1996-03-31,NA,1994-04-01,W1P 9LN,NA,NA,NA,NA
+RQQ,Hinchingbrooke Health Care NHS Trust,RGN,RCM,RGN,2017-03-31,2022-09-30,1995-04-01,1995-04-01,PE29 6NT,NA,NA,NA,NA
+RQR,St James's And Seacroft University Hospital NHS Trust,NA,NA,NA,NA,1998-03-31,NA,1995-04-01,LS9 7TF,NA,NA,NA,NA
+RQS,United Leeds Teaching Hospitals NHS Trust,NA,NA,NA,NA,1998-03-31,NA,1995-04-01,LS1 3EX,NA,NA,NA,NA
+RQT,"Fosse Health, Leicestershire Community NHS Trust",NA,NA,NA,NA,1999-03-31,NA,1995-04-01,LE5 0TD,NA,NA,NA,NA
+RQU,Grantham And District Hospital NHS Trust,NA,NA,NA,NA,2000-03-31,NA,1995-04-01,NG31 8DG,NA,NA,NA,NA
+RQV,Essex And Hertfordshire Community NHS Trust,NA,NA,NA,NA,2001-03-31,NA,1995-04-01,CM23 5JH,NA,NA,NA,NA
+RQW,The Princess Alexandra Hospital NHS Trust,NA,FBS,NA,NA,NA,NA,1995-04-01,CM20 1QX,Y61,East Of England,QM7,NHS Hertfordshire And West Essex
+RQX,Homerton Healthcare NHS Foundation Trust,NA,FBR,NA,NA,NA,NA,1995-04-01,E9 6SR,Y56,London,QMF,NHS North East London
+RQY,South West London And St George's Mental Health NHS Trust,NA,HWM,NA,NA,NA,NA,1995-04-01,SW17 7DJ,Y56,London,QWE,NHS South West London
+RR1,Heart Of England NHS Foundation Trust,RRK,"MV1,RL7,RJH",RRK,2018-04-01,NA,1996-04-01,1996-04-01,B9 5ST,NA,NA,NA,NA
+RR2,Isle Of Wight Healthcare NHS Trust,NA,NA,NA,2006-09-30,2009-09-30,1997-04-01,1997-04-01,PO30 5TG,NA,NA,NA,NA
+RR4,Pinderfields And Pontefract Hospitals NHS Trust,NA,NA,NA,NA,2002-03-31,NA,1997-04-01,WF1 4EE,NA,NA,NA,NA
+RR5,Wirral And West Cheshire Community NHS Trust,NA,NA,NA,NA,2002-03-31,NA,1997-04-01,CH44 5UF,NA,NA,NA,NA
+RR7,Gateshead Health NHS Foundation Trust,NA,"RM7,RE2",NA,NA,NA,NA,1998-04-01,NE9 6SX,Y63,North East And Yorkshire,QHM,NHS North East And North Cumbria
+RR8,Leeds Teaching Hospitals NHS Trust,NA,"RQR,RQS",NA,NA,NA,NA,1998-04-01,LS9 7TF,Y63,North East And Yorkshire,QWO,NHS West Yorkshire
+RR9,North Durham Health Care NHS Trust,NA,NA,NA,NA,2002-09-30,NA,1998-04-01,DH1 5TW,NA,NA,NA,NA
+RRD,North Essex Partnership University NHS Foundation Trust,R1L,"RDJ,RP3,RQV",R1L,2017-03-31,NA,2001-04-01,2001-04-01,CM2 0QX,NA,NA,NA,NA
+RRE,Midlands Partnership University NHS Foundation Trust,NA,"RNG,R1E,RBH,RBG",NA,NA,NA,NA,2001-04-01,ST16 3SR,Y60,Midlands,QNC,NHS Staffordshire And Stoke-on-trent
+RRF,"Wrightington, Wigan And Leigh Teaching Hospitals NHS Foundation Trust",NA,"REY,RJY",NA,NA,NA,NA,2001-04-01,WN1 2NN,Y62,North West,QOP,NHS Greater Manchester
+RRG,Tower Hamlets Healthcare NHS Trust,NA,NA,NA,NA,2001-03-31,NA,1995-04-01,E1 4DG,NA,NA,NA,NA
+RRH,Newham Community Health Services NHS Trust,NA,NA,NA,NA,2001-03-31,NA,1995-04-01,E13 9EH,NA,NA,NA,NA
+RRJ,The Royal Orthopaedic Hospital NHS Foundation Trust,NA,MQ9,NA,NA,NA,NA,1995-04-01,B31 2AP,Y60,Midlands,QHL,NHS Birmingham And Solihull
+RRK,University Hospitals Birmingham NHS Foundation Trust,NA,"MQ4,RR1",NA,NA,NA,NA,1995-04-01,B15 2GW,Y60,Midlands,QHL,NHS Birmingham And Solihull
+RRL,City And Hackney Community Services NHS Trust,NA,NA,NA,NA,2001-03-31,NA,1995-04-01,N1 5LZ,NA,NA,NA,NA
+RRP,"Barnet, Enfield And Haringey Mental Health NHS Trust",G6V2S,"RHC,RCZ,RP2",G6V2S,2024-10-31,NA,2001-04-01,2001-04-01,N15 3TH,Y56,London,QMJ,NHS North Central London
+RRQ,Camden And Islington Mental Health NHS Trust,NA,NA,NA,NA,2002-03-31,NA,2001-04-01,NW1 0PE,NA,NA,NA,NA
+RRU,London Ambulance Service NHS Trust,NA,HLV01,NA,NA,NA,NA,1996-04-01,SE1 8SD,Y56,London,QKK,NHS South East London
+RRV,University College London Hospitals NHS Foundation Trust,NA,RQP,NA,NA,NA,NA,1996-04-01,NW1 2PG,Y56,London,QMJ,NHS North Central London
+RRX,Lincoln And Louth NHS Trust,NA,NA,NA,NA,2000-03-31,NA,1996-04-01,LN2 5QY,NA,NA,NA,NA
+RRY,Hartlepool And East Durham NHS Trust,NA,NA,NA,NA,1999-03-31,NA,1996-04-01,TS24 9AH,NA,NA,NA,NA
+RRZ,Worcestershire Community Healthcare NHS Trust,NA,NA,NA,NA,2000-03-31,NA,1996-04-01,WR4 9RW,NA,NA,NA,NA
+RT1,Cambridgeshire And Peterborough NHS Foundation Trust,NA,"RGS,RGK",NA,NA,NA,NA,2002-04-01,CB21 5EF,Y61,East Of England,QUE,NHS Cambridgeshire And Peterborough
+RT2,Pennine Care NHS Foundation Trust,NA,"RMQ,RMN,REZ,REX",NA,NA,NA,NA,2002-04-01,OL6 7SR,Y62,North West,QOP,NHS Greater Manchester
+RT3,Royal Brompton & Harefield NHS Foundation Trust,RJ1,"RPX,RC5",RJ1,2021-01-31,2025-10-31,1998-04-01,1998-04-01,SW3 6NP,NA,NA,NA,NA
+RT5,Leicestershire Partnership NHS Trust,NA,"RK2,RQT",NA,NA,NA,NA,1999-04-01,LE3 8RA,Y60,Midlands,QK1,"NHS Leicester, Leicestershire And Rutland"
+RT6,Suffolk Mental Health Partnership NHS Trust,RMY,"RGJ,RGL,RCL",RMY,2011-12-31,2022-09-30,1999-04-01,1999-04-01,IP3 8LU,NA,NA,NA,NA
+RTA,South Durham Health Care NHS Trust,NA,NA,NA,NA,2002-09-30,NA,1998-04-01,DL3 6HX,NA,NA,NA,NA
+RTC,County Durham And Darlington Priority Services NHS Trust,NA,NA,NA,NA,2006-03-31,NA,1998-04-01,DH1 5RD,NA,NA,NA,NA
+RTD,The Newcastle Upon Tyne Hospitals NHS Foundation Trust,NA,"RCK,RAB",NA,NA,NA,NA,1998-04-01,NE7 7DN,Y63,North East And Yorkshire,QHM,NHS North East And North Cumbria
+RTE,Gloucestershire Hospitals NHS Foundation Trust,NA,"RA5,RH6",NA,NA,NA,NA,2002-04-01,GL53 7AN,Y58,South West,QR1,NHS Gloucestershire
+RTF,Northumbria Healthcare NHS Foundation Trust,NA,"RLK,RLC,RCKDR,RLM",NA,NA,NA,NA,1998-04-01,NE29 8NH,Y63,North East And Yorkshire,QHM,NHS North East And North Cumbria
+RTG,University Hospitals Of Derby And Burton NHS Foundation Trust,NA,"RJF,RK8,RFP",NA,NA,NA,NA,1998-04-01,DE22 3NE,Y60,Midlands,QJ2,NHS Derby And Derbyshire
+RTH,Oxford University Hospitals NHS Foundation Trust,NA,"RHV,RNX,RBF,RH3",NA,NA,NA,NA,1998-04-01,OX3 9DU,Y59,South East,QU9,"NHS Buckinghamshire, Oxfordshire And Berkshire West"
+RTJ,Surrey Hampshire Borders NHS Trust,NA,NA,NA,NA,2005-03-31,NA,1998-04-01,GU16 9QE,NA,NA,NA,NA
+RTK,Ashford And St Peter's Hospitals NHS Foundation Trust,NA,"RCY,RDV",NA,NA,NA,NA,1998-04-01,KT16 0PZ,Y59,South East,QXU,NHS Surrey Heartlands
+RTM,East Kent NHS And Social Care Partnership Trust,NA,NA,NA,NA,2006-03-31,NA,1998-04-01,CT1 1AZ,NA,NA,NA,NA
+RTN,Surrey Oaklands NHS Trust,NA,NA,NA,NA,2005-03-31,NA,1998-04-01,CR3 5YA,NA,NA,NA,NA
+RTP,Surrey And Sussex Healthcare NHS Trust,NA,"RHE,RHH",NA,NA,NA,NA,1998-04-01,RH1 5RH,Y59,South East,QXU,NHS Surrey Heartlands
+RTQ,Gloucestershire Health And Care NHS Foundation Trust,NA,"R1J,RA5,RH7",NA,NA,NA,NA,2002-04-01,GL3 4AW,Y58,South West,QR1,NHS Gloucestershire
+RTR,South Tees Hospitals NHS Foundation Trust,NA,"RCJ,RCA",NA,NA,NA,NA,2002-04-01,TS4 3BW,Y63,North East And Yorkshire,QHM,NHS North East And North Cumbria
+RTV,North West Boroughs Healthcare NHS Foundation Trust,RW4,"RBP,RER,RJQ,RMM",RW4,2021-05-31,2025-10-31,2002-04-01,2002-04-01,WA2 8WA,NA,NA,NA,NA
+RTW,Shropshire's Community And Mental Health Services NHS Trust,NA,NA,NA,NA,2002-03-31,NA,1998-04-01,SY3 8DN,NA,NA,NA,NA
+RTX,University Hospitals Of Morecambe Bay NHS Foundation Trust,NA,"RE5,REV,RM8",NA,NA,NA,NA,1998-04-01,LA9 7RG,Y62,North West,QE1,NHS Lancashire And South Cumbria
+RV1,Tees East And North Yorkshire Ambulance Service NHS Trust,NA,NA,NA,NA,2006-06-30,NA,1999-04-01,YO30 1XW,NA,NA,NA,NA
+RV2,"Ealing, Hammersmith And Fulham Mental Health NHS Trust",NA,NA,NA,NA,2001-03-31,NA,1999-04-01,UB1 3EU,NA,NA,NA,NA
+RV3,Central And North West London NHS Foundation Trust,NA,"RQK,RFY,RJ3",NA,NA,NA,NA,1999-04-01,NW1 3AX,Y56,London,QMJ,NHS North Central London
+RV4,Community Health South London NHS Trust,NA,NA,NA,NA,2002-03-31,NA,1999-04-01,SE14 5ER,NA,NA,NA,NA
+RV5,South London And Maudsley NHS Foundation Trust,NA,"RN9,RDT,RQ9",NA,NA,NA,NA,1999-04-01,BR3 3BX,Y56,London,QKK,NHS South East London
+RV6,East Midlands Ambulance Service NHS Trust,NA,NA,NA,NA,2006-06-30,NA,1999-04-01,NG8 3LL,NA,NA,NA,NA
+RV7,Bedfordshire And Luton Mental Health And Social Care Partnership NHS Trust,RWN,"RFT,RDB",R1L,2010-03-31,2020-09-30,1999-04-01,1999-04-01,LU1 2PL,NA,NA,NA,NA
+RV8,North West London Hospitals NHS Trust,R1K,"RFZ,RAU",R1K,2014-09-30,NA,1999-04-01,1999-04-01,HA1 3UJ,NA,NA,NA,NA
+RV9,Humber Teaching NHS Foundation Trust,NA,"RMV,RMU",NA,NA,NA,NA,1999-10-01,HU10 6ED,Y63,North East And Yorkshire,QOQ,NHS Humber And North Yorkshire
+RVJ,North Bristol NHS Trust,NA,"REE,REB",NA,NA,NA,NA,1999-04-01,BS10 5NB,Y58,South West,QUY,"NHS Bristol, North Somerset And South Gloucestershire"
+RVK,North East Ambulance Service NHS Trust,NA,NA,NA,NA,2006-06-30,NA,1999-04-01,NE4 7YL,NA,NA,NA,NA
+RVL,Barnet And Chase Farm Hospitals NHS Trust,RAL,"RG9,RDC",RAL,2014-07-01,2020-09-30,1999-04-01,1999-04-01,EN5 3DJ,NA,NA,NA,NA
+RVM,South West London Community NHS Trust,NA,NA,NA,NA,2002-03-31,NA,1999-04-01,SW15 5PN,NA,NA,NA,NA
+RVN,Avon And Wiltshire Mental Health Partnership NHS Trust,NA,RDX,NA,NA,NA,NA,1999-04-01,BA1 3QE,Y58,South West,QOX,"NHS Bath And North East Somerset, Swindon And Wiltshire"
+RVP,South Lincolnshire Healthcare NHS Trust,NA,NA,NA,NA,2001-03-31,NA,1999-04-01,NG34 8PP,NA,NA,NA,NA
+RVQ,Wiltshire And Swindon Health Care NHS Trust,NA,NA,NA,NA,2002-03-31,NA,1999-10-01,SN5 8YF,NA,NA,NA,NA
+RVR,Epsom And St Helier University Hospitals NHS Trust,NA,"RA1,RAZ",NA,NA,NA,NA,1999-04-01,SM5 1AA,Y56,London,QWE,NHS South West London
+RVT,North Sefton And West Lancashire Community NHS Trust,NA,NA,NA,NA,2002-03-31,NA,1999-04-01,L39 2JW,NA,NA,NA,NA
+RVV,East Kent Hospitals University NHS Foundation Trust,NA,"RGW,RPF,RGV",NA,NA,NA,NA,1999-04-01,CT1 3NG,Y59,South East,QKS,NHS Kent And Medway
+RVW,North Tees And Hartlepool NHS Foundation Trust,NA,"RRY,RCH",NA,NA,NA,NA,1999-04-01,TS24 9AH,Y63,North East And Yorkshire,QHM,NHS North East And North Cumbria
+RVX,Tees And North East Yorkshire NHS Trust,RX3,"RE4,RRY,RCH",RX3,2006-03-31,2025-01-31,1999-04-01,1999-04-01,TS6 0SZ,NA,NA,NA,NA
+RVY,Southport And Ormskirk Hospital NHS Trust,RBN,"REQ,RJV",RBN,2023-06-30,NA,1999-04-01,1999-04-01,PR8 6PN,Y62,North West,QYG,NHS Cheshire And Merseyside
+RW1,Hampshire And Isle Of Wight Healthcare NHS Foundation Trust,NA,"RHX,R1C,RN4,RHS",NA,NA,NA,NA,2001-04-01,SO40 2RZ,Y59,South East,QRL,NHS Hampshire And Isle Of Wight
+RW2,Southern Derbyshire Community And Mental Health Services NHS Trust,NA,NA,NA,NA,2002-03-31,NA,2001-04-01,DE22 3LZ,NA,NA,NA,NA
+RW3,Central Manchester University Hospitals NHS Foundation Trust,R0A,"RQ7,RBU,RM4",R0A,2017-09-30,NA,2001-04-01,2001-04-01,M13 9WL,NA,NA,NA,NA
+RW4,Mersey Care NHS Foundation Trust,NA,"RJX,RY1,RTV,RES,RVT",NA,NA,NA,NA,2001-04-01,L34 1PJ,Y62,North West,QYG,NHS Cheshire And Merseyside
+RW5,Lancashire & South Cumbria NHS Foundation Trust,NA,"RMG,RME,RJU,RML,RVT",NA,NA,NA,NA,2002-04-01,PR5 6AW,Y62,North West,QE1,NHS Lancashire And South Cumbria
+RW6,Pennine Acute Hospitals NHS Trust,"RM3,R0A","RMK,REZ,RMN,REX","RM3,R0A",2021-09-30,NA,2002-04-01,2002-04-01,M8 5RB,Y62,North West,QOP,NHS Greater Manchester
+RW7,North West Surrey Mental Health NHS Partnership Trust,NA,NA,NA,NA,2005-03-31,NA,2002-04-01,KT16 0AE,NA,NA,NA,NA
+RW8,West Sussex Health And Social Care NHS Trust,RX2,"RPK,RPS,RHJ",RX2,2006-03-31,2025-01-31,2002-04-01,2002-04-01,BN13 3EP,NA,NA,NA,NA
+RW9,South Of Tyne And Wearside Mental Health NHS Trust,RX4,RLH,RX4,2006-03-31,2022-09-30,2002-04-01,2002-04-01,SR2 0NB,NA,NA,NA,NA
+RWA,Hull University Teaching Hospitals NHS Trust,NA,"RF2,RF3",NA,NA,NA,NA,1999-10-01,HU3 2JZ,Y63,North East And Yorkshire,QOQ,NHS Humber And North Yorkshire
+RWC,Doncaster And South Humber Healthcare NHS Trust,NA,NA,NA,NA,2004-03-31,NA,1999-10-01,DN4 8QN,NA,NA,NA,NA
+RWD,United Lincolnshire Teaching Hospitals NHS Trust,NA,"RQU,RRX,RK1",NA,NA,NA,NA,2000-04-01,LN2 5QY,Y60,Midlands,QJM,NHS Lincolnshire
+RWE,University Hospitals Of Leicester NHS Trust,NA,"RFD,RFL,RFB",NA,NA,NA,NA,2000-04-01,LE1 5WW,Y60,Midlands,QK1,"NHS Leicester, Leicestershire And Rutland"
+RWF,Maidstone And Tunbridge Wells NHS Trust,NA,"RG1,RPD",NA,NA,NA,NA,2000-04-01,ME16 9QQ,Y59,South East,QKS,NHS Kent And Medway
+RWG,West Hertfordshire Teaching Hospitals NHS Trust,NA,"RPW,RQL",NA,NA,NA,NA,2000-04-01,WD18 0HB,Y61,East Of England,QM7,NHS Hertfordshire And West Essex
+RWH,East And North Hertfordshire Teaching NHS Trust,NA,"RAQ,RC4",NA,NA,NA,NA,2000-04-01,SG1 4AB,Y61,East Of England,QM7,NHS Hertfordshire And West Essex
+RWJ,Stockport NHS Foundation Trust,NA,"RMS,RMT",NA,NA,NA,NA,2000-04-01,SK2 7JE,Y62,North West,QOP,NHS Greater Manchester
+RWK,East London NHS Foundation Trust,NA,"RRG,RRH,RRL",NA,NA,NA,NA,2000-04-01,E1 8DE,Y56,London,QMF,NHS North East London
+RWL,Birmingham Specialist Community Health NHS Trust,NA,NA,NA,NA,2002-03-31,NA,2000-04-01,B13 8JL,NA,NA,NA,NA
+RWN,South Essex Partnership University NHS Foundation Trust,R1L,"RV7,RDK,RG8",R1L,2017-03-31,NA,2000-04-01,2000-04-01,SS11 7XX,NA,NA,NA,NA
+RWP,Worcestershire Acute Hospitals NHS Trust,NA,"RJB,RM9,RLR",NA,NA,NA,NA,2000-04-01,WR5 1DD,Y60,Midlands,QGH,NHS Herefordshire And Worcestershire
+RWQ,Worcestershire Mental Health Partnership NHS Trust,R1A,"RJB,RRZ",R1A,2011-06-30,2022-09-30,2000-04-01,2000-04-01,WR4 9RW,NA,NA,NA,NA
+RWR,Hertfordshire Partnership University NHS Foundation Trust,NA,"RC8,RQJ",NA,NA,NA,NA,2001-04-01,AL10 8YE,Y61,East Of England,QM7,NHS Hertfordshire And West Essex
+RWV,Devon Partnership NHS Trust,NA,REA,NA,NA,NA,NA,2001-04-01,EX2 5AF,Y58,South West,QJK,NHS Devon
+RWW,Warrington And Halton Teaching Hospitals NHS Foundation Trust,NA,"RKC,RJS",NA,NA,NA,NA,2001-04-01,WA5 1QG,Y62,North West,QYG,NHS Cheshire And Merseyside
+RWX,Berkshire Healthcare NHS Foundation Trust,NA,"RH4,RD6",NA,NA,NA,NA,2001-04-01,RG12 2UT,Y59,South East,QNQ,NHS Frimley
+RWY,Calderdale And Huddersfield NHS Foundation Trust,NA,"RGB,RGA",NA,NA,NA,NA,2001-04-01,HD3 3EA,Y63,North East And Yorkshire,QWO,NHS West Yorkshire
+RX1,Nottingham University Hospitals NHS Trust,NA,"RCS,RFK",NA,NA,NA,NA,2006-04-01,NG7 2UH,Y60,Midlands,QT1,NHS Nottingham And Nottinghamshire
+RX2,Sussex Partnership NHS Foundation Trust,NA,"RW8,RXD",NA,NA,NA,NA,2006-04-01,BN13 3EP,Y59,South East,QNX,NHS Sussex
+RX3,"Tees, Esk And Wear Valleys NHS Foundation Trust",NA,"RTC,RVX",NA,NA,NA,NA,2006-04-01,DL2 2TS,Y63,North East And Yorkshire,QHM,NHS North East And North Cumbria
+RX4,"Cumbria, Northumberland, Tyne And Wear NHS Foundation Trust",NA,"RNP,RM6,RW9",NA,NA,NA,NA,2006-04-01,NE3 3XT,Y63,North East And Yorkshire,QHM,NHS North East And North Cumbria
+RX5,Great Western Ambulance Service NHS Trust,NA,NA,NA,2013-02-01,2015-06-09,2006-04-01,2006-04-01,SN15 1GG,NA,NA,NA,NA
+RX6,North East Ambulance Service NHS Foundation Trust,NA,"RV1,RVK",NA,NA,NA,NA,2006-07-01,NE15 8NY,Y63,North East And Yorkshire,QHM,NHS North East And North Cumbria
+RX7,North West Ambulance Service NHS Trust,NA,"RE6,RMA,RB6,RMD",NA,NA,NA,NA,2006-07-01,BL1 5DD,Y62,North West,QOP,NHS Greater Manchester
+RX8,Yorkshire Ambulance Service NHS Trust,NA,"RB8,RV1,RGH",NA,NA,NA,NA,2006-07-01,WF2 0XQ,Y63,North East And Yorkshire,QWO,NHS West Yorkshire
+RX9,East Midlands Ambulance Service NHS Trust,NA,"RV6,RHY,RBX",NA,NA,NA,NA,2006-07-01,NG8 6PY,Y60,Midlands,QT1,NHS Nottingham And Nottinghamshire
+RXA,Cheshire And Wirral Partnership NHS Foundation Trust,NA,"RJT,RR5",NA,NA,NA,NA,2002-04-01,CH2 1BQ,Y62,North West,QYG,NHS Cheshire And Merseyside
+RXC,East Sussex Healthcare NHS Trust,NA,"RDL,RDM",NA,NA,NA,NA,2002-04-01,TN37 7PT,Y59,South East,QNX,NHS Sussex
+RXD,East Sussex County Healthcare NHS Trust,RX2,"RGX,RDM",RX2,2006-03-31,2022-09-30,2002-04-01,2002-04-01,BN27 4EP,NA,NA,NA,NA
+RXE,Rotherham Doncaster And South Humber NHS Foundation Trust,NA,RWC,NA,NA,NA,NA,2004-04-01,DN4 8QN,Y63,North East And Yorkshire,QF7,NHS South Yorkshire
+RXF,Mid Yorkshire Teaching NHS Trust,NA,"RMW,RR4",NA,NA,NA,NA,2002-04-01,WF1 4DG,Y63,North East And Yorkshire,QWO,NHS West Yorkshire
+RXG,South West Yorkshire Partnership NHS Foundation Trust,NA,"RGF,RMW",NA,NA,NA,NA,2002-04-01,WF1 3SP,Y63,North East And Yorkshire,QWO,NHS West Yorkshire
+RXH,Brighton And Sussex University Hospitals NHS Trust,RYR,"RPS,RGU",RYR,2021-03-31,NA,2002-04-01,2002-04-01,BN2 5BE,Y59,South East,QNX,NHS Sussex
+RXJ,West Kent NHS And Social Care Trust,NA,NA,NA,NA,2006-03-31,NA,2002-04-01,ME19 4AX,NA,NA,NA,NA
+RXK,Sandwell And West Birmingham Hospitals NHS Trust,NA,"RLW,RNE",NA,NA,NA,NA,2002-04-01,B66 2QT,Y60,Midlands,QUA,NHS Black Country
+RXL,Blackpool Teaching Hospitals NHS Foundation Trust,NA,"RMR,RML",NA,NA,NA,NA,2002-04-01,FY3 8NR,Y62,North West,QE1,NHS Lancashire And South Cumbria
+RXM,Derbyshire Healthcare NHS Foundation Trust,NA,"RW2,RKX",NA,NA,NA,NA,2002-04-01,DE22 3LZ,Y60,Midlands,QJ2,NHS Derby And Derbyshire
+RXN,Lancashire Teaching Hospitals NHS Foundation Trust,NA,"RMF,RJU",NA,NA,NA,NA,2002-08-01,PR2 9HT,Y62,North West,QE1,NHS Lancashire And South Cumbria
+RXP,County Durham And Darlington NHS Foundation Trust,NA,"RR9,RTA",NA,NA,NA,NA,2002-10-01,DL3 6HX,Y63,North East And Yorkshire,QHM,NHS North East And North Cumbria
+RXQ,Buckinghamshire Healthcare NHS Trust,NA,"RNT,RH2",NA,NA,NA,NA,2003-04-01,HP7 0JD,Y59,South East,QU9,"NHS Buckinghamshire, Oxfordshire And Berkshire West"
+RXR,East Lancashire Hospitals NHS Trust,NA,"REU,RMB",NA,NA,NA,NA,2003-04-01,BB2 3HH,Y62,North West,QE1,NHS Lancashire And South Cumbria
+RXT,Birmingham And Solihull Mental Health NHS Foundation Trust,NA,"RND,RNF",NA,NA,NA,NA,2003-04-01,B13 8QY,Y60,Midlands,QHL,NHS Birmingham And Solihull
+RXV,Greater Manchester Mental Health NHS Foundation Trust,NA,"RMH,TAE",NA,NA,NA,NA,2003-04-01,M25 3BL,Y62,North West,QOP,NHS Greater Manchester
+RXW,The Shrewsbury And Telford Hospital NHS Trust,NA,"RLZ,RKF",NA,NA,NA,NA,2003-10-01,SY3 8XQ,Y60,Midlands,QOC,"NHS Shropshire, Telford And Wrekin"
+RXX,Surrey And Borders Partnership NHS Foundation Trust,NA,"RTN,RW7,RTJ",NA,NA,NA,NA,2005-04-01,KT22 7AD,Y59,South East,QXU,NHS Surrey Heartlands
+RXY,Kent And Medway Mental Health NHS Trust,NA,"RXJ,RTM",NA,NA,NA,NA,2006-04-01,ME16 9PH,Y59,South East,QKS,NHS Kent And Medway
+RY1,Liverpool Community Health NHS Trust,RW4,NA,RW4,2018-03-31,NA,2010-11-01,2010-11-01,L13 1FB,NA,NA,NA,NA
+RY2,Bridgewater Community Healthcare NHS Foundation Trust,NA,NA,NA,NA,NA,NA,2010-11-01,WA3 7PG,Y62,North West,QYG,NHS Cheshire And Merseyside
+RY3,Norfolk Community Health And Care NHS Trust,NA,NA,NA,NA,NA,NA,2010-11-01,NR2 3TU,Y61,East Of England,QMM,NHS Norfolk And Waveney
+RY4,Hertfordshire Community NHS Trust,NA,NA,NA,NA,NA,NA,2010-11-01,AL7 1BW,Y61,East Of England,QM7,NHS Hertfordshire And West Essex
+RY5,Lincolnshire Community Health Services NHS Trust,NA,NA,NA,NA,NA,NA,2011-04-01,LN5 7JH,Y60,Midlands,QJM,NHS Lincolnshire
+RY6,Leeds Community Healthcare NHS Trust,NA,NA,NA,NA,NA,2011-04-01,2011-03-21,LS11 0DL,Y63,North East And Yorkshire,QWO,NHS West Yorkshire
+RY7,Wirral Community Health And Care NHS Foundation Trust,NA,NA,NA,NA,NA,NA,2011-04-01,CH42 0LQ,Y62,North West,QYG,NHS Cheshire And Merseyside
+RY8,Derbyshire Community Health Services NHS Foundation Trust,NA,NA,NA,NA,NA,2011-04-01,2011-03-21,S42 7JE,Y60,Midlands,QJ2,NHS Derby And Derbyshire
+RY9,Hounslow And Richmond Community Healthcare NHS Trust,RAX,NA,RAX,2024-10-31,NA,2011-04-01,2011-04-01,TW11 8HU,Y56,London,QWE,NHS South West London
+RYA,West Midlands Ambulance Service University NHS Foundation Trust,NA,"RB7,RL5,RL6,RKA",NA,NA,NA,NA,2006-07-01,DY5 1LX,Y60,Midlands,QUA,NHS Black Country
+RYC,East Of England Ambulance Service NHS Trust,NA,"RMZ,RFU,RB4",NA,NA,NA,NA,2006-07-01,SG8 6NA,Y61,East Of England,QUE,NHS Cambridgeshire And Peterborough
+RYD,South East Coast Ambulance Service NHS Foundation Trust,NA,"RPH,RQ2,RPQ",NA,NA,NA,NA,2006-07-01,RH10 9BG,Y59,South East,QNX,NHS Sussex
+RYE,South Central Ambulance Service NHS Foundation Trust,NA,"RKD,RNY,RHY,RH1",NA,NA,NA,NA,2006-07-01,OX26 6HR,Y59,South East,QU9,"NHS Buckinghamshire, Oxfordshire And Berkshire West"
+RYF,South Western Ambulance Service NHS Foundation Trust,NA,"RHP,RJ9,RX5",NA,NA,NA,NA,2006-07-01,EX2 7HY,Y58,South West,QJK,NHS Devon
+RYG,Coventry And Warwickshire Partnership NHS Trust,NA,NA,NA,NA,NA,NA,2006-10-01,CV6 6NY,Y60,Midlands,QWU,NHS Coventry And Warwickshire
+RYH,NHS Direct NHS Trust,NA,T1370,NA,2014-03-31,NA,2007-04-01,2007-04-01,E1 8EU,NA,NA,NA,NA
+RYJ,Imperial College Healthcare NHS Trust,NA,"RQN,RJ5",NA,NA,NA,NA,2007-10-01,W2 1BL,Y56,London,QRV,NHS North West London
+RYK,Dudley Integrated Health And Care NHS Trust,TAJ,NA,TAJ,2024-09-30,NA,2008-10-01,2008-10-01,DY5 1RU,Y60,Midlands,QUA,NHS Black Country
+RYQ,South London Healthcare NHS Trust,NA,"RG3,RGZ,RG2",NA,2013-09-30,NA,2009-04-01,2009-04-01,DA14 6LT,NA,NA,NA,NA
+RYR,University Hospitals Sussex NHS Foundation Trust,NA,"RPL,RXH,RPR",NA,NA,NA,NA,2009-04-01,BN11 2DH,Y59,South East,QNX,NHS Sussex
+RYV,Cambridgeshire Community Services NHS Trust,NA,NA,NA,NA,NA,2010-04-01,2010-03-24,PE27 4LG,Y61,East Of England,QUE,NHS Cambridgeshire And Peterborough
+RYW,Birmingham Community Healthcare NHS Foundation Trust,NA,NA,NA,NA,NA,NA,2010-11-01,B7 4BN,Y60,Midlands,QHL,NHS Birmingham And Solihull
+RYX,Central London Community Healthcare NHS Trust,NA,NA,NA,NA,NA,NA,2010-11-01,NW1 5JD,Y56,London,QRV,NHS North West London
+RYY,Kent Community Health NHS Foundation Trust,NA,NA,NA,NA,NA,NA,2010-11-01,TN25 4AZ,Y59,South East,QKS,NHS Kent And Medway
+TAD,Bradford District Care NHS Foundation Trust,NA,RCE,NA,NA,NA,NA,2002-04-01,BD18 3LD,Y63,North East And Yorkshire,QWO,NHS West Yorkshire
+TAE,Manchester Mental Health And Social Care Trust,RXV,NA,RXV,2016-12-31,2020-09-30,2002-04-01,2002-04-01,M21 9UN,NA,NA,NA,NA
+TAF,Camden And Islington NHS Foundation Trust,G6V2S,RRQ,G6V2S,2024-10-31,NA,2002-04-01,2002-04-01,NW1 0PE,Y56,London,QMJ,NHS North Central London
+TAH,Sheffield Health Partnership University NHS Foundation Trust,NA,RK7,NA,NA,NA,NA,2003-04-01,S4 7QQ,Y63,North East And Yorkshire,QF7,NHS South Yorkshire
+TAJ,Black Country Healthcare NHS Foundation Trust,NA,"RQ4,RYK",NA,NA,NA,NA,2003-04-01,DY2 8PS,Y60,Midlands,QUA,NHS Black Country
