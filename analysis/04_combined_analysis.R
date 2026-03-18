@@ -5,7 +5,7 @@ Secondary_DDD_by_year <- read.csv(here(data_dir, "secondary_DDD_by_year.csv"))
 HospitalFP10_DDD_by_year <- read.csv(here(data_dir, "hospital_fp10_DDD_by_year.csv"))
 primary_lithium_df <- read.csv(here(data_dir, "primary_lithium_by_region.csv"))
 secondary_lithium_df <- read.csv(here(data_dir, "secondary_lithium_by_region.csv"))
-Hospital_FP10_total_DDD_by_region_2024 <- read.csv(here(data_dir, "hospital_fp10_DDD_by_region_2024.csv"))
+Hospital_FP10_total_DDD_by_region_2025 <- read.csv(here(data_dir, "hospital_fp10_DDD_by_region_2025.csv"))
 Primary_DDD_by_year_region <- read.csv(here(data_dir, "primary_DDD_by_year_region.csv"))
 Secondary_DDD_by_year_region <- read.csv(here(data_dir, "secondary_DDD_by_year_region.csv"))
 HospitalFP10_DDD_by_year_region <- read.csv(here(data_dir, "hospital_fp10_DDD_by_year_region.csv"))
@@ -16,16 +16,16 @@ primary_line <- ggplot(Primaryy_DDD_by_year, aes(x = as.integer(year), y = total
   geom_point(size = 3, color = "blue") +
   labs(
     title = "Primary Care: Lithium Prescribing Trends Over Time",
-    subtitle = "Total Daily Defined Doses (DDD) issued per year (2015–2024)",
+    subtitle = "Total Daily Defined Doses (DDD) issued per year (2015–2025)",
     x = "Year",
     y = "Total DDD (millions)"
   ) +
   scale_y_continuous(
-    limits = c(0, 14),
+    limits = c(0, ceiling(max(Primaryy_DDD_by_year$total_DDD / 1e6, na.rm = TRUE) * 1.05)),
     expand = c(0, 0),
     labels = function(x) format(x, scientific = FALSE, big.mark = ",")
   ) +
-  scale_x_continuous(breaks = 2015:2024) +
+  scale_x_continuous(breaks = 2015:2025) +
   theme_minimal(base_size = 13) +
   theme(
     plot.title = element_text(face = "bold", size = 16),
@@ -39,7 +39,7 @@ secondary_line <- ggplot(Secondary_DDD_by_year, aes(x = as.integer(year), y = to
   geom_point(size = 3, color = "#F8766D") +
   labs(
     title = "Secondary Care: Lithium Prescribing Trends Over Time",
-    subtitle = "Total Daily Defined Doses (DDD) issued per year (2019–2024)",
+    subtitle = "Total Daily Defined Doses (DDD) issued per year (2019–2025)",
     x = "Year",
     y = "Total DDD (millions)"
   ) +
@@ -48,7 +48,7 @@ secondary_line <- ggplot(Secondary_DDD_by_year, aes(x = as.integer(year), y = to
     expand = c(0, 0),
     labels = scales::label_number(accuracy = 0.1)
   ) +
-  scale_x_continuous(breaks = 2019:2024) +
+  scale_x_continuous(breaks = 2019:2025) +
   coord_cartesian(ylim = c(0, 1.2)) +
   theme_minimal(base_size = 13) +
   theme(
@@ -204,14 +204,19 @@ secondary_lithium_df <- secondary_lithium_df %>%
     Region = ifelse(tolower(region) == "east of england", "East of England", as.character(region)),
     Source = "Secondary"
   )
-Hospital_FP10_total_DDD_by_region_2024 <- Hospital_FP10_total_DDD_by_region_2024 %>%
+Hospital_FP10_total_DDD_by_region_2025 <- Hospital_FP10_total_DDD_by_region_2025 %>%
   mutate(
     Region = ifelse(tolower(region) == "east of england", "East of England", as.character(region)),
     Source = "Hospital FP10"
   ) %>%
   select(-region)
 
-combined_df_all <- bind_rows(primary_lithium_df, secondary_lithium_df, Hospital_FP10_total_DDD_by_region_2024) %>%
+# Ensure Region is character in all data frames
+primary_lithium_df <- primary_lithium_df %>% mutate(Region = as.character(Region))
+secondary_lithium_df <- secondary_lithium_df %>% mutate(Region = as.character(Region))
+Hospital_FP10_total_DDD_by_region_2025 <- Hospital_FP10_total_DDD_by_region_2025 %>% mutate(Region = as.character(Region))
+
+combined_df_all <- bind_rows(primary_lithium_df, secondary_lithium_df, Hospital_FP10_total_DDD_by_region_2025) %>%
   mutate(Source = factor(Source, levels = c("Primary", "Secondary", "Hospital FP10")))
 
 stacked_bar_plot <- ggplot(combined_df_all, aes(x = Region, y = `DDD.population`, fill = Source)) +
@@ -222,7 +227,7 @@ stacked_bar_plot <- ggplot(combined_df_all, aes(x = Region, y = `DDD.population`
   theme_minimal() +
   labs(
     title = "Regional Lithium Use by Care Level",
-    subtitle = "Primary, Secondary, Hospital (FP10) in 2024",
+    subtitle = "Primary, Secondary, Hospital (FP10) in 2025",
     x = "Region",
     y = "Lithium usage (DDD/population)",
     fill = "Care Level"
@@ -267,7 +272,7 @@ combined_data <- bind_rows(Primary_clean, Secondary_clean, Hospital_clean)
 filtered_data <- combined_data %>% filter(year >= 2019)
 summed_data <- filtered_data %>%
   group_by(year) %>%
-  summarise(total_DDD_sum = sum(total_DDD, na.rm = TRUE))
+  summarise(total_DDD_sum = sum(total_DDD, na.rm = TRUE), .groups = "drop")
 
 max_total_millions <- max(summed_data$total_DDD_sum) / 1e6
 national_ddd_plot <- ggplot(summed_data, aes(x = as.integer(year), y = total_DDD_sum / 1e6)) +
@@ -275,7 +280,7 @@ national_ddd_plot <- ggplot(summed_data, aes(x = as.integer(year), y = total_DDD
   geom_point(color = "#e31a1c", size = 3) +
   labs(
     title = "National DDD Trends from All Sources",
-    subtitle = "Summed total DDD (in millions) across Primary, Secondary, and Hospital FP10 (2019–2024)",
+    subtitle = "Summed total DDD (in millions) across Primary, Secondary, and Hospital FP10 (2019–2025)",
     x = "Year",
     y = "Total DDD (Millions)"
   ) +
@@ -337,5 +342,5 @@ ggsave(here(plots_dir, "regional_ddd_trends.png"), regional_trends_plot, width =
 
 write.csv(summed_data, here(data_dir, "national_DDD_summed.csv"), row.names = FALSE)
 write.csv(summed_by_region, here(data_dir, "regional_DDD_trends.csv"), row.names = FALSE)
-write.csv(combined_df_all, here(data_dir, "combined_regional_by_care_2024.csv"), row.names = FALSE)
+write.csv(combined_df_all, here(data_dir, "combined_regional_by_care_2025.csv"), row.names = FALSE)
 message("Combined analysis complete. Outputs saved to ", output_dir)
