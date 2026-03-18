@@ -1,54 +1,43 @@
 source(here::here("analysis", "00_setup.R"))
 
-# Import primary care dataset
-PrimaryCare_Lithium <- read.csv(gzfile(here("data", "primary_care", "primary_lithium.csv.gz")))
-PrimaryCare_Lithium <- PrimaryCare_Lithium %>%
-  mutate(month = as.Date(month))
-
-Practice_codes <- read_excel(here("data", "primary_care", "practice_codes.xlsx"))
-merged_data <- PrimaryCare_Lithium %>%
-  left_join(Practice_codes, by = c("practice" = "code")) %>%
-  filter(setting == 4)
-
-df_primarycare2 <- read.csv(here("data", "primary_care", "primary_care.csv"))
-PRIMARYCARE_dataset <- merge(
-  merged_data,
-  df_primarycare2[, c("bnf_code", "strnt_nmrtr_val")],
-  by = "bnf_code",
-  all.x = TRUE
+# Import primary care dataset from EPD monthly files (data/primary_care/epd_lithium_YYYYMM.csv)
+epd_files <- list.files(
+  here("data", "primary_care"),
+  pattern = "^epd_lithium_[0-9]{6}\\.csv$",
+  full.names = TRUE
 )
-
-PRIMARYCARE_dataset <- PRIMARYCARE_dataset %>%
+if (length(epd_files) == 0) {
+  stop("No epd_lithium_YYYYMM.csv files found in data/primary_care/")
+}
+read_epd_file <- function(f) {
+  df <- read.csv(f)
+  df[, c("YEAR_MONTH", "REGIONAL_OFFICE_CODE", "PRACTICE_CODE", "BNF_CODE", "BNF_DESCRIPTION", "TOTAL_QUANTITY")]
+}
+PrimaryCare_Lithium <- epd_files %>%
+  lapply(read_epd_file) %>%
+  bind_rows() %>%
   mutate(
-    chemical = case_when(
-      bnf_name %in% c(
-        "Camcolit 250 tablets",
-        "Camcolit 400 modified-release tablets",
-        "Liskonum 450mg modified-release tablets",
-        "Lithium carbonate 200mg modified-release tablets",
-        "Lithium carbonate 200mg/5ml oral suspension",
-        "Lithium carbonate 250mg tablets",
-        "Lithium carbonate 400mg modified-release tablets",
-        "Lithium carbonate 450mg modified-release tablets",
-        "Lithonate 400mg modified-release tablets",
-        "Priadel 200mg modified-release tablets",
-        "Priadel 400mg modified-release tablets"
-      ) ~ "Lithium Carbonate",
-      bnf_name %in% c(
-        "Li-Liquid 1.018g/5ml oral solution",
-        "Li-Liquid 509mg/5ml oral solution",
-        "Lithium citrate 1.018g/5ml oral solution",
-        "Lithium citrate 509mg/5ml oral solution",
-        "Lithium citrate 520mg/5ml oral solution sugar free",
-        "Priadel 520mg/5ml liquid",
-        "Lithium citrate 10.8mmol/5ml oral solution sugar free"
-      ) ~ "Lithium Citrate",
-      TRUE ~ "Other"
-    ),
+    month = as.Date(paste0(substr(YEAR_MONTH, 1, 4), "-", substr(YEAR_MONTH, 5, 6), "-01")),
+    practice = PRACTICE_CODE,
+    bnf_code = BNF_CODE,
+    bnf_name = BNF_DESCRIPTION,
+    quantity = TOTAL_QUANTITY,
+    regional_team = REGIONAL_OFFICE_CODE
+  ) %>%
+  select(month, practice, bnf_code, bnf_name, quantity, regional_team)
+
+# Restrict to products in lithium_products
+lithium_products <- read.csv(here("data", "lithium_products.csv"))
+PRIMARYCARE_dataset <- PrimaryCare_Lithium %>%
+  inner_join(
+    lithium_products %>% select(bnf_code, strnt_nmrtr_val, chemical),
+    by = "bnf_code"
+  ) %>%
+  mutate(
     quantity_mg = quantity * strnt_nmrtr_val,
     mmol = case_when(
-      chemical == "Lithium Carbonate" ~ quantity_mg / 37.04,
-      chemical == "Lithium Citrate" ~ quantity_mg / 69.98,
+      chemical == "Lithium carbonate" ~ quantity_mg / 37.04,
+      chemical == "Lithium citrate" ~ quantity_mg / 69.98,
       TRUE ~ NA_real_
     ),
     DDD = mmol / 24
@@ -65,32 +54,31 @@ region_mapping <- c(
 )
 PRIMARYCARE_dataset$Region <- region_mapping[PRIMARYCARE_dataset$regional_team]
 PRIMARYCARE_dataset <- PRIMARYCARE_dataset %>%
-  filter(month >= as.Date("2015-01-01") & month <= as.Date("2024-12-31"))
+  filter(month >= as.Date("2015-01-01") & month <= as.Date("2025-12-31"))
 
 PRIMARYCARE_dataset <- PRIMARYCARE_dataset %>%
   mutate(year = format(as.Date(month), "%Y"))
 
 Primaryy_DDD_by_year <- PRIMARYCARE_dataset %>%
-  filter(year != "2025") %>%
+  filter(year != "2026") %>%
   group_by(year) %>%
-  summarise(total_DDD = sum(DDD, na.rm = TRUE)) %>%
-  ungroup()
+  summarise(total_DDD = sum(DDD, na.rm = TRUE), .groups = "drop")
 
 primary_line <- ggplot(Primaryy_DDD_by_year, aes(x = as.integer(year), y = total_DDD / 1e6)) +
   geom_line(linewidth = 1.2, color = "orange") +
   geom_point(size = 3, color = "blue") +
   labs(
     title = "Primary Care: Lithium Prescribing Trends Over Time",
-    subtitle = "Total Daily Defined Doses (DDD) issued per year (2015–2024)",
+    subtitle = "Total Daily Defined Doses (DDD) issued per year (2015–2025)",
     x = "Year",
     y = "Total DDD (millions)"
   ) +
   scale_y_continuous(
-    limits = c(0, 14),
+    limits = c(0, ceiling(max(Primaryy_DDD_by_year$total_DDD / 1e6, na.rm = TRUE) * 1.05)),
     expand = c(0, 0),
     labels = function(x) format(x, scientific = FALSE, big.mark = ",")
   ) +
-  scale_x_continuous(breaks = 2015:2024) +
+  scale_x_continuous(breaks = 2015:2025) +
   theme_minimal(base_size = 13) +
   theme(
     plot.title = element_text(face = "bold", size = 16),
@@ -110,7 +98,7 @@ primary_bar <- ggplot(Primaryy_DDD_by_year, aes(x = as.factor(year), y = total_D
   ) +
   labs(
     title = "Primary Care: Lithium Prescribing Trends Over Time",
-    subtitle = "Total Daily Defined Doses (DDD) issued per year (2015–2024)",
+    subtitle = "Total Daily Defined Doses (DDD) issued per year (2015–2025)",
     x = "Year",
     y = "Total DDD (millions)"
   ) +
@@ -130,34 +118,34 @@ ggsave(here(plots_dir, "primary_bar_trends.png"), primary_bar, width = 8, height
 
 lithium_df_primary <- PRIMARYCARE_dataset %>%
   group_by(Region) %>%
-  summarise(total_DDD = sum(DDD, na.rm = TRUE)) %>%
+  summarise(total_DDD = sum(DDD, na.rm = TRUE), .groups = "drop") %>%
   mutate(Region = as.factor(Region)) %>%
   filter(!is.na(Region))
 
-total_primary_DDD_by_region_2024 <- PRIMARYCARE_dataset %>%
-  filter(year(month) == 2024) %>%
+total_primary_DDD_by_region_2025 <- PRIMARYCARE_dataset %>%
+  filter(year(month) == 2025) %>%
   group_by(Region) %>%
-  summarise(total_DDD_2024 = sum(DDD, na.rm = TRUE))
+  summarise(total_DDD_2025 = sum(DDD, na.rm = TRUE), .groups = "drop")
 
 primary_lithium_df <- lithium_df_primary %>%
-  left_join(total_primary_DDD_by_region_2024, by = "Region") %>%
+  left_join(total_primary_DDD_by_region_2025, by = "Region") %>%
   left_join(population_df %>% select(Region, population), by = "Region") %>%
-  mutate(`DDD/population` = total_DDD_2024 / population)
+  mutate(`DDD/population` = total_DDD_2025 / population)
 
 coverage_data_primary <- nhs_regions_sf %>%
   left_join(primary_lithium_df, by = "Region")
 unique_values <- sort(unique(coverage_data_primary$`DDD/population`))
 breaks <- c(0, unique_values, max(unique_values, na.rm = TRUE) + 10)
-labels <- scales::label_number(breaks)
 
 primary_coverage_plot <- coverage_data_primary %>%
+  st_transform(27700) %>%
   ggplot() +
   geom_sf(aes(fill = `DDD/population`), colour = "black", linewidth = 0.8) +
   geom_sf_text(aes(label = Region), colour = "white", size = 3) +
   scale_fill_gradientn(
     colors = c("#ffd13a", "#ff7c00", "#f20c51"),
     breaks = breaks,
-    labels = labels,
+    labels = scales::label_number(accuracy = 0.001),
     na.value = "grey90"
   ) +
   theme_minimal() +
@@ -168,7 +156,7 @@ primary_coverage_plot <- coverage_data_primary %>%
     plot.title = element_text(face = "bold")
   ) +
   guides(fill = guide_legend(title = "Lithium (DDD)/ population")) +
-  coord_sf(datum = NA) +
+  coord_sf(crs = 27700, datum = NA) +
   xlab("") +
   ylab("")
 ggsave(here(plots_dir, "primary_coverage_map.png"), primary_coverage_plot, width = 8, height = 6, dpi = 300)
@@ -178,10 +166,10 @@ primaryhist <- ggplot(primary_lithium_df, aes(x = Region, y = `DDD/population`))
   geom_text(aes(label = sprintf("%.3f", `DDD/population`)), vjust = -0.3, size = 3.5) +
   theme_minimal() +
   xlab("Region") +
-  ylab("Lithium usage (Total DDD for 2024) / population") +
+  ylab("Lithium usage (Total DDD for 2025) / population") +
   labs(
     title = "Regional Lithium Use in Primary Care",
-    subtitle = "Average DDDs per Person (2024) (prescription)"
+    subtitle = "Average DDDs per Person (2025) (prescription)"
   ) +
   theme(
     axis.text.x = element_text(angle = 45, hjust = 1, size = 10),
@@ -195,10 +183,9 @@ ggsave(here(plots_dir, "primary_hist_ddd_pop.png"), primaryhist, width = 8, heig
 Primary_DDD_by_year_region <- PRIMARYCARE_dataset %>%
   mutate(month = as.Date(month)) %>%
   mutate(year = year(month)) %>%
-  filter(year != 2025) %>%
+  filter(year != "2026") %>%
   group_by(year, Region) %>%
-  summarise(total_DDD = sum(DDD, na.rm = TRUE)) %>%
-  ungroup() %>%
+  summarise(total_DDD = sum(DDD, na.rm = TRUE), .groups = "drop") %>%
   left_join(population_df %>% select(Region, population), by = "Region") %>%
   mutate(DDD_population = total_DDD / population)
 
