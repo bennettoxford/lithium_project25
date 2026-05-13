@@ -109,6 +109,27 @@ all_years <- c(
   as.numeric(HospitalFP10_DDD_by_year$PERIOD)
 )
 
+combined_totals_by_year <- full_join(
+  Primaryy_DDD_by_year %>%
+    transmute(year = as.integer(year), primary_total_DDD = total_DDD),
+  Secondary_DDD_by_year %>%
+    transmute(year = as.integer(year), secondary_total_DDD = total_DDD),
+  by = "year"
+) %>%
+  full_join(
+    HospitalFP10_DDD_by_year %>%
+      transmute(year = as.integer(PERIOD), fp10_total_DDD = total_DDD),
+    by = "year"
+  ) %>%
+  mutate(
+    primary_total_DDD = replace_na(primary_total_DDD, 0),
+    secondary_total_DDD = replace_na(secondary_total_DDD, 0),
+    fp10_total_DDD = replace_na(fp10_total_DDD, 0),
+    total_DDD = primary_total_DDD + secondary_total_DDD + fp10_total_DDD
+  ) %>%
+  filter(year >= 2019) %>%
+  arrange(year)
+
 combined_line_plot <- ggplot() +
   geom_line(data = Primaryy_DDD_by_year,
             aes(x = as.integer(year), y = total_DDD / 1e6),
@@ -128,12 +149,19 @@ combined_line_plot <- ggplot() +
   geom_point(data = HospitalFP10_DDD_by_year,
              aes(x = as.integer(PERIOD), y = total_DDD / 1e6),
              color = colour_care_fp10, size = 3) +
+  geom_line(data = combined_totals_by_year,
+            aes(x = year, y = total_DDD / 1e6),
+            color = colour_care_combined_aggregate, linewidth = 1.2) +
+  geom_point(data = combined_totals_by_year,
+             aes(x = year, y = total_DDD / 1e6),
+             color = colour_care_combined_aggregate, size = 3) +
   labs(x = "Year", y = "Total DDD (millions)") +
   scale_y_to_next_tick(
     values = c(
       Primaryy_DDD_by_year$total_DDD / 1e6,
       Secondary_DDD_by_year$total_DDD / 1e6,
-      HospitalFP10_DDD_by_year$total_DDD / 1e6
+      HospitalFP10_DDD_by_year$total_DDD / 1e6,
+      combined_totals_by_year$total_DDD / 1e6
     ),
     labels = scales::label_number(accuracy = 1),
     min_upper = 1.2
@@ -172,12 +200,19 @@ combined_line_plot_legend <- ggplot() +
   geom_point(data = HospitalFP10_DDD_by_year,
              aes(x = as.integer(PERIOD), y = total_DDD / 1e6, color = "Hospital FP10"),
              size = 3) +
+  geom_line(data = combined_totals_by_year,
+            aes(x = year, y = total_DDD / 1e6, color = "Total"),
+            linewidth = 1.2) +
+  geom_point(data = combined_totals_by_year,
+             aes(x = year, y = total_DDD / 1e6, color = "Total"),
+             size = 3) +
   scale_color_manual(
     name = "Care Type",
     values = c(
       "Primary care" = colour_care_primary,
       "Secondary care" = colour_care_secondary,
-      "Hospital FP10" = colour_care_fp10
+      "Hospital FP10" = colour_care_fp10,
+      "Total" = colour_care_combined_aggregate
     )
   ) +
   labs(x = "Year", y = "Total DDD (millions)") +
@@ -185,7 +220,8 @@ combined_line_plot_legend <- ggplot() +
     values = c(
       Primaryy_DDD_by_year$total_DDD / 1e6,
       Secondary_DDD_by_year$total_DDD / 1e6,
-      HospitalFP10_DDD_by_year$total_DDD / 1e6
+      HospitalFP10_DDD_by_year$total_DDD / 1e6,
+      combined_totals_by_year$total_DDD / 1e6
     ),
     labels = scales::label_number(accuracy = 1),
     min_upper = 1.2
