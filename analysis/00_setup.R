@@ -84,6 +84,9 @@ axis_tick_label_size <- 14
 theme_lithium <- function(base_size = 13) {
   theme_minimal(base_size = base_size) +
     theme(
+      axis.line = element_line(color = "black"),
+      axis.ticks = element_line(color = "black", linewidth = 0.4),
+      axis.ticks.length = unit(2.5, "mm"),
       axis.text.x = element_text(size = axis_tick_label_size),
       axis.text.y = element_text(size = axis_tick_label_size)
     )
