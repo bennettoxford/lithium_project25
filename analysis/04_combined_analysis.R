@@ -9,6 +9,59 @@ Hospital_FP10_total_DDD_by_region_2024 <- read.csv(here(data_dir, "hospital_fp10
 Primary_DDD_by_year_region <- read.csv(here(data_dir, "primary_DDD_by_year_region.csv"))
 Secondary_DDD_by_year_region <- read.csv(here(data_dir, "secondary_DDD_by_year_region.csv"))
 HospitalFP10_DDD_by_year_region <- read.csv(here(data_dir, "hospital_fp10_DDD_by_year_region.csv"))
+primary_product_DDD <- read.csv(here(data_dir, "primary_product_DDD.csv"), colClasses = c(product_code = "character"))
+secondary_product_DDD <- read.csv(here(data_dir, "secondary_product_DDD.csv"), colClasses = c(product_code = "character"))
+hospital_fp10_product_DDD <- read.csv(here(data_dir, "hospital_fp10_product_DDD.csv"), colClasses = c(product_code = "character"))
+
+primary_care_product_lookup <- read.csv(here("data", "primary_care", "primary_care.csv")) %>%
+  select(product_code = bnf_code, generic_product_name = nm) %>%
+  distinct(product_code, .keep_all = TRUE)
+
+primary_product_DDD_for_merge <- primary_product_DDD %>%
+  group_by(product_code) %>%
+  summarise(
+    primary_product_name = first(product_name),
+    total_DDD_primary_care = sum(total_DDD, na.rm = TRUE),
+    .groups = "drop"
+  )
+
+hospital_fp10_product_DDD_for_merge <- hospital_fp10_product_DDD %>%
+  group_by(product_code) %>%
+  summarise(
+    fp10_product_name = first(product_name),
+    total_DDD_fp10 = sum(total_DDD, na.rm = TRUE),
+    .groups = "drop"
+  )
+
+primary_fp10_product_DDD <- full_join(
+  primary_product_DDD_for_merge,
+  hospital_fp10_product_DDD_for_merge,
+  by = "product_code"
+) %>%
+  mutate(
+    product_name = coalesce(primary_product_name, fp10_product_name),
+    total_DDD_primary_care = replace_na(total_DDD_primary_care, 0),
+    total_DDD_fp10 = replace_na(total_DDD_fp10, 0)
+  ) %>%
+  select(product_code, product_name, total_DDD_primary_care, total_DDD_fp10) %>%
+  arrange(desc(total_DDD_primary_care + total_DDD_fp10), product_name)
+
+lithium_products_DDD_summary <- bind_rows(
+  primary_product_DDD %>%
+    mutate(source = "Primary care", product_code = as.character(product_code)),
+  secondary_product_DDD %>%
+    mutate(source = "Secondary care", product_code = as.character(product_code)),
+  hospital_fp10_product_DDD %>%
+    mutate(source = "Hospital FP10", product_code = as.character(product_code))
+) %>%
+  left_join(primary_care_product_lookup, by = "product_code") %>%
+  mutate(product_name = if_else(
+    source %in% c("Primary care", "Hospital FP10") & !is.na(generic_product_name),
+    generic_product_name,
+    product_name
+  )) %>%
+  select(source, product_code, product_name, total_DDD) %>%
+  arrange(source, desc(total_DDD), product_name)
 
 # Combined primary + secondary trends
 primary_line <- ggplot(Primaryy_DDD_by_year, aes(x = as.integer(year), y = total_DDD / 1e6)) +
@@ -264,7 +317,7 @@ Hospital_clean <- HospitalFP10_DDD_by_year_region %>%
   select(year, region, total_DDD, population, DDD_population)
 
 combined_data <- bind_rows(Primary_clean, Secondary_clean, Hospital_clean)
-filtered_data <- combined_data %>% filter(year >= 2019)
+filtered_data <- combined_data %>% filter(year >= 2019, year <= 2024)
 summed_data <- filtered_data %>%
   group_by(year) %>%
   summarise(total_DDD_sum = sum(total_DDD, na.rm = TRUE))
@@ -284,7 +337,7 @@ national_ddd_plot <- ggplot(summed_data, aes(x = as.integer(year), y = total_DDD
     limits = c(0, max_total_millions * 1.1),
     labels = scales::label_number(accuracy = 0.1)
   ) +
-  scale_x_continuous(breaks = 2019:2025) +
+  scale_x_continuous(breaks = 2019:2024) +
   theme_minimal(base_size = 13) +
   theme(
     plot.title = element_text(face = "bold", size = 16),
@@ -307,7 +360,7 @@ Hospital_clean_reg <- HospitalFP10_DDD_by_year_region %>%
   select(year, region, total_DDD, population, DDD_population)
 
 combined_data_reg <- bind_rows(Primary_clean_reg, Secondary_clean_reg, Hospital_clean_reg)
-filtered_data_reg <- combined_data_reg %>% filter(year >= 2019)
+filtered_data_reg <- combined_data_reg %>% filter(year >= 2019, year <= 2024)
 summed_by_region <- filtered_data_reg %>%
   group_by(year, region) %>%
   summarise(total_DDD_pop_sum = sum(DDD_population, na.rm = TRUE), .groups = "drop")
@@ -317,7 +370,7 @@ regional_trends_plot <- ggplot(summed_by_region, aes(x = year, y = total_DDD_pop
   geom_point(size = 3) +
   labs(
     title = "DDD Trends by Region (All Data Sources Combined)",
-    subtitle = "Summed total DDD per year by region across Primary, Secondary, and Hospital FP10 (2019–Present)",
+    subtitle = "Summed total DDD per year by region across Primary, Secondary, and Hospital FP10 (2019–2024)",
     x = "Year",
     y = "Total DDD (Millions)/Population",
     color = "Region"
@@ -327,7 +380,7 @@ regional_trends_plot <- ggplot(summed_by_region, aes(x = year, y = total_DDD_pop
     breaks = c(0.0, 0.05, 0.1, 0.15, 0.2),
     labels = function(x) format(x, nsmall = 1)
   ) +
-  scale_x_continuous(breaks = 2019:2025) +
+  scale_x_continuous(breaks = 2019:2024) +
   theme_minimal(base_size = 13) +
   theme(
     plot.title = element_text(face = "bold", size = 16),
@@ -338,4 +391,10 @@ ggsave(here(plots_dir, "regional_ddd_trends.png"), regional_trends_plot, width =
 write.csv(summed_data, here(data_dir, "national_DDD_summed.csv"), row.names = FALSE)
 write.csv(summed_by_region, here(data_dir, "regional_DDD_trends.csv"), row.names = FALSE)
 write.csv(combined_df_all, here(data_dir, "combined_regional_by_care_2024.csv"), row.names = FALSE)
+write.csv(
+  lithium_products_DDD_summary,
+  here(data_dir, "lithium_products_DDD_summary.csv"),
+  row.names = FALSE
+)
+write.csv(primary_fp10_product_DDD, here(data_dir, "primary_fp10_product_DDD.csv"), row.names = FALSE)
 message("Combined analysis complete. Outputs saved to ", output_dir)

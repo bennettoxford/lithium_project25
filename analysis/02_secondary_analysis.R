@@ -8,13 +8,18 @@ Lithium_SCMD <- secondary_care %>%
     year = format(year_month, "%Y"),
     region = Region,
     DDD = Value  # already in DDDs
-  )
+  ) %>%
+  filter(year_month <= as.Date("2024-12-31"))
 
 Secondary_DDD_by_year <- Lithium_SCMD %>%
-  filter(year != "2025") %>%
   group_by(year) %>%
   summarise(total_DDD = sum(DDD, na.rm = TRUE)) %>%
   ungroup()
+
+secondary_product_DDD <- Lithium_SCMD %>%
+  group_by(product_code = `VMP Code`, product_name = `VMP Name`) %>%
+  summarise(total_DDD = sum(DDD, na.rm = TRUE), .groups = "drop") %>%
+  arrange(desc(total_DDD), product_name)
 
 secondary_line <- ggplot(Secondary_DDD_by_year, aes(x = as.integer(year), y = total_DDD / 1e6)) +
   geom_line(linewidth = 1.2, color = "#00BFC4") +
@@ -139,7 +144,6 @@ secondaryhist <- ggplot(secondary_lithium_df, aes(x = region, y = `DDD/populatio
 ggsave(here(plots_dir, "secondary_hist_ddd_pop.png"), secondaryhist, width = 8, height = 5, dpi = 300)
 
 Secondary_DDD_by_year_region <- Lithium_SCMD %>%
-  filter(year != "2025") %>%
   group_by(year, region) %>%
   summarise(total_DDD = sum(DDD, na.rm = TRUE)) %>%
   ungroup() %>%
@@ -173,6 +177,7 @@ seven_region_secondary <- ggplot(Secondary_DDD_by_year_region, aes(x = as.intege
 ggsave(here(plots_dir, "secondary_seven_region_trends.png"), seven_region_secondary, width = 10, height = 6, dpi = 300)
 
 write.csv(Secondary_DDD_by_year, here(data_dir, "secondary_DDD_by_year.csv"), row.names = FALSE)
+write.csv(secondary_product_DDD, here(data_dir, "secondary_product_DDD.csv"), row.names = FALSE)
 write.csv(secondary_lithium_df, here(data_dir, "secondary_lithium_by_region.csv"), row.names = FALSE)
 write.csv(Secondary_DDD_by_year_region, here(data_dir, "secondary_DDD_by_year_region.csv"), row.names = FALSE)
 message("Secondary analysis complete. Outputs saved to ", output_dir)
