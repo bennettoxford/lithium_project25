@@ -24,12 +24,7 @@ secondary_product_DDD <- Lithium_SCMD %>%
 secondary_line <- ggplot(Secondary_DDD_by_year, aes(x = as.integer(year), y = total_DDD / 1e6)) +
   geom_line(linewidth = 1.2, color = colour_care_secondary) +
   geom_point(size = 3, color = colour_care_secondary) +
-  labs(
-    title = "Secondary Care: Lithium Prescribing Trends Over Time",
-    subtitle = "Total Daily Defined Doses (DDD) issued per year (2019–2024)",
-    x = "Year",
-    y = "Total DDD (millions)"
-  ) +
+  labs(x = "Year", y = "Total DDD (millions)") +
   scale_y_continuous(
     limits = c(0, 1.2),
     expand = c(0, 0),
@@ -39,8 +34,6 @@ secondary_line <- ggplot(Secondary_DDD_by_year, aes(x = as.integer(year), y = to
   coord_cartesian(ylim = c(0, 1.2)) +
   theme_minimal(base_size = 13) +
   theme(
-    plot.title = element_text(face = "bold", size = 16),
-    plot.subtitle = element_text(size = 12),
     axis.title.x = element_text(face = "bold"),
     axis.title.y = element_text(face = "bold")
   )
@@ -54,20 +47,13 @@ secondary_bar <- ggplot(Secondary_DDD_by_year, aes(x = as.factor(year), y = tota
     size = 4.2,
     fontface = "bold"
   ) +
-  labs(
-    title = "Secondary Care: Lithium Prescribing Trends Over Time",
-    subtitle = "Total Daily Defined Doses (DDD) issued per year (2019–2024)",
-    x = "Year",
-    y = "Total DDD (millions)"
-  ) +
+  labs(x = "Year", y = "Total DDD (millions)") +
   scale_y_continuous(
     labels = function(x) format(x, scientific = FALSE, big.mark = ","),
     expand = expansion(mult = c(0, 0.1))
   ) +
   theme_minimal(base_size = 13) +
   theme(
-    plot.title = element_text(face = "bold", size = 16),
-    plot.subtitle = element_text(size = 12),
     axis.title.x = element_text(face = "bold"),
     axis.title.y = element_text(face = "bold"),
     axis.text.x = element_text(face = "bold")
@@ -110,8 +96,7 @@ secondary_coverage_plot <- coverage_data_secondary %>%
   theme(
     legend.position = c(0.2, 0.5),
     legend.text = element_text(hjust = 1),
-    panel.background = element_rect(fill = "white"),
-    plot.title = element_text(face = "bold")
+    panel.background = element_rect(fill = "white")
   ) +
   guides(fill = guide_legend(title = "Lithium (DDD)/ population")) +
   coord_sf(datum = NA) +
@@ -125,10 +110,6 @@ secondaryhist <- ggplot(secondary_lithium_df, aes(x = region, y = `DDD/populatio
   theme_minimal() +
   xlab("Region") +
   ylab("Lithium usage (Total DDD for 2024) / population") +
-  labs(
-    title = "Regional Lithium Use in Secondary Care",
-    subtitle = "Average DDDs per Person (2024) (stock movement)"
-  ) +
   scale_y_continuous(
     limits = c(0, 0.03),
     breaks = seq(0, 0.03, by = 0.01),
@@ -137,8 +118,6 @@ secondaryhist <- ggplot(secondary_lithium_df, aes(x = region, y = `DDD/populatio
   theme(
     axis.text.x = element_text(angle = 45, hjust = 1, size = 10),
     axis.text.y = element_text(size = 10),
-    plot.title = element_text(size = 12, face = "bold"),
-    plot.subtitle = element_text(size = 10, face = "italic"),
     plot.margin = margin(10, 10, 10, 10)
   )
 ggsave(here(plots_dir, "secondary_hist_ddd_pop.png"), secondaryhist, width = 8, height = 5, dpi = 300)
@@ -153,13 +132,7 @@ Secondary_DDD_by_year_region <- Lithium_SCMD %>%
 seven_region_secondary <- ggplot(Secondary_DDD_by_year_region, aes(x = as.integer(year), y = DDD_population, color = region)) +
   geom_line(linewidth = 1.2) +
   geom_point(size = 3) +
-  labs(
-    title = "Secondary Care: Lithium Prescribing Trends Per Population",
-    subtitle = "DDD per population issued per year by region (2019–2024)",
-    x = "Year",
-    y = NULL,
-    color = "Region"
-  ) +
+  labs(x = "Year", y = NULL, color = "Region") +
   scale_y_continuous(
     limits = c(0, 0.03),
     expand = c(0, 0),
@@ -168,8 +141,6 @@ seven_region_secondary <- ggplot(Secondary_DDD_by_year_region, aes(x = as.intege
   scale_x_continuous(breaks = 2019:2024) +
   theme_minimal(base_size = 13) +
   theme(
-    plot.title = element_text(face = "bold", size = 16),
-    plot.subtitle = element_text(size = 12),
     axis.title.x = element_text(face = "bold"),
     axis.title.y = element_text(face = "bold"),
     legend.title = element_text(face = "bold")

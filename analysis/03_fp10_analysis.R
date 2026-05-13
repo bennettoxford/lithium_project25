@@ -169,12 +169,7 @@ hospitalFP10_line <- ggplot(HospitalFP10_DDD_by_year,
                             aes(x = as.integer(PERIOD), y = total_DDD / 1e6)) +
   geom_line(linewidth = 1.2, color = colour_care_fp10) +
   geom_point(size = 3, color = colour_care_fp10) +
-  labs(
-    title = "Secondary care (Hospital FP10): Lithium Prescribing Trends Over Time",
-    subtitle = "Total Daily Defined Doses (DDD) issued per year (2017–2024)",
-    x = "Year",
-    y = "Total DDD (millions)"
-  ) +
+  labs(x = "Year", y = "Total DDD (millions)") +
   scale_y_continuous(
     limits = c(0, max_value * 1.1),
     expand = c(0, 0),
@@ -183,8 +178,6 @@ hospitalFP10_line <- ggplot(HospitalFP10_DDD_by_year,
   scale_x_continuous(breaks = 2017:2024) +
   theme_minimal(base_size = 13) +
   theme(
-    plot.title = element_text(face = "bold", size = 16),
-    plot.subtitle = element_text(size = 12),
     axis.title.x = element_text(face = "bold"),
     axis.title.y = element_text(face = "bold")
   )
@@ -239,15 +232,10 @@ FP10_coverage_plot <- coverage_data_fp10 %>%
   theme(
     legend.position = c(0.2, 0.5),
     legend.text = element_text(hjust = 1),
-    panel.background = element_rect(fill = "white"),
-    plot.title = element_text(face = "bold", size = 16)
+    panel.background = element_rect(fill = "white")
   ) +
   guides(fill = guide_legend(title = "Lithium (DDD)/ population")) +
   coord_sf(datum = NA) +
-  labs(
-    title = "Hospital FP10 data",
-    subtitle = "Total Daily Defined Dose of Lithium in 2024 regionally, per population estimates"
-  ) +
   xlab("") +
   ylab("")
 ggsave(here(plots_dir, "fp10_coverage_map.png"), FP10_coverage_plot, width = 8, height = 6, dpi = 300)
@@ -260,10 +248,6 @@ FP10hist <- ggplot(Hospital_FP10_total_DDD_by_region_2024, aes(x = region, y = `
   theme_minimal() +
   xlab("Region") +
   ylab("Lithium usage (Total DDD for 2024) / population") +
-  labs(
-    title = "Regional Lithium Use in Secondary Care, FP10 hopsital data",
-    subtitle = "Average DDDs per Person (2024)"
-  ) +
   scale_y_continuous(
     limits = c(0, max_y + buffer),
     breaks = scales::pretty_breaks(n = 5),
@@ -272,8 +256,6 @@ FP10hist <- ggplot(Hospital_FP10_total_DDD_by_region_2024, aes(x = region, y = `
   theme(
     axis.text.x = element_text(angle = 45, hjust = 1, size = 10),
     axis.text.y = element_text(size = 10),
-    plot.title = element_text(size = 12, face = "bold"),
-    plot.subtitle = element_text(size = 10, face = "italic"),
     plot.margin = margin(10, 10, 10, 10)
   )
 ggsave(here(plots_dir, "fp10_hist_ddd_pop.png"), FP10hist, width = 8, height = 5, dpi = 300)
