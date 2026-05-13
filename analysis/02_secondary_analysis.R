@@ -74,17 +74,17 @@ total_DDD_by_region_2024 <- Lithium_SCMD %>%
 secondary_lithium_df <- lithium_df %>%
   left_join(total_DDD_by_region_2024, by = "region") %>%
   left_join(population_df %>% select(region, population), by = "region") %>%
-  mutate(`DDD/population` = total_DDD_2024 / population)
+  mutate(DDDs_per_1000 = round(total_DDD_2024 / population * 1000, 2))
 
 coverage_data_secondary <- nhs_regions_sf %>%
   left_join(secondary_lithium_df, by = "region")
-unique_values <- sort(unique(coverage_data_secondary$`DDD/population`))
+unique_values <- sort(unique(coverage_data_secondary$DDDs_per_1000))
 breaks <- c(0, unique_values, max(unique_values, na.rm = TRUE) + 10)
-labels <- scales::label_number(breaks)
+labels <- scales::label_number(accuracy = 0.01)
 
 secondary_coverage_plot <- coverage_data_secondary %>%
   ggplot() +
-  geom_sf(aes(fill = `DDD/population`), colour = "black", linewidth = 0.8) +
+  geom_sf(aes(fill = DDDs_per_1000), colour = "black", linewidth = 0.8) +
   geom_sf_text(aes(label = region), colour = "white", size = 3) +
   scale_fill_gradientn(
     colors = colour_care_secondary_map,
@@ -98,22 +98,22 @@ secondary_coverage_plot <- coverage_data_secondary %>%
     legend.text = element_text(hjust = 1),
     panel.background = element_rect(fill = "white")
   ) +
-  guides(fill = guide_legend(title = "Lithium (DDD)/ population")) +
+  guides(fill = guide_legend(title = "DDDs per 1,000 population")) +
   coord_sf(datum = NA) +
   xlab("") +
   ylab("")
 ggsave(here(plots_dir, "secondary_coverage_map.png"), secondary_coverage_plot, width = 8, height = 6, dpi = 300)
 
-secondaryhist <- ggplot(secondary_lithium_df, aes(x = region, y = `DDD/population`)) +
+secondaryhist <- ggplot(secondary_lithium_df, aes(x = region, y = DDDs_per_1000)) +
   geom_col(fill = colour_care_secondary, color = colour_care_secondary) +
-  geom_text(aes(label = round(`DDD/population`, 3)), vjust = -0.3, size = 3.5) +
+  geom_text(aes(label = sprintf("%.2f", DDDs_per_1000)), vjust = -0.3, size = 3.5) +
   theme_lithium() +
   xlab("Region") +
-  ylab("Lithium usage (Total DDD for 2024) / population") +
+  ylab("DDDs per 1,000 population") +
   scale_y_to_next_tick(
-    values = secondary_lithium_df$`DDD/population`,
-    labels = scales::number_format(accuracy = 0.001),
-    min_upper = 0.03
+    values = secondary_lithium_df$DDDs_per_1000,
+    labels = scales::number_format(accuracy = 0.01),
+    min_upper = 30
   ) +
   theme(
     axis.text.x = element_text(angle = 45, hjust = 1, size = axis_tick_label_size),
@@ -127,19 +127,19 @@ Secondary_DDD_by_year_region <- Lithium_SCMD %>%
   summarise(total_DDD = sum(DDD, na.rm = TRUE)) %>%
   ungroup() %>%
   left_join(population_df %>% select(region, population), by = "region") %>%
-  mutate(DDD_population = total_DDD / population)
+  mutate(DDDs_per_1000 = round(total_DDD / population * 1000, 2))
 
 seven_region_secondary <- Secondary_DDD_by_year_region %>%
   mutate(region = standardise_region(as.character(region))) %>%
-  ggplot(aes(x = as.integer(year), y = DDD_population, color = region)) +
+  ggplot(aes(x = as.integer(year), y = DDDs_per_1000, color = region)) +
   geom_line(linewidth = 1.2) +
   geom_point(size = 3) +
-  labs(x = "Year", y = NULL, color = "Region") +
+  labs(x = "Year", y = "DDDs per 1,000 population", color = "Region") +
   scale_colour_nhs_region(drop = FALSE) +
   scale_y_to_next_tick(
-    values = Secondary_DDD_by_year_region$DDD_population,
-    labels = scales::number_format(accuracy = 0.001),
-    min_upper = 0.03
+    values = Secondary_DDD_by_year_region$DDDs_per_1000,
+    labels = scales::number_format(accuracy = 0.01),
+    min_upper = 30
   ) +
   scale_x_continuous(breaks = 2019:2024, expand = expansion(mult = c(0.02, 0.02))) +
   theme_lithium(base_size = 13) +

@@ -215,7 +215,7 @@ combined_line_plot_legend <- ggplot() +
       "Total" = colour_care_combined_aggregate
     )
   ) +
-  labs(x = "Year", y = "Total DDD (millions)") +
+  labs(x = "Year", y = "DDDs (millions)") +
   scale_y_to_next_tick(
     values = c(
       Primaryy_DDD_by_year$total_DDD / 1e6,
@@ -265,8 +265,9 @@ Hospital_FP10_total_DDD_by_region_2024 <- Hospital_FP10_total_DDD_by_region_2024
 combined_df_all <- bind_rows(primary_lithium_df, secondary_lithium_df, Hospital_FP10_total_DDD_by_region_2024) %>%
   mutate(Source = factor(Source, levels = c("Primary", "Secondary", "Hospital FP10")))
 
-stacked_bar_plot <- ggplot(combined_df_all, aes(x = Region, y = `DDD.population`, fill = Source)) +
+stacked_bar_plot <- ggplot(combined_df_all, aes(x = Region, y = DDDs_per_1000, fill = Source)) +
   geom_col(color = "black") +
+  scale_y_continuous(labels = scales::label_number(accuracy = 0.01)) +
   scale_fill_manual(
     values = c(
       "Primary" = colour_care_primary,
@@ -275,7 +276,7 @@ stacked_bar_plot <- ggplot(combined_df_all, aes(x = Region, y = `DDD.population`
     )
   ) +
   theme_lithium() +
-  labs(x = "Region", y = "Lithium usage (DDD/population)", fill = "Care Level") +
+  labs(x = "Region", y = "DDDs per 1,000 population", fill = "Care Level") +
   theme(axis.text.x = element_text(angle = 45, hjust = 1))
 ggsave(here(plots_dir, "stacked_bar_regional_by_care.png"), stacked_bar_plot, width = 10, height = 6, dpi = 300)
 
@@ -285,21 +286,21 @@ Primary_clean <- Primary_DDD_by_year_region %>%
     year = as.integer(year),
     region = if ("Region" %in% names(.)) standardise_region(Region) else standardise_region(region)
   ) %>%
-  select(year, region, total_DDD, population, DDD_population)
+  select(year, region, total_DDD, population, DDDs_per_1000)
 
 Secondary_clean <- Secondary_DDD_by_year_region %>%
   mutate(
     year = as.integer(year),
     region = standardise_region(region)
   ) %>%
-  select(year, region, total_DDD, population, DDD_population)
+  select(year, region, total_DDD, population, DDDs_per_1000)
 
 Hospital_clean <- HospitalFP10_DDD_by_year_region %>%
   mutate(
     year = as.integer(year),
     region = standardise_region(region)
   ) %>%
-  select(year, region, total_DDD, population, DDD_population)
+  select(year, region, total_DDD, population, DDDs_per_1000)
 
 combined_data <- bind_rows(Primary_clean, Secondary_clean, Hospital_clean)
 filtered_data <- combined_data %>% filter(year >= 2019, year <= 2024)
@@ -324,30 +325,30 @@ Primary_clean_reg <- Primary_DDD_by_year_region %>%
     year = as.integer(year),
     region = if ("Region" %in% names(.)) standardise_region(Region) else standardise_region(region)
   ) %>%
-  select(year, region, total_DDD, population, DDD_population)
+  select(year, region, total_DDD, population, DDDs_per_1000)
 Secondary_clean_reg <- Secondary_DDD_by_year_region %>%
   mutate(year = as.integer(year), region = standardise_region(region)) %>%
-  select(year, region, total_DDD, population, DDD_population)
+  select(year, region, total_DDD, population, DDDs_per_1000)
 Hospital_clean_reg <- HospitalFP10_DDD_by_year_region %>%
   mutate(year = as.integer(year), region = standardise_region(region)) %>%
-  select(year, region, total_DDD, population, DDD_population)
+  select(year, region, total_DDD, population, DDDs_per_1000)
 
 combined_data_reg <- bind_rows(Primary_clean_reg, Secondary_clean_reg, Hospital_clean_reg)
 filtered_data_reg <- combined_data_reg %>% filter(year >= 2019, year <= 2024)
 summed_by_region <- filtered_data_reg %>%
   group_by(year, region) %>%
-  summarise(total_DDD_pop_sum = sum(DDD_population, na.rm = TRUE), .groups = "drop") %>%
+  summarise(DDDs_per_1000 = round(sum(DDDs_per_1000, na.rm = TRUE), 2), .groups = "drop") %>%
   filter(!is.na(region))
 
-regional_trends_plot <- ggplot(summed_by_region, aes(x = year, y = total_DDD_pop_sum, color = region)) +
+regional_trends_plot <- ggplot(summed_by_region, aes(x = year, y = DDDs_per_1000, color = region)) +
   geom_line(linewidth = 1.2) +
   geom_point(size = 3) +
-  labs(x = "Year", y = "Total DDD (Millions)/Population", color = "Region") +
+  labs(x = "Year", y = "DDDs per 1,000 population", color = "Region") +
   scale_colour_nhs_region(drop = FALSE) +
   scale_y_to_next_tick(
-    values = summed_by_region$total_DDD_pop_sum,
-    labels = scales::number_format(accuracy = 0.01),
-    min_upper = 0.3
+    values = summed_by_region$DDDs_per_1000,
+    labels = scales::label_number(accuracy = 0.01),
+    min_upper = 300
   ) +
   scale_x_continuous(breaks = 2019:2024, expand = expansion(mult = c(0.02, 0.02))) +
   theme_lithium(base_size = 13)
