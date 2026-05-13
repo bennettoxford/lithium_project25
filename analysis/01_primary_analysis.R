@@ -13,7 +13,7 @@ merged_data <- PrimaryCare_Lithium %>%
 df_primarycare2 <- read.csv(here("data", "primary_care", "primary_care.csv"))
 PRIMARYCARE_dataset <- merge(
   merged_data,
-  df_primarycare2[, c("bnf_code", "strnt_nmrtr_val")],
+  df_primarycare2[, c("bnf_code", "nm", "strnt_nmrtr_val")],
   by = "bnf_code",
   all.x = TRUE
 )
@@ -71,10 +71,16 @@ PRIMARYCARE_dataset <- PRIMARYCARE_dataset %>%
   mutate(year = format(as.Date(month), "%Y"))
 
 Primaryy_DDD_by_year <- PRIMARYCARE_dataset %>%
-  filter(year != "2025") %>%
+  filter(as.integer(year) <= 2024L) %>%
   group_by(year) %>%
   summarise(total_DDD = sum(DDD, na.rm = TRUE)) %>%
   ungroup()
+
+primary_product_DDD <- PRIMARYCARE_dataset %>%
+  filter(as.integer(year) <= 2024L) %>%
+  group_by(product_code = bnf_code, product_name = bnf_name) %>%
+  summarise(total_DDD = sum(DDD, na.rm = TRUE), .groups = "drop") %>%
+  arrange(desc(total_DDD), product_name)
 
 primary_line <- ggplot(Primaryy_DDD_by_year, aes(x = as.integer(year), y = total_DDD / 1e6)) +
   geom_line(linewidth = 1.2, color = "orange") +
@@ -195,7 +201,7 @@ ggsave(here(plots_dir, "primary_hist_ddd_pop.png"), primaryhist, width = 8, heig
 Primary_DDD_by_year_region <- PRIMARYCARE_dataset %>%
   mutate(month = as.Date(month)) %>%
   mutate(year = year(month)) %>%
-  filter(year != 2025) %>%
+  filter(year <= 2024L) %>%
   group_by(year, Region) %>%
   summarise(total_DDD = sum(DDD, na.rm = TRUE)) %>%
   ungroup() %>%
@@ -203,6 +209,7 @@ Primary_DDD_by_year_region <- PRIMARYCARE_dataset %>%
   mutate(DDD_population = total_DDD / population)
 
 write.csv(Primaryy_DDD_by_year, here(data_dir, "primary_DDD_by_year.csv"), row.names = FALSE)
+write.csv(primary_product_DDD, here(data_dir, "primary_product_DDD.csv"), row.names = FALSE)
 write.csv(primary_lithium_df, here(data_dir, "primary_lithium_by_region.csv"), row.names = FALSE)
 write.csv(Primary_DDD_by_year_region, here(data_dir, "primary_DDD_by_year_region.csv"), row.names = FALSE)
 message("Primary analysis complete. Outputs saved to ", output_dir)

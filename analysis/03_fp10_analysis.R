@@ -148,7 +148,8 @@ New_Hospital_FP10_data <- New_Hospital_FP10_data %>%
     is.na(region) & trust_code_prefix %in% names(region_mapping),
     region_mapping[trust_code_prefix],
     region
-  ))
+  )) %>%
+  filter(year(PERIOD) <= 2024L)
 
 Hospital_FP10_data <- New_Hospital_FP10_data %>%
   mutate(PERIOD = format(as.Date(PERIOD), "%Y"))
@@ -157,6 +158,11 @@ HospitalFP10_DDD_by_year <- Hospital_FP10_data %>%
   group_by(PERIOD) %>%
   summarise(total_DDD = sum(DDD, na.rm = TRUE)) %>%
   ungroup()
+
+hospital_fp10_product_DDD <- New_Hospital_FP10_data %>%
+  group_by(product_code = BNF_CODE, product_name = BNF_NAME) %>%
+  summarise(total_DDD = sum(DDD, na.rm = TRUE), .groups = "drop") %>%
+  arrange(desc(total_DDD), product_name)
 
 max_value <- max(HospitalFP10_DDD_by_year$total_DDD) / 1e6
 hospitalFP10_line <- ggplot(HospitalFP10_DDD_by_year,
@@ -273,6 +279,7 @@ FP10hist <- ggplot(Hospital_FP10_total_DDD_by_region_2024, aes(x = region, y = `
 ggsave(here(plots_dir, "fp10_hist_ddd_pop.png"), FP10hist, width = 8, height = 5, dpi = 300)
 
 write.csv(HospitalFP10_DDD_by_year, here(data_dir, "hospital_fp10_DDD_by_year.csv"), row.names = FALSE)
+write.csv(hospital_fp10_product_DDD, here(data_dir, "hospital_fp10_product_DDD.csv"), row.names = FALSE)
 write.csv(Hospital_FP10_total_DDD_by_region_2024, here(data_dir, "hospital_fp10_DDD_by_region_2024.csv"), row.names = FALSE)
 write.csv(HospitalFP10_DDD_by_year_region, here(data_dir, "hospital_fp10_DDD_by_year_region.csv"), row.names = FALSE)
 message("FP10 analysis complete. Outputs saved to ", output_dir)
