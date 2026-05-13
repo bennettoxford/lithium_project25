@@ -138,28 +138,67 @@ primary_lithium_df <- lithium_df_primary %>%
 
 coverage_data_primary <- nhs_regions_sf %>%
   left_join(primary_lithium_df, by = "Region")
-unique_values <- sort(unique(coverage_data_primary$DDDs_per_1000))
-breaks <- c(0, unique_values, max(unique_values, na.rm = TRUE) + 10)
-labels <- scales::label_number(accuracy = 0.01)
 
-primary_coverage_plot <- coverage_data_primary %>%
-  ggplot() +
-  geom_sf(aes(fill = DDDs_per_1000), colour = "black", linewidth = 0.8) +
-  geom_sf_text(aes(label = Region), colour = "white", size = 3) +
+primary_label_d <- coverage_map_label_layers_data(coverage_data_primary, "Region")
+primary_label_pts <- dplyr::bind_rows(primary_label_d$other, primary_label_d$london_txt)
+primary_label_halo <- coverage_map_label_halo_rect(primary_label_pts)
+
+primary_coverage_plot <- ggplot() +
+  geom_sf(data = coverage_data_primary, aes(fill = DDDs_per_1000), colour = "black", linewidth = 0.8) +
+  geom_segment(
+    data = primary_label_d$london_seg,
+    aes(x = lon, y = lat, xend = lon_end, yend = lat_end),
+    inherit.aes = FALSE,
+    colour = "black",
+    linewidth = coverage_map_leader_linewidth,
+    lineend = "round"
+  ) +
+  geom_polygon(
+    data = primary_label_halo,
+    aes(x = lon, y = lat, group = group),
+    inherit.aes = FALSE,
+    fill = "white",
+    colour = "grey25",
+    linewidth = 0.35
+  ) +
+  geom_text(
+    data = primary_label_pts,
+    aes(x = lon, y = lat, label = label),
+    inherit.aes = FALSE,
+    colour = "black",
+    fontface = "bold",
+    size = coverage_map_value_label_size
+  ) +
   scale_fill_gradientn(
     colors = colour_care_primary_map,
-    breaks = breaks,
-    labels = labels,
-    na.value = "grey90"
+    breaks = function(lims) c(lims[1], lims[2]),
+    labels = coverage_map_colourbar_break_labels,
+    na.value = "grey90",
+    guide = guide_colourbar(
+      title = "DDDs per 1,000 population",
+      title.position = "top",
+      barheight = unit(3.2, "cm"),
+      barwidth = unit(0.55, "cm"),
+      ticks = FALSE,
+      reverse = TRUE,
+      frame.colour = "black",
+      frame.linewidth = 0.35
+    )
   ) +
   theme_lithium() +
   theme(
-    legend.position = c(0.2, 0.5),
-    legend.text = element_text(hjust = 1),
-    panel.background = element_rect(fill = "white")
+    legend.position = coverage_map_legend_position,
+    legend.text = element_text(size = coverage_map_legend_text_size),
+    legend.title = element_text(size = coverage_map_legend_title_size),
+    panel.border = element_blank(),
+    panel.background = element_rect(fill = "white", colour = NA),
+    plot.background = element_rect(fill = "white", colour = NA),
+    axis.line = element_blank(),
+    axis.ticks = element_blank(),
+    axis.text = element_blank(),
+    plot.margin = margin(5.5, coverage_map_plot_margin_right, 5.5, 5.5)
   ) +
-  guides(fill = guide_legend(title = "DDDs per 1,000 population")) +
-  coord_sf(datum = NA) +
+  coord_sf(datum = NA, clip = "off") +
   xlab("") +
   ylab("")
 ggsave(here(plots_dir, "primary_coverage_map.png"), primary_coverage_plot, width = 8, height = 6, dpi = 300)
