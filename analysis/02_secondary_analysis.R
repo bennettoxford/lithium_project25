@@ -22,8 +22,8 @@ secondary_product_DDD <- Lithium_SCMD %>%
   arrange(desc(total_DDD), product_name)
 
 secondary_line <- ggplot(Secondary_DDD_by_year, aes(x = as.integer(year), y = total_DDD / 1e6)) +
-  geom_line(linewidth = 1.2, color = "#00BFC4") +
-  geom_point(size = 3, color = "#F8766D") +
+  geom_line(linewidth = 1.2, color = colour_care_secondary) +
+  geom_point(size = 3, color = colour_care_secondary) +
   labs(
     title = "Secondary Care: Lithium Prescribing Trends Over Time",
     subtitle = "Total Daily Defined Doses (DDD) issued per year (2019–2024)",
@@ -47,7 +47,7 @@ secondary_line <- ggplot(Secondary_DDD_by_year, aes(x = as.integer(year), y = to
 ggsave(here(plots_dir, "secondary_line_trends.png"), secondary_line, width = 8, height = 5, dpi = 300)
 
 secondary_bar <- ggplot(Secondary_DDD_by_year, aes(x = as.factor(year), y = total_DDD / 1e6)) +
-  geom_bar(stat = "identity", fill = "#00BFC4", width = 0.6) +
+  geom_bar(stat = "identity", fill = colour_care_secondary, width = 0.6) +
   geom_text(
     aes(label = format(round(total_DDD / 1e6, 1), nsmall = 1)),
     vjust = -0.5,
@@ -101,7 +101,7 @@ secondary_coverage_plot <- coverage_data_secondary %>%
   geom_sf(aes(fill = `DDD/population`), colour = "black", linewidth = 0.8) +
   geom_sf_text(aes(label = region), colour = "white", size = 3) +
   scale_fill_gradientn(
-    colors = c("#ffd13a", "#ff7c00", "#f20c51"),
+    colors = colour_care_secondary_map,
     breaks = breaks,
     labels = labels,
     na.value = "grey90"
@@ -120,7 +120,7 @@ secondary_coverage_plot <- coverage_data_secondary %>%
 ggsave(here(plots_dir, "secondary_coverage_map.png"), secondary_coverage_plot, width = 8, height = 6, dpi = 300)
 
 secondaryhist <- ggplot(secondary_lithium_df, aes(x = region, y = `DDD/population`)) +
-  geom_col(fill = "#FF0000", color = "#FF6f6f") +
+  geom_col(fill = colour_care_secondary, color = colour_care_secondary) +
   geom_text(aes(label = round(`DDD/population`, 3)), vjust = -0.3, size = 3.5) +
   theme_minimal() +
   xlab("Region") +

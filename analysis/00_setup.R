@@ -69,3 +69,13 @@ population_df <- tibble(
             "London", "South East", "South West"),
   population = c(8220282, 7515718, 10951858, 6401418, 8869043, 9387286, 5766937)
 )
+
+colour_care_primary <- "#0072B2"
+colour_care_secondary <- "#D55E00"
+colour_care_fp10 <- "#009E73"
+
+colour_care_primary_map <- c("#E8F2FA", "#4A93C9", colour_care_primary)
+colour_care_secondary_map <- c("#FDEEE3", "#E7893D", colour_care_secondary)
+colour_care_fp10_map <- c("#E5F5F0", "#3FA67F", colour_care_fp10)
+
+colour_care_combined_aggregate <- "#333333"

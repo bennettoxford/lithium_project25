@@ -65,8 +65,8 @@ lithium_products_DDD_summary <- bind_rows(
 
 # Combined primary + secondary trends
 primary_line <- ggplot(Primaryy_DDD_by_year, aes(x = as.integer(year), y = total_DDD / 1e6)) +
-  geom_line(linewidth = 1.2, color = "orange") +
-  geom_point(size = 3, color = "blue") +
+  geom_line(linewidth = 1.2, color = colour_care_primary) +
+  geom_point(size = 3, color = colour_care_primary) +
   labs(
     title = "Primary Care: Lithium Prescribing Trends Over Time",
     subtitle = "Total Daily Defined Doses (DDD) issued per year (2015–2024)",
@@ -88,8 +88,8 @@ primary_line <- ggplot(Primaryy_DDD_by_year, aes(x = as.integer(year), y = total
   )
 
 secondary_line <- ggplot(Secondary_DDD_by_year, aes(x = as.integer(year), y = total_DDD / 1e6)) +
-  geom_line(linewidth = 1.2, color = "#00BFC4") +
-  geom_point(size = 3, color = "#F8766D") +
+  geom_line(linewidth = 1.2, color = colour_care_secondary) +
+  geom_point(size = 3, color = colour_care_secondary) +
   labs(
     title = "Secondary Care: Lithium Prescribing Trends Over Time",
     subtitle = "Total Daily Defined Doses (DDD) issued per year (2019–2024)",
@@ -124,22 +124,22 @@ all_years <- c(
 combined_line_plot <- ggplot() +
   geom_line(data = Primaryy_DDD_by_year,
             aes(x = as.integer(year), y = total_DDD / 1e6),
-            color = "orange", linewidth = 1.2) +
+            color = colour_care_primary, linewidth = 1.2) +
   geom_point(data = Primaryy_DDD_by_year,
              aes(x = as.integer(year), y = total_DDD / 1e6),
-             color = "blue", size = 3) +
+             color = colour_care_primary, size = 3) +
   geom_line(data = Secondary_DDD_by_year,
             aes(x = as.integer(year), y = total_DDD / 1e6),
-            color = "#00BFC4", linewidth = 1.2) +
+            color = colour_care_secondary, linewidth = 1.2) +
   geom_point(data = Secondary_DDD_by_year,
              aes(x = as.integer(year), y = total_DDD / 1e6),
-             color = "#F8766D", size = 3) +
+             color = colour_care_secondary, size = 3) +
   geom_line(data = HospitalFP10_DDD_by_year,
             aes(x = as.integer(PERIOD), y = total_DDD / 1e6),
-            color = "#2E8B57", linewidth = 1.2) +
+            color = colour_care_fp10, linewidth = 1.2) +
   geom_point(data = HospitalFP10_DDD_by_year,
              aes(x = as.integer(PERIOD), y = total_DDD / 1e6),
-             color = "#FFD700", size = 3) +
+             color = colour_care_fp10, size = 3) +
   labs(
     title = "Lithium Prescribing Trends Over Time",
     subtitle = "Total Daily Defined Doses (DDD) issued per year",
@@ -180,29 +180,29 @@ ggsave(here(plots_dir, "combined_line_all_sources.png"), combined_line_plot, wid
 
 combined_line_plot_legend <- ggplot() +
   geom_line(data = Primaryy_DDD_by_year,
-            aes(x = as.integer(year), y = total_DDD / 1e6, color = "Primary Care"),
+            aes(x = as.integer(year), y = total_DDD / 1e6, color = "Primary care"),
             linewidth = 1.2) +
   geom_point(data = Primaryy_DDD_by_year,
-             aes(x = as.integer(year), y = total_DDD / 1e6),
-             color = "blue", size = 3) +
+             aes(x = as.integer(year), y = total_DDD / 1e6, color = "Primary care"),
+             size = 3) +
   geom_line(data = Secondary_DDD_by_year,
-            aes(x = as.integer(year), y = total_DDD / 1e6, color = "Secondary Care"),
+            aes(x = as.integer(year), y = total_DDD / 1e6, color = "Secondary care"),
             linewidth = 1.2) +
   geom_point(data = Secondary_DDD_by_year,
-             aes(x = as.integer(year), y = total_DDD / 1e6),
-             color = "#F8766D", size = 3) +
+             aes(x = as.integer(year), y = total_DDD / 1e6, color = "Secondary care"),
+             size = 3) +
   geom_line(data = HospitalFP10_DDD_by_year,
-            aes(x = as.integer(PERIOD), y = total_DDD / 1e6, color = "Hospital FP10 Care"),
+            aes(x = as.integer(PERIOD), y = total_DDD / 1e6, color = "Hospital FP10"),
             linewidth = 1.2) +
   geom_point(data = HospitalFP10_DDD_by_year,
-             aes(x = as.integer(PERIOD), y = total_DDD / 1e6),
-             color = "#FFD700", size = 3) +
+             aes(x = as.integer(PERIOD), y = total_DDD / 1e6, color = "Hospital FP10"),
+             size = 3) +
   scale_color_manual(
     name = "Care Type",
     values = c(
-      "Primary Care" = "orange",
-      "Secondary Care" = "#00BFC4",
-      "Hospital FP10 Care" = "#2E8B57"
+      "Primary care" = colour_care_primary,
+      "Secondary care" = colour_care_secondary,
+      "Hospital FP10" = colour_care_fp10
     )
   ) +
   labs(
@@ -270,7 +270,11 @@ combined_df_all <- bind_rows(primary_lithium_df, secondary_lithium_df, Hospital_
 stacked_bar_plot <- ggplot(combined_df_all, aes(x = Region, y = `DDD.population`, fill = Source)) +
   geom_col(color = "black") +
   scale_fill_manual(
-    values = c("Primary" = "orange", "Secondary" = "#00BFC4", "Hospital FP10" = "#2E8B57")
+    values = c(
+      "Primary" = colour_care_primary,
+      "Secondary" = colour_care_secondary,
+      "Hospital FP10" = colour_care_fp10
+    )
   ) +
   theme_minimal() +
   labs(
@@ -324,8 +328,8 @@ summed_data <- filtered_data %>%
 
 max_total_millions <- max(summed_data$total_DDD_sum) / 1e6
 national_ddd_plot <- ggplot(summed_data, aes(x = as.integer(year), y = total_DDD_sum / 1e6)) +
-  geom_line(color = "#1f78b4", linewidth = 1.2) +
-  geom_point(color = "#e31a1c", size = 3) +
+  geom_line(color = colour_care_combined_aggregate, linewidth = 1.2) +
+  geom_point(color = colour_care_combined_aggregate, size = 3) +
   labs(
     title = "National DDD Trends from All Sources",
     subtitle = "Summed total DDD (in millions) across Primary, Secondary, and Hospital FP10 (2019–2024)",

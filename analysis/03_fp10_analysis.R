@@ -167,8 +167,8 @@ hospital_fp10_product_DDD <- New_Hospital_FP10_data %>%
 max_value <- max(HospitalFP10_DDD_by_year$total_DDD) / 1e6
 hospitalFP10_line <- ggplot(HospitalFP10_DDD_by_year,
                             aes(x = as.integer(PERIOD), y = total_DDD / 1e6)) +
-  geom_line(linewidth = 1.2, color = "#2E8B57") +
-  geom_point(size = 3, color = "#FFD700") +
+  geom_line(linewidth = 1.2, color = colour_care_fp10) +
+  geom_point(size = 3, color = colour_care_fp10) +
   labs(
     title = "Secondary care (Hospital FP10): Lithium Prescribing Trends Over Time",
     subtitle = "Total Daily Defined Doses (DDD) issued per year (2017–2024)",
@@ -230,7 +230,7 @@ FP10_coverage_plot <- coverage_data_fp10 %>%
   geom_sf(aes(fill = `DDD/population`), colour = "black", linewidth = 0.8) +
   geom_sf_text(aes(label = region), colour = "white", size = 3) +
   scale_fill_gradientn(
-    colors = c("#ffd13a", "#ff7c00", "#f20c51"),
+    colors = colour_care_fp10_map,
     breaks = breaks,
     labels = labels,
     na.value = "grey90"
@@ -255,7 +255,7 @@ ggsave(here(plots_dir, "fp10_coverage_map.png"), FP10_coverage_plot, width = 8, 
 max_y <- max(Hospital_FP10_total_DDD_by_region_2024$`DDD/population`, na.rm = TRUE)
 buffer <- max_y * 0.1
 FP10hist <- ggplot(Hospital_FP10_total_DDD_by_region_2024, aes(x = region, y = `DDD/population`)) +
-  geom_col(fill = "#FFD700", color = "#FFD700") +
+  geom_col(fill = colour_care_fp10, color = colour_care_fp10) +
   geom_text(aes(label = round(`DDD/population`, 3)), vjust = -0.3, size = 3.5) +
   theme_minimal() +
   xlab("Region") +

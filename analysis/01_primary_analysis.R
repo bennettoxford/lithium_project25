@@ -83,8 +83,8 @@ primary_product_DDD <- PRIMARYCARE_dataset %>%
   arrange(desc(total_DDD), product_name)
 
 primary_line <- ggplot(Primaryy_DDD_by_year, aes(x = as.integer(year), y = total_DDD / 1e6)) +
-  geom_line(linewidth = 1.2, color = "orange") +
-  geom_point(size = 3, color = "blue") +
+  geom_line(linewidth = 1.2, color = colour_care_primary) +
+  geom_point(size = 3, color = colour_care_primary) +
   labs(
     title = "Primary Care: Lithium Prescribing Trends Over Time",
     subtitle = "Total Daily Defined Doses (DDD) issued per year (2015–2024)",
@@ -107,7 +107,7 @@ primary_line <- ggplot(Primaryy_DDD_by_year, aes(x = as.integer(year), y = total
 ggsave(here(plots_dir, "primary_line_trends.png"), primary_line, width = 8, height = 5, dpi = 300)
 
 primary_bar <- ggplot(Primaryy_DDD_by_year, aes(x = as.factor(year), y = total_DDD / 1e6)) +
-  geom_bar(stat = "identity", fill = "orange", width = 0.6) +
+  geom_bar(stat = "identity", fill = colour_care_primary, width = 0.6) +
   geom_text(
     aes(label = format(round(total_DDD / 1e6, 1), nsmall = 1)),
     vjust = -0.5,
@@ -161,7 +161,7 @@ primary_coverage_plot <- coverage_data_primary %>%
   geom_sf(aes(fill = `DDD/population`), colour = "black", linewidth = 0.8) +
   geom_sf_text(aes(label = Region), colour = "white", size = 3) +
   scale_fill_gradientn(
-    colors = c("#ffd13a", "#ff7c00", "#f20c51"),
+    colors = colour_care_primary_map,
     breaks = breaks,
     labels = labels,
     na.value = "grey90"
@@ -180,7 +180,7 @@ primary_coverage_plot <- coverage_data_primary %>%
 ggsave(here(plots_dir, "primary_coverage_map.png"), primary_coverage_plot, width = 8, height = 6, dpi = 300)
 
 primaryhist <- ggplot(primary_lithium_df, aes(x = Region, y = `DDD/population`)) +
-  geom_col(fill = "#1f77b4", color = "#6baed6") +
+  geom_col(fill = colour_care_primary, color = colour_care_primary) +
   geom_text(aes(label = sprintf("%.3f", `DDD/population`)), vjust = -0.3, size = 3.5) +
   theme_minimal() +
   xlab("Region") +
