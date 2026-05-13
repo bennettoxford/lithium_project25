@@ -79,3 +79,42 @@ colour_care_secondary_map <- c("#FDEEE3", "#E7893D", colour_care_secondary)
 colour_care_fp10_map <- c("#E5F5F0", "#3FA67F", colour_care_fp10)
 
 colour_care_combined_aggregate <- "#333333"
+
+standardise_region <- function(region) {
+  region <- tolower(region)
+  region <- trimws(region)
+  region <- gsub(" of ", " Of ", region)
+  region <- tools::toTitleCase(region)
+  region
+}
+
+region_levels_ordered <- c(
+  "North East and Yorkshire",
+  "North West",
+  "Midlands",
+  "East of England",
+  "London",
+  "South East",
+  "South West"
+)
+
+colour_region_palette <- c(
+  "North East And Yorkshire" = "#4477AA",
+  "North East and Yorkshire" = "#4477AA",
+  "North West"               = "#EE6677",
+  "Midlands"                 = "#228833",
+  "East Of England"          = "#CCBB44",
+  "East of England"          = "#CCBB44",
+  "London"                   = "#66CCEE",
+  "South East"               = "#AA3377",
+  "South West"               = "#DDAA33"
+)
+
+scale_colour_nhs_region <- function(drop = FALSE) {
+  scale_color_manual(
+    values = colour_region_palette,
+    limits = region_levels_ordered,
+    drop = drop,
+    na.value = "grey50"
+  )
+}

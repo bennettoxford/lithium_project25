@@ -129,10 +129,13 @@ Secondary_DDD_by_year_region <- Lithium_SCMD %>%
   left_join(population_df %>% select(region, population), by = "region") %>%
   mutate(DDD_population = total_DDD / population)
 
-seven_region_secondary <- ggplot(Secondary_DDD_by_year_region, aes(x = as.integer(year), y = DDD_population, color = region)) +
+seven_region_secondary <- Secondary_DDD_by_year_region %>%
+  mutate(region = standardise_region(as.character(region))) %>%
+  ggplot(aes(x = as.integer(year), y = DDD_population, color = region)) +
   geom_line(linewidth = 1.2) +
   geom_point(size = 3) +
   labs(x = "Year", y = NULL, color = "Region") +
+  scale_colour_nhs_region(drop = FALSE) +
   scale_y_continuous(
     limits = c(0, 0.03),
     expand = c(0, 0),

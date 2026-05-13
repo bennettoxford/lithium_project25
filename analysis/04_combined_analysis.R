@@ -258,14 +258,6 @@ stacked_bar_plot <- ggplot(combined_df_all, aes(x = Region, y = `DDD.population`
 ggsave(here(plots_dir, "stacked_bar_regional_by_care.png"), stacked_bar_plot, width = 10, height = 6, dpi = 300)
 
 # National DDD trends
-standardise_region <- function(region) {
-  region <- tolower(region)
-  region <- trimws(region)
-  region <- gsub(" of ", " Of ", region)
-  region <- tools::toTitleCase(region)
-  return(region)
-}
-
 Primary_clean <- Primary_DDD_by_year_region %>%
   mutate(
     year = as.integer(year),
@@ -324,12 +316,14 @@ combined_data_reg <- bind_rows(Primary_clean_reg, Secondary_clean_reg, Hospital_
 filtered_data_reg <- combined_data_reg %>% filter(year >= 2019, year <= 2024)
 summed_by_region <- filtered_data_reg %>%
   group_by(year, region) %>%
-  summarise(total_DDD_pop_sum = sum(DDD_population, na.rm = TRUE), .groups = "drop")
+  summarise(total_DDD_pop_sum = sum(DDD_population, na.rm = TRUE), .groups = "drop") %>%
+  filter(!is.na(region))
 
 regional_trends_plot <- ggplot(summed_by_region, aes(x = year, y = total_DDD_pop_sum, color = region)) +
   geom_line(linewidth = 1.2) +
   geom_point(size = 3) +
   labs(x = "Year", y = "Total DDD (Millions)/Population", color = "Region") +
+  scale_colour_nhs_region(drop = FALSE) +
   scale_y_continuous(
     limits = c(0, 0.3),
     breaks = c(0.0, 0.05, 0.1, 0.15, 0.2),
