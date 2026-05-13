@@ -86,9 +86,8 @@ primary_line <- ggplot(Primaryy_DDD_by_year, aes(x = as.integer(year), y = total
   geom_line(linewidth = 1.2, color = colour_care_primary) +
   geom_point(size = 3, color = colour_care_primary) +
   labs(x = "Year", y = "Total DDD (millions)") +
-  scale_y_continuous(
-    limits = c(0, 14),
-    expand = c(0, 0),
+  scale_y_to_next_tick(
+    values = Primaryy_DDD_by_year$total_DDD / 1e6,
     labels = function(x) format(x, scientific = FALSE, big.mark = ",")
   ) +
   scale_x_continuous(breaks = 2015:2024) +
@@ -108,9 +107,9 @@ primary_bar <- ggplot(Primaryy_DDD_by_year, aes(x = as.factor(year), y = total_D
     fontface = "bold"
   ) +
   labs(x = "Year", y = "Total DDD (millions)") +
-  scale_y_continuous(
-    labels = function(x) format(x, scientific = FALSE, big.mark = ","),
-    expand = expansion(mult = c(0, 0.1))
+  scale_y_to_next_tick(
+    values = Primaryy_DDD_by_year$total_DDD / 1e6,
+    labels = function(x) format(x, scientific = FALSE, big.mark = ",")
   ) +
   theme_minimal(base_size = 13) +
   theme(
@@ -170,6 +169,10 @@ primaryhist <- ggplot(primary_lithium_df, aes(x = Region, y = `DDD/population`))
   theme_minimal() +
   xlab("Region") +
   ylab("Lithium usage (Total DDD for 2024) / population") +
+  scale_y_to_next_tick(
+    values = primary_lithium_df$`DDD/population`,
+    labels = scales::number_format(accuracy = 0.001)
+  ) +
   theme(
     axis.text.x = element_text(angle = 45, hjust = 1, size = 10),
     axis.text.y = element_text(size = 10),

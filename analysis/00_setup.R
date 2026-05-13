@@ -118,3 +118,33 @@ scale_colour_nhs_region <- function(drop = FALSE) {
     na.value = "grey50"
   )
 }
+
+scale_y_to_next_tick <- function(values, n_breaks = 5, labels = waiver(), min_upper = NULL) {
+  finite_values <- values[is.finite(values)]
+  y_max <- if (length(finite_values) == 0) 0 else max(finite_values, na.rm = TRUE)
+  y_max <- max(y_max, 0)
+
+  breaks <- pretty(c(0, y_max), n = n_breaks)
+  breaks <- breaks[breaks >= 0]
+  if (length(breaks) < 2) {
+    breaks <- c(0, if (y_max > 0) y_max else 1)
+  }
+
+  step <- breaks[2] - breaks[1]
+  upper <- max(breaks)
+
+  if (!is.null(min_upper)) {
+    upper <- max(upper, ceiling(min_upper / step) * step)
+  }
+  if (upper <= y_max) {
+    upper <- upper + step
+  }
+
+  breaks <- seq(0, upper, by = step)
+  scale_y_continuous(
+    limits = c(0, upper),
+    breaks = breaks,
+    expand = c(0, 0),
+    labels = labels
+  )
+}

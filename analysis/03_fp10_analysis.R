@@ -164,15 +164,13 @@ hospital_fp10_product_DDD <- New_Hospital_FP10_data %>%
   summarise(total_DDD = sum(DDD, na.rm = TRUE), .groups = "drop") %>%
   arrange(desc(total_DDD), product_name)
 
-max_value <- max(HospitalFP10_DDD_by_year$total_DDD) / 1e6
 hospitalFP10_line <- ggplot(HospitalFP10_DDD_by_year,
                             aes(x = as.integer(PERIOD), y = total_DDD / 1e6)) +
   geom_line(linewidth = 1.2, color = colour_care_fp10) +
   geom_point(size = 3, color = colour_care_fp10) +
   labs(x = "Year", y = "Total DDD (millions)") +
-  scale_y_continuous(
-    limits = c(0, max_value * 1.1),
-    expand = c(0, 0),
+  scale_y_to_next_tick(
+    values = HospitalFP10_DDD_by_year$total_DDD / 1e6,
     labels = scales::label_number(accuracy = 0.01)
   ) +
   scale_x_continuous(breaks = 2017:2024) +
@@ -240,17 +238,14 @@ FP10_coverage_plot <- coverage_data_fp10 %>%
   ylab("")
 ggsave(here(plots_dir, "fp10_coverage_map.png"), FP10_coverage_plot, width = 8, height = 6, dpi = 300)
 
-max_y <- max(Hospital_FP10_total_DDD_by_region_2024$`DDD/population`, na.rm = TRUE)
-buffer <- max_y * 0.1
 FP10hist <- ggplot(Hospital_FP10_total_DDD_by_region_2024, aes(x = region, y = `DDD/population`)) +
   geom_col(fill = colour_care_fp10, color = colour_care_fp10) +
   geom_text(aes(label = round(`DDD/population`, 3)), vjust = -0.3, size = 3.5) +
   theme_minimal() +
   xlab("Region") +
   ylab("Lithium usage (Total DDD for 2024) / population") +
-  scale_y_continuous(
-    limits = c(0, max_y + buffer),
-    breaks = scales::pretty_breaks(n = 5),
+  scale_y_to_next_tick(
+    values = Hospital_FP10_total_DDD_by_region_2024$`DDD/population`,
     labels = scales::number_format(accuracy = 0.001)
   ) +
   theme(

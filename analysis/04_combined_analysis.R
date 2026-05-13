@@ -68,9 +68,8 @@ primary_line <- ggplot(Primaryy_DDD_by_year, aes(x = as.integer(year), y = total
   geom_line(linewidth = 1.2, color = colour_care_primary) +
   geom_point(size = 3, color = colour_care_primary) +
   labs(x = "Year", y = "Total DDD (millions)", tag = "(a)") +
-  scale_y_continuous(
-    limits = c(0, 14),
-    expand = c(0, 0),
+  scale_y_to_next_tick(
+    values = Primaryy_DDD_by_year$total_DDD / 1e6,
     labels = function(x) format(x, scientific = FALSE, big.mark = ",")
   ) +
   scale_x_continuous(breaks = 2015:2024) +
@@ -86,13 +85,12 @@ secondary_line <- ggplot(Secondary_DDD_by_year, aes(x = as.integer(year), y = to
   geom_line(linewidth = 1.2, color = colour_care_secondary) +
   geom_point(size = 3, color = colour_care_secondary) +
   labs(x = "Year", y = "Total DDD (millions)", tag = "(b)") +
-  scale_y_continuous(
-    limits = c(0, 1.2),
-    expand = c(0, 0),
-    labels = scales::label_number(accuracy = 0.1)
+  scale_y_to_next_tick(
+    values = Secondary_DDD_by_year$total_DDD / 1e6,
+    labels = scales::label_number(accuracy = 0.1),
+    min_upper = 1.2
   ) +
   scale_x_continuous(breaks = 2019:2024) +
-  coord_cartesian(ylim = c(0, 1.2)) +
   theme_minimal(base_size = 13) +
   theme(
     axis.title.x = element_text(face = "bold"),
@@ -131,21 +129,14 @@ combined_line_plot <- ggplot() +
              aes(x = as.integer(PERIOD), y = total_DDD / 1e6),
              color = colour_care_fp10, size = 3) +
   labs(x = "Year", y = "Total DDD (millions)") +
-  scale_y_continuous(
-    limits = c(0, ceiling(max(
-      max(Primaryy_DDD_by_year$total_DDD / 1e6, na.rm = TRUE),
-      max(Secondary_DDD_by_year$total_DDD / 1e6, na.rm = TRUE),
-      max(HospitalFP10_DDD_by_year$total_DDD / 1e6, na.rm = TRUE),
-      1.2
-    ) * 1.1)),
-    breaks = seq(0, ceiling(max(
-      max(Primaryy_DDD_by_year$total_DDD / 1e6, na.rm = TRUE),
-      max(Secondary_DDD_by_year$total_DDD / 1e6, na.rm = TRUE),
-      max(HospitalFP10_DDD_by_year$total_DDD / 1e6, na.rm = TRUE),
-      1.2
-    ) * 1.1), by = 1),
-    expand = c(0, 0),
-    labels = scales::label_number(accuracy = 1)
+  scale_y_to_next_tick(
+    values = c(
+      Primaryy_DDD_by_year$total_DDD / 1e6,
+      Secondary_DDD_by_year$total_DDD / 1e6,
+      HospitalFP10_DDD_by_year$total_DDD / 1e6
+    ),
+    labels = scales::label_number(accuracy = 1),
+    min_upper = 1.2
   ) +
   scale_x_continuous(
     breaks = seq(min(all_years, na.rm = TRUE), max(all_years, na.rm = TRUE)),
@@ -189,21 +180,14 @@ combined_line_plot_legend <- ggplot() +
     )
   ) +
   labs(x = "Year", y = "Total DDD (millions)") +
-  scale_y_continuous(
-    limits = c(0, ceiling(max(
-      max(Primaryy_DDD_by_year$total_DDD / 1e6, na.rm = TRUE),
-      max(Secondary_DDD_by_year$total_DDD / 1e6, na.rm = TRUE),
-      max(HospitalFP10_DDD_by_year$total_DDD / 1e6, na.rm = TRUE),
-      1.2
-    ) * 1.1)),
-    breaks = seq(0, ceiling(max(
-      max(Primaryy_DDD_by_year$total_DDD / 1e6, na.rm = TRUE),
-      max(Secondary_DDD_by_year$total_DDD / 1e6, na.rm = TRUE),
-      max(HospitalFP10_DDD_by_year$total_DDD / 1e6, na.rm = TRUE),
-      1.2
-    ) * 1.1), by = 1),
-    expand = c(0, 0),
-    labels = scales::label_number(accuracy = 1)
+  scale_y_to_next_tick(
+    values = c(
+      Primaryy_DDD_by_year$total_DDD / 1e6,
+      Secondary_DDD_by_year$total_DDD / 1e6,
+      HospitalFP10_DDD_by_year$total_DDD / 1e6
+    ),
+    labels = scales::label_number(accuracy = 1),
+    min_upper = 1.2
   ) +
   scale_x_continuous(
     breaks = seq(min(all_years, na.rm = TRUE), max(all_years, na.rm = TRUE)),
@@ -285,14 +269,12 @@ summed_data <- filtered_data %>%
   group_by(year) %>%
   summarise(total_DDD_sum = sum(total_DDD, na.rm = TRUE))
 
-max_total_millions <- max(summed_data$total_DDD_sum) / 1e6
 national_ddd_plot <- ggplot(summed_data, aes(x = as.integer(year), y = total_DDD_sum / 1e6)) +
   geom_line(color = colour_care_combined_aggregate, linewidth = 1.2) +
   geom_point(color = colour_care_combined_aggregate, size = 3) +
   labs(x = "Year", y = "Total DDD (Millions)") +
-  scale_y_continuous(
-    expand = expansion(mult = c(0, 0.1)),
-    limits = c(0, max_total_millions * 1.1),
+  scale_y_to_next_tick(
+    values = summed_data$total_DDD_sum / 1e6,
     labels = scales::label_number(accuracy = 0.1)
   ) +
   scale_x_continuous(breaks = 2019:2024) +
@@ -324,10 +306,10 @@ regional_trends_plot <- ggplot(summed_by_region, aes(x = year, y = total_DDD_pop
   geom_point(size = 3) +
   labs(x = "Year", y = "Total DDD (Millions)/Population", color = "Region") +
   scale_colour_nhs_region(drop = FALSE) +
-  scale_y_continuous(
-    limits = c(0, 0.3),
-    breaks = c(0.0, 0.05, 0.1, 0.15, 0.2),
-    labels = function(x) format(x, nsmall = 1)
+  scale_y_to_next_tick(
+    values = summed_by_region$total_DDD_pop_sum,
+    labels = scales::number_format(accuracy = 0.01),
+    min_upper = 0.3
   ) +
   scale_x_continuous(breaks = 2019:2024) +
   theme_minimal(base_size = 13)

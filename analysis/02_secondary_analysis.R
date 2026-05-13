@@ -25,13 +25,12 @@ secondary_line <- ggplot(Secondary_DDD_by_year, aes(x = as.integer(year), y = to
   geom_line(linewidth = 1.2, color = colour_care_secondary) +
   geom_point(size = 3, color = colour_care_secondary) +
   labs(x = "Year", y = "Total DDD (millions)") +
-  scale_y_continuous(
-    limits = c(0, 1.2),
-    expand = c(0, 0),
-    labels = scales::label_number(accuracy = 0.1)
+  scale_y_to_next_tick(
+    values = Secondary_DDD_by_year$total_DDD / 1e6,
+    labels = scales::label_number(accuracy = 0.1),
+    min_upper = 1.2
   ) +
   scale_x_continuous(breaks = 2019:2024) +
-  coord_cartesian(ylim = c(0, 1.2)) +
   theme_minimal(base_size = 13) +
   theme(
     axis.title.x = element_text(face = "bold"),
@@ -48,9 +47,9 @@ secondary_bar <- ggplot(Secondary_DDD_by_year, aes(x = as.factor(year), y = tota
     fontface = "bold"
   ) +
   labs(x = "Year", y = "Total DDD (millions)") +
-  scale_y_continuous(
-    labels = function(x) format(x, scientific = FALSE, big.mark = ","),
-    expand = expansion(mult = c(0, 0.1))
+  scale_y_to_next_tick(
+    values = Secondary_DDD_by_year$total_DDD / 1e6,
+    labels = function(x) format(x, scientific = FALSE, big.mark = ",")
   ) +
   theme_minimal(base_size = 13) +
   theme(
@@ -110,10 +109,10 @@ secondaryhist <- ggplot(secondary_lithium_df, aes(x = region, y = `DDD/populatio
   theme_minimal() +
   xlab("Region") +
   ylab("Lithium usage (Total DDD for 2024) / population") +
-  scale_y_continuous(
-    limits = c(0, 0.03),
-    breaks = seq(0, 0.03, by = 0.01),
-    labels = scales::number_format(accuracy = 0.001)
+  scale_y_to_next_tick(
+    values = secondary_lithium_df$`DDD/population`,
+    labels = scales::number_format(accuracy = 0.001),
+    min_upper = 0.03
   ) +
   theme(
     axis.text.x = element_text(angle = 45, hjust = 1, size = 10),
@@ -136,10 +135,10 @@ seven_region_secondary <- Secondary_DDD_by_year_region %>%
   geom_point(size = 3) +
   labs(x = "Year", y = NULL, color = "Region") +
   scale_colour_nhs_region(drop = FALSE) +
-  scale_y_continuous(
-    limits = c(0, 0.03),
-    expand = c(0, 0),
-    labels = scales::number_format(accuracy = 0.001)
+  scale_y_to_next_tick(
+    values = Secondary_DDD_by_year_region$DDD_population,
+    labels = scales::number_format(accuracy = 0.001),
+    min_upper = 0.03
   ) +
   scale_x_continuous(breaks = 2019:2024) +
   theme_minimal(base_size = 13) +
