@@ -73,7 +73,7 @@ primary_line <- ggplot(Primaryy_DDD_by_year, aes(x = as.integer(year), y = total
     labels = function(x) format(x, scientific = FALSE, big.mark = ",")
   ) +
   scale_x_continuous(breaks = 2015:2024, expand = expansion(mult = c(0.02, 0.02))) +
-  theme_minimal(base_size = 13) +
+  theme_lithium(base_size = 13) +
   theme(
     axis.title.x = element_text(face = "bold"),
     axis.title.y = element_text(face = "bold"),
@@ -91,7 +91,7 @@ secondary_line <- ggplot(Secondary_DDD_by_year, aes(x = as.integer(year), y = to
     min_upper = 1.2
   ) +
   scale_x_continuous(breaks = 2019:2024, expand = expansion(mult = c(0.02, 0.02))) +
-  theme_minimal(base_size = 13) +
+  theme_lithium(base_size = 13) +
   theme(
     axis.title.x = element_text(face = "bold"),
     axis.title.y = element_text(face = "bold"),
@@ -171,7 +171,7 @@ combined_line_plot <- ggplot() +
     limits = c(min(all_years, na.rm = TRUE), max(all_years, na.rm = TRUE)),
     expand = expansion(mult = c(0.02, 0.02))
   ) +
-  theme_minimal(base_size = 13) +
+  theme_lithium(base_size = 13) +
   theme(
     panel.grid.major = element_line(color = "grey80"),
     panel.grid.minor = element_blank(),
@@ -231,7 +231,7 @@ combined_line_plot_legend <- ggplot() +
     limits = c(min(all_years, na.rm = TRUE), max(all_years, na.rm = TRUE)),
     expand = expansion(mult = c(0.02, 0.02))
   ) +
-  theme_minimal(base_size = 13) +
+  theme_lithium(base_size = 13) +
   theme(
     panel.grid.major = element_line(color = "grey80"),
     panel.grid.minor = element_blank(),
@@ -274,7 +274,7 @@ stacked_bar_plot <- ggplot(combined_df_all, aes(x = Region, y = `DDD.population`
       "Hospital FP10" = colour_care_fp10
     )
   ) +
-  theme_minimal() +
+  theme_lithium() +
   labs(x = "Region", y = "Lithium usage (DDD/population)", fill = "Care Level") +
   theme(axis.text.x = element_text(angle = 45, hjust = 1))
 ggsave(here(plots_dir, "stacked_bar_regional_by_care.png"), stacked_bar_plot, width = 10, height = 6, dpi = 300)
@@ -316,7 +316,7 @@ national_ddd_plot <- ggplot(summed_data, aes(x = as.integer(year), y = total_DDD
     labels = scales::label_number(accuracy = 0.1)
   ) +
   scale_x_continuous(breaks = 2019:2024, expand = expansion(mult = c(0.02, 0.02))) +
-  theme_minimal(base_size = 13)
+  theme_lithium(base_size = 13)
 
 # Regional DDD trends
 Primary_clean_reg <- Primary_DDD_by_year_region %>%
@@ -350,7 +350,7 @@ regional_trends_plot <- ggplot(summed_by_region, aes(x = year, y = total_DDD_pop
     min_upper = 0.3
   ) +
   scale_x_continuous(breaks = 2019:2024, expand = expansion(mult = c(0.02, 0.02))) +
-  theme_minimal(base_size = 13)
+  theme_lithium(base_size = 13)
 ggsave(here(plots_dir, "regional_ddd_trends.png"), regional_trends_plot, width = 10, height = 6, dpi = 300)
 
 write.csv(summed_data, here(data_dir, "national_DDD_summed.csv"), row.names = FALSE)

@@ -91,7 +91,7 @@ primary_line <- ggplot(Primaryy_DDD_by_year, aes(x = as.integer(year), y = total
     labels = function(x) format(x, scientific = FALSE, big.mark = ",")
   ) +
   scale_x_continuous(breaks = 2015:2024, expand = expansion(mult = c(0.02, 0.02))) +
-  theme_minimal(base_size = 13) +
+  theme_lithium(base_size = 13) +
   theme(
     axis.title.x = element_text(face = "bold"),
     axis.title.y = element_text(face = "bold")
@@ -112,7 +112,7 @@ primary_bar <- ggplot(Primaryy_DDD_by_year, aes(x = as.factor(year), y = total_D
     labels = function(x) format(x, scientific = FALSE, big.mark = ",")
   ) +
   scale_x_discrete(expand = expansion(mult = c(0.02, 0.02))) +
-  theme_minimal(base_size = 13) +
+  theme_lithium(base_size = 13) +
   theme(
     axis.title.x = element_text(face = "bold"),
     axis.title.y = element_text(face = "bold"),
@@ -152,7 +152,7 @@ primary_coverage_plot <- coverage_data_primary %>%
     labels = labels,
     na.value = "grey90"
   ) +
-  theme_minimal() +
+  theme_lithium() +
   theme(
     legend.position = c(0.2, 0.5),
     legend.text = element_text(hjust = 1),
@@ -167,7 +167,7 @@ ggsave(here(plots_dir, "primary_coverage_map.png"), primary_coverage_plot, width
 primaryhist <- ggplot(primary_lithium_df, aes(x = Region, y = `DDD/population`)) +
   geom_col(fill = colour_care_primary, color = colour_care_primary) +
   geom_text(aes(label = sprintf("%.3f", `DDD/population`)), vjust = -0.3, size = 3.5) +
-  theme_minimal() +
+  theme_lithium() +
   xlab("Region") +
   ylab("Lithium usage (Total DDD for 2024) / population") +
   scale_y_to_next_tick(
@@ -175,8 +175,8 @@ primaryhist <- ggplot(primary_lithium_df, aes(x = Region, y = `DDD/population`))
     labels = scales::number_format(accuracy = 0.001)
   ) +
   theme(
-    axis.text.x = element_text(angle = 45, hjust = 1, size = 10),
-    axis.text.y = element_text(size = 10),
+    axis.text.x = element_text(angle = 45, hjust = 1, size = axis_tick_label_size),
+    axis.text.y = element_text(size = axis_tick_label_size),
     plot.margin = margin(10, 10, 10, 10)
   )
 ggsave(here(plots_dir, "primary_hist_ddd_pop.png"), primaryhist, width = 8, height = 5, dpi = 300)

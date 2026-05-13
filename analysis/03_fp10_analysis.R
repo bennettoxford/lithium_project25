@@ -174,7 +174,7 @@ hospitalFP10_line <- ggplot(HospitalFP10_DDD_by_year,
     labels = scales::label_number(accuracy = 0.01)
   ) +
   scale_x_continuous(breaks = 2017:2024, expand = expansion(mult = c(0.02, 0.02))) +
-  theme_minimal(base_size = 13) +
+  theme_lithium(base_size = 13) +
   theme(
     axis.title.x = element_text(face = "bold"),
     axis.title.y = element_text(face = "bold")
@@ -226,7 +226,7 @@ FP10_coverage_plot <- coverage_data_fp10 %>%
     labels = labels,
     na.value = "grey90"
   ) +
-  theme_minimal() +
+  theme_lithium() +
   theme(
     legend.position = c(0.2, 0.5),
     legend.text = element_text(hjust = 1),
@@ -241,7 +241,7 @@ ggsave(here(plots_dir, "fp10_coverage_map.png"), FP10_coverage_plot, width = 8, 
 FP10hist <- ggplot(Hospital_FP10_total_DDD_by_region_2024, aes(x = region, y = `DDD/population`)) +
   geom_col(fill = colour_care_fp10, color = colour_care_fp10) +
   geom_text(aes(label = round(`DDD/population`, 3)), vjust = -0.3, size = 3.5) +
-  theme_minimal() +
+  theme_lithium() +
   xlab("Region") +
   ylab("Lithium usage (Total DDD for 2024) / population") +
   scale_y_to_next_tick(
@@ -249,8 +249,8 @@ FP10hist <- ggplot(Hospital_FP10_total_DDD_by_region_2024, aes(x = region, y = `
     labels = scales::number_format(accuracy = 0.001)
   ) +
   theme(
-    axis.text.x = element_text(angle = 45, hjust = 1, size = 10),
-    axis.text.y = element_text(size = 10),
+    axis.text.x = element_text(angle = 45, hjust = 1, size = axis_tick_label_size),
+    axis.text.y = element_text(size = axis_tick_label_size),
     plot.margin = margin(10, 10, 10, 10)
   )
 ggsave(here(plots_dir, "fp10_hist_ddd_pop.png"), FP10hist, width = 8, height = 5, dpi = 300)

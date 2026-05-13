@@ -79,6 +79,15 @@ colour_care_secondary_map <- c("#FDEEE3", "#E7893D", colour_care_secondary)
 colour_care_fp10_map <- c("#E5F5F0", "#3FA67F", colour_care_fp10)
 
 colour_care_combined_aggregate <- "#333333"
+axis_tick_label_size <- 14
+
+theme_lithium <- function(base_size = 13) {
+  theme_minimal(base_size = base_size) +
+    theme(
+      axis.text.x = element_text(size = axis_tick_label_size),
+      axis.text.y = element_text(size = axis_tick_label_size)
+    )
+}
 
 standardise_region <- function(region) {
   region <- tolower(region)
