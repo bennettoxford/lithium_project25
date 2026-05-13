@@ -30,7 +30,7 @@ secondary_line <- ggplot(Secondary_DDD_by_year, aes(x = as.integer(year), y = to
     labels = scales::label_number(accuracy = 0.1),
     min_upper = 1.2
   ) +
-  scale_x_continuous(breaks = 2019:2024) +
+  scale_x_continuous(breaks = 2019:2024, expand = expansion(mult = c(0.02, 0.02))) +
   theme_minimal(base_size = 13) +
   theme(
     axis.title.x = element_text(face = "bold"),
@@ -51,6 +51,7 @@ secondary_bar <- ggplot(Secondary_DDD_by_year, aes(x = as.factor(year), y = tota
     values = Secondary_DDD_by_year$total_DDD / 1e6,
     labels = function(x) format(x, scientific = FALSE, big.mark = ",")
   ) +
+  scale_x_discrete(expand = expansion(mult = c(0.02, 0.02))) +
   theme_minimal(base_size = 13) +
   theme(
     axis.title.x = element_text(face = "bold"),
@@ -140,7 +141,7 @@ seven_region_secondary <- Secondary_DDD_by_year_region %>%
     labels = scales::number_format(accuracy = 0.001),
     min_upper = 0.03
   ) +
-  scale_x_continuous(breaks = 2019:2024) +
+  scale_x_continuous(breaks = 2019:2024, expand = expansion(mult = c(0.02, 0.02))) +
   theme_minimal(base_size = 13) +
   theme(
     axis.title.x = element_text(face = "bold"),

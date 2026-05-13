@@ -90,7 +90,7 @@ primary_line <- ggplot(Primaryy_DDD_by_year, aes(x = as.integer(year), y = total
     values = Primaryy_DDD_by_year$total_DDD / 1e6,
     labels = function(x) format(x, scientific = FALSE, big.mark = ",")
   ) +
-  scale_x_continuous(breaks = 2015:2024) +
+  scale_x_continuous(breaks = 2015:2024, expand = expansion(mult = c(0.02, 0.02))) +
   theme_minimal(base_size = 13) +
   theme(
     axis.title.x = element_text(face = "bold"),
@@ -111,6 +111,7 @@ primary_bar <- ggplot(Primaryy_DDD_by_year, aes(x = as.factor(year), y = total_D
     values = Primaryy_DDD_by_year$total_DDD / 1e6,
     labels = function(x) format(x, scientific = FALSE, big.mark = ",")
   ) +
+  scale_x_discrete(expand = expansion(mult = c(0.02, 0.02))) +
   theme_minimal(base_size = 13) +
   theme(
     axis.title.x = element_text(face = "bold"),

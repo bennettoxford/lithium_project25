@@ -173,7 +173,7 @@ hospitalFP10_line <- ggplot(HospitalFP10_DDD_by_year,
     values = HospitalFP10_DDD_by_year$total_DDD / 1e6,
     labels = scales::label_number(accuracy = 0.01)
   ) +
-  scale_x_continuous(breaks = 2017:2024) +
+  scale_x_continuous(breaks = 2017:2024, expand = expansion(mult = c(0.02, 0.02))) +
   theme_minimal(base_size = 13) +
   theme(
     axis.title.x = element_text(face = "bold"),
