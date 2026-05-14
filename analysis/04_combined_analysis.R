@@ -17,10 +17,6 @@ primary_product_DDD_by_year <- read.csv(here(data_dir, "primary_product_DDD_by_y
 secondary_product_DDD_by_year <- read.csv(here(data_dir, "secondary_product_DDD_by_year.csv"), colClasses = c(product_code = "character", year = "character"))
 hospital_fp10_product_DDD_by_year <- read.csv(here(data_dir, "hospital_fp10_product_DDD_by_year.csv"), colClasses = c(product_code = "character", year = "character"))
 
-primary_care_product_lookup <- read.csv(here("data", "primary_care", "primary_care.csv")) %>%
-  select(product_code = bnf_code, generic_product_name = nm) %>%
-  distinct(product_code, .keep_all = TRUE)
-
 primary_product_DDD_for_merge <- primary_product_DDD %>%
   group_by(product_code) %>%
   summarise(
@@ -112,13 +108,7 @@ format_ddd_int_comma <- function(x) {
 secondary_summary_for_table <- lithium_product_ddd_summary_from_by_year(
   secondary_product_DDD_by_year,
   "Secondary care"
-) %>%
-  left_join(primary_care_product_lookup, by = "product_code") %>%
-  mutate(product_name = if_else(
-    !is.na(generic_product_name),
-    generic_product_name,
-    product_name
-  ))
+)
 
 secondary_earliest_yr <- as.integer(secondary_summary_for_table$first_data_year[1L])
 secondary_latest_yr <- as.integer(secondary_summary_for_table$last_data_year[1L])
@@ -132,12 +122,6 @@ lithium_primary_fp10_summary_rows <- primary_fp10_product_DDD %>%
   left_join(fp10_first %>% rename(fp10_first_ddd = ddd), by = "product_code") %>%
   left_join(prim_last %>% rename(prim_last_ddd = ddd), by = "product_code") %>%
   left_join(fp10_last %>% rename(fp10_last_ddd = ddd), by = "product_code") %>%
-  left_join(primary_care_product_lookup, by = "product_code") %>%
-  mutate(product_name = if_else(
-    !is.na(generic_product_name),
-    generic_product_name,
-    product_name
-  )) %>%
   arrange(desc(total_DDD_all_periods), product_name) %>%
   transmute(
     V1 = NA_character_,
