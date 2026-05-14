@@ -307,7 +307,17 @@ Hospital_FP10_total_DDD_by_region_2024 <- Hospital_FP10_total_DDD_by_region_2024
   select(-region)
 
 combined_df_all <- bind_rows(primary_lithium_df, secondary_lithium_df, Hospital_FP10_total_DDD_by_region_2024) %>%
-  mutate(Source = factor(Source, levels = c("Primary", "Secondary", "Hospital FP10")))
+  mutate(Source = factor(Source, levels = c("Primary", "Secondary", "Hospital FP10"))) %>%
+  select(
+    Region,
+    population,
+    total_DDD_2024,
+    total_DDD,
+    DDDs_per_1000,
+    Source,
+    region,
+    name
+  )
 
 stacked_bar_plot <- ggplot(combined_df_all, aes(x = Region, y = DDDs_per_1000, fill = Source)) +
   geom_col(color = "black") +
