@@ -294,7 +294,11 @@ FP10hist <- ggplot(Hospital_FP10_total_DDD_by_region_2024, aes(x = region, y = D
   )
 ggsave(here(plots_dir, "fp10_hist_ddd_pop.png"), FP10hist, width = 8, height = 5, dpi = 300)
 
-write.csv(HospitalFP10_DDD_by_year, here(data_dir, "hospital_fp10_DDD_by_year.csv"), row.names = FALSE)
+write.csv(
+  format_ddd_by_year_for_export(HospitalFP10_DDD_by_year, "PERIOD"),
+  here(data_dir, "hospital_fp10_DDD_by_year.csv"),
+  row.names = FALSE
+)
 write.csv(hospital_fp10_product_DDD, here(data_dir, "hospital_fp10_product_DDD.csv"), row.names = FALSE)
 write.csv(Hospital_FP10_total_DDD_by_region_2024, here(data_dir, "hospital_fp10_DDD_by_region_2024.csv"), row.names = FALSE)
 write.csv(HospitalFP10_DDD_by_year_region, here(data_dir, "hospital_fp10_DDD_by_year_region.csv"), row.names = FALSE)

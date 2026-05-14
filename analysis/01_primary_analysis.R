@@ -230,7 +230,11 @@ Primary_DDD_by_year_region <- PRIMARYCARE_dataset %>%
   left_join(population_df %>% select(Region, population), by = "Region") %>%
   mutate(DDDs_per_1000 = round(total_DDD / population * 1000, 2))
 
-write.csv(Primaryy_DDD_by_year, here(data_dir, "primary_DDD_by_year.csv"), row.names = FALSE)
+write.csv(
+  format_ddd_by_year_for_export(Primaryy_DDD_by_year, "year"),
+  here(data_dir, "primary_DDD_by_year.csv"),
+  row.names = FALSE
+)
 write.csv(primary_product_DDD, here(data_dir, "primary_product_DDD.csv"), row.names = FALSE)
 write.csv(primary_lithium_df, here(data_dir, "primary_lithium_by_region.csv"), row.names = FALSE)
 write.csv(Primary_DDD_by_year_region, here(data_dir, "primary_DDD_by_year_region.csv"), row.names = FALSE)

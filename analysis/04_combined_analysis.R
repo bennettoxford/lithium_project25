@@ -1,8 +1,9 @@
 source(here::here("analysis", "00_setup.R"))
 
-Primaryy_DDD_by_year <- read.csv(here(data_dir, "primary_DDD_by_year.csv"))
-Secondary_DDD_by_year <- read.csv(here(data_dir, "secondary_DDD_by_year.csv"))
-HospitalFP10_DDD_by_year <- read.csv(here(data_dir, "hospital_fp10_DDD_by_year.csv"))
+Primaryy_DDD_by_year <- read_ddd_by_year_export_csv(here(data_dir, "primary_DDD_by_year.csv"))
+Secondary_DDD_by_year <- read_ddd_by_year_export_csv(here(data_dir, "secondary_DDD_by_year.csv"))
+HospitalFP10_DDD_by_year <- read_ddd_by_year_export_csv(here(data_dir, "hospital_fp10_DDD_by_year.csv")) %>%
+  mutate(PERIOD = year)
 primary_lithium_df <- read.csv(here(data_dir, "primary_lithium_by_region.csv"))
 secondary_lithium_df <- read.csv(here(data_dir, "secondary_lithium_by_region.csv"))
 Hospital_FP10_total_DDD_by_region_2024 <- read.csv(here(data_dir, "hospital_fp10_DDD_by_region_2024.csv"))

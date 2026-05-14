@@ -260,3 +260,26 @@ scale_y_to_next_tick <- function(values, n_breaks = 5, labels = waiver(), min_up
     labels = labels
   )
 }
+
+format_ddd_by_year_for_export <- function(df, year_col, ddd_col = "total_DDD") {
+  df %>%
+    transmute(
+      Year = as.integer(.data[[year_col]]),
+      `Total DDDs` = format(
+        round(.data[[ddd_col]]),
+        big.mark = ",",
+        scientific = FALSE,
+        trim = TRUE
+      )
+    )
+}
+
+read_ddd_by_year_export_csv <- function(path) {
+  raw <- read.csv(path, check.names = FALSE, stringsAsFactors = FALSE)
+  y <- as.integer(gsub(",", "", trimws(as.character(raw[["Year"]]))))
+  ddd <- as.numeric(gsub(",", "", trimws(as.character(raw[["Total DDDs"]]))))
+  tibble(
+    year = as.character(y),
+    total_DDD = ddd
+  )
+}
