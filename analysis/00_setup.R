@@ -61,14 +61,64 @@ if (nrow(nhs_regions_sf) == 0) {
   stop("No NHS regions matched. ONS file columns: ", paste(names(st_read(nhs_regions_file, quiet = TRUE)), collapse = ", "))
 }
 
-# ONS mid-2023 population estimates (7 regions)
-population_df <- tibble(
-  region = c("North East And Yorkshire", "North West", "Midlands", "East Of England",
-             "London", "South East", "South West"),
-  Region = c("North East And Yorkshire", "North West", "Midlands", "East of England",
-            "London", "South East", "South West"),
-  population = c(8220282, 7515718, 10951858, 6401418, 8869043, 9387286, 5766937)
-)
+normalise_nhs_region <- function(region) {
+  cleaned_region <- region %>%
+    as.character() %>%
+    str_squish()
+
+  case_when(
+    cleaned_region == "East Of England" ~ "East of England",
+    cleaned_region == "North East and Yorkshire" ~ "North East And Yorkshire",
+    TRUE ~ cleaned_region
+  )
+}
+
+population_path <- here("output", "data", "ons_nhs_england_region_population_estimates.csv")
+
+population_annual_df <- read_csv(population_path, show_col_types = FALSE) %>%
+  transmute(
+    year = as.integer(estimate_year),
+    region = normalise_nhs_region(nhs_region),
+    Region = region,
+    population = as.numeric(population)
+  ) %>%
+  distinct(year, region, .keep_all = TRUE)
+
+population_df <- population_annual_df %>%
+  filter(year == 2024L)
+
+add_population_by_year <- function(df, year_col, region_col) {
+  df %>%
+    mutate(
+      .population_year = as.integer(.data[[year_col]]),
+      .population_region = normalise_nhs_region(.data[[region_col]])
+    ) %>%
+    left_join(
+      population_annual_df %>%
+        transmute(
+          .population_year = year,
+          .population_region = region,
+          population
+        ),
+      by = c(".population_year", ".population_region")
+    ) %>%
+    select(-.population_year, -.population_region)
+}
+
+add_population_for_year <- function(df, region_col, population_year) {
+  df %>%
+    mutate(.population_region = normalise_nhs_region(.data[[region_col]])) %>%
+    left_join(
+      population_annual_df %>%
+        filter(year == population_year) %>%
+        transmute(
+          .population_region = region,
+          population
+        ),
+      by = ".population_region"
+    ) %>%
+    select(-.population_region)
+}
 
 colour_care_primary <- "#0072B2"
 colour_care_secondary <- "#D55E00"

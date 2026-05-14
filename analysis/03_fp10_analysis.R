@@ -185,7 +185,7 @@ HospitalFP10_DDD_by_year_region <- Hospital_FP10_data %>%
   mutate(year = as.integer(PERIOD)) %>%
   group_by(year, region) %>%
   summarise(total_DDD = sum(DDD, na.rm = TRUE), .groups = "drop") %>%
-  left_join(population_df %>% select(region, population), by = "region") %>%
+  add_population_by_year(year_col = "year", region_col = "region") %>%
   mutate(DDDs_per_1000 = round(total_DDD / population * 1000, 2))
 
 Hospital_FP10_total_DDD_by_region_2024 <- New_Hospital_FP10_data %>%
@@ -207,7 +207,7 @@ Hospital_FP10_total_DDD_by_region_2024 <- New_Hospital_FP10_data %>%
     region = as.factor(region)
   ) %>%
   filter(!is.na(region)) %>%
-  left_join(population_df %>% select(region, population), by = "region") %>%
+  add_population_for_year(region_col = "region", population_year = 2024L) %>%
   mutate(DDDs_per_1000 = round(total_DDD_2024 / population * 1000, 2))
 
 coverage_data_fp10 <- nhs_regions_sf %>%

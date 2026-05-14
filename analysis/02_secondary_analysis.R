@@ -73,7 +73,7 @@ total_DDD_by_region_2024 <- Lithium_SCMD %>%
 
 secondary_lithium_df <- lithium_df %>%
   left_join(total_DDD_by_region_2024, by = "region") %>%
-  left_join(population_df %>% select(region, population), by = "region") %>%
+  add_population_for_year(region_col = "region", population_year = 2024L) %>%
   mutate(DDDs_per_1000 = round(total_DDD_2024 / population * 1000, 2))
 
 coverage_data_secondary <- nhs_regions_sf %>%
@@ -165,7 +165,7 @@ Secondary_DDD_by_year_region <- Lithium_SCMD %>%
   group_by(year, region) %>%
   summarise(total_DDD = sum(DDD, na.rm = TRUE)) %>%
   ungroup() %>%
-  left_join(population_df %>% select(region, population), by = "region") %>%
+  add_population_by_year(year_col = "year", region_col = "region") %>%
   mutate(DDDs_per_1000 = round(total_DDD / population * 1000, 2))
 
 seven_region_secondary <- Secondary_DDD_by_year_region %>%

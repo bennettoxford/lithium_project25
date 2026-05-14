@@ -1,0 +1,99 @@
+estimate_year,source_workbook,nhs_region,nhs_region_code,population
+2011,ons_pop_estimates_2011-2022.xlsx,East of England,E40000013,6117817
+2011,ons_pop_estimates_2011-2022.xlsx,London,E40000003,8204407
+2011,ons_pop_estimates_2011-2022.xlsx,Midlands,E40000011,10146115
+2011,ons_pop_estimates_2011-2022.xlsx,North East and Yorkshire,E40000012,8196421
+2011,ons_pop_estimates_2011-2022.xlsx,North West,E40000014,6744193
+2011,ons_pop_estimates_2011-2022.xlsx,South East,E40000005,8392150
+2011,ons_pop_estimates_2011-2022.xlsx,South West,E40000006,5306066
+2012,ons_pop_estimates_2011-2022.xlsx,East of England,E40000013,6174658
+2012,ons_pop_estimates_2011-2022.xlsx,London,E40000003,8320767
+2012,ons_pop_estimates_2011-2022.xlsx,Midlands,E40000011,10211027
+2012,ons_pop_estimates_2011-2022.xlsx,North East and Yorkshire,E40000012,8224145
+2012,ons_pop_estimates_2011-2022.xlsx,North West,E40000014,6767657
+2012,ons_pop_estimates_2011-2022.xlsx,South East,E40000005,8466993
+2012,ons_pop_estimates_2011-2022.xlsx,South West,E40000006,5341565
+2013,ons_pop_estimates_2011-2022.xlsx,East of England,E40000013,6235907
+2013,ons_pop_estimates_2011-2022.xlsx,London,E40000003,8438987
+2013,ons_pop_estimates_2011-2022.xlsx,Midlands,E40000011,10281513
+2013,ons_pop_estimates_2011-2022.xlsx,North East and Yorkshire,E40000012,8249813
+2013,ons_pop_estimates_2011-2022.xlsx,North West,E40000014,6793724
+2013,ons_pop_estimates_2011-2022.xlsx,South East,E40000005,8538763
+2013,ons_pop_estimates_2011-2022.xlsx,South West,E40000006,5379979
+2014,ons_pop_estimates_2011-2022.xlsx,East of England,E40000013,6310378
+2014,ons_pop_estimates_2011-2022.xlsx,London,E40000003,8547192
+2014,ons_pop_estimates_2011-2022.xlsx,Midlands,E40000011,10359511
+2014,ons_pop_estimates_2011-2022.xlsx,North East and Yorkshire,E40000012,8278669
+2014,ons_pop_estimates_2011-2022.xlsx,North West,E40000014,6829337
+2014,ons_pop_estimates_2011-2022.xlsx,South East,E40000005,8617988
+2014,ons_pop_estimates_2011-2022.xlsx,South West,E40000006,5427244
+2015,ons_pop_estimates_2011-2022.xlsx,East of England,E40000013,6374179
+2015,ons_pop_estimates_2011-2022.xlsx,London,E40000003,8659545
+2015,ons_pop_estimates_2011-2022.xlsx,Midlands,E40000011,10437927
+2015,ons_pop_estimates_2011-2022.xlsx,North East and Yorkshire,E40000012,8301110
+2015,ons_pop_estimates_2011-2022.xlsx,North West,E40000014,6870707
+2015,ons_pop_estimates_2011-2022.xlsx,South East,E40000005,8688265
+2015,ons_pop_estimates_2011-2022.xlsx,South West,E40000006,5476943
+2016,ons_pop_estimates_2011-2022.xlsx,East of England,E40000013,6441487
+2016,ons_pop_estimates_2011-2022.xlsx,London,E40000003,8743651
+2016,ons_pop_estimates_2011-2022.xlsx,Midlands,E40000011,10543863
+2016,ons_pop_estimates_2011-2022.xlsx,North East and Yorkshire,E40000012,8338384
+2016,ons_pop_estimates_2011-2022.xlsx,North West,E40000014,6922068
+2016,ons_pop_estimates_2011-2022.xlsx,South East,E40000005,8767028
+2016,ons_pop_estimates_2011-2022.xlsx,South West,E40000006,5532553
+2017,ons_pop_estimates_2011-2022.xlsx,East of England,E40000013,6485874
+2017,ons_pop_estimates_2011-2022.xlsx,London,E40000003,8776229
+2017,ons_pop_estimates_2011-2022.xlsx,Midlands,E40000011,10633398
+2017,ons_pop_estimates_2011-2022.xlsx,North East and Yorkshire,E40000012,8363457
+2017,ons_pop_estimates_2011-2022.xlsx,North West,E40000014,6963879
+2017,ons_pop_estimates_2011-2022.xlsx,South East,E40000005,8816332
+2017,ons_pop_estimates_2011-2022.xlsx,South West,E40000006,5580379
+2018,ons_pop_estimates_2011-2022.xlsx,East of England,E40000013,6522780
+2018,ons_pop_estimates_2011-2022.xlsx,London,E40000003,8833335
+2018,ons_pop_estimates_2011-2022.xlsx,Midlands,E40000011,10704479
+2018,ons_pop_estimates_2011-2022.xlsx,North East and Yorkshire,E40000012,8385257
+2018,ons_pop_estimates_2011-2022.xlsx,North West,E40000014,7004135
+2018,ons_pop_estimates_2011-2022.xlsx,South East,E40000005,8858941
+2018,ons_pop_estimates_2011-2022.xlsx,South West,E40000006,5615601
+2019,ons_pop_estimates_2011-2022.xlsx,East of England,E40000013,6562167
+2019,ons_pop_estimates_2011-2022.xlsx,London,E40000003,8889743
+2019,ons_pop_estimates_2011-2022.xlsx,Midlands,E40000011,10764978
+2019,ons_pop_estimates_2011-2022.xlsx,North East and Yorkshire,E40000012,8413528
+2019,ons_pop_estimates_2011-2022.xlsx,North West,E40000014,7051066
+2019,ons_pop_estimates_2011-2022.xlsx,South East,E40000005,8899771
+2019,ons_pop_estimates_2011-2022.xlsx,South West,E40000006,5648803
+2020,ons_pop_estimates_2011-2022.xlsx,East of England,E40000013,6588234
+2020,ons_pop_estimates_2011-2022.xlsx,London,E40000003,8867008
+2020,ons_pop_estimates_2011-2022.xlsx,Midlands,E40000011,10787393
+2020,ons_pop_estimates_2011-2022.xlsx,North East and Yorkshire,E40000012,8418150
+2020,ons_pop_estimates_2011-2022.xlsx,North West,E40000014,7068368
+2020,ons_pop_estimates_2011-2022.xlsx,South East,E40000005,8928630
+2020,ons_pop_estimates_2011-2022.xlsx,South West,E40000006,5668178
+2021,ons_pop_estimates_2011-2022.xlsx,East of England,E40000013,6645011
+2021,ons_pop_estimates_2011-2022.xlsx,London,E40000003,8804769
+2021,ons_pop_estimates_2011-2022.xlsx,Midlands,E40000011,10837785
+2021,ons_pop_estimates_2011-2022.xlsx,North East and Yorkshire,E40000012,8444104
+2021,ons_pop_estimates_2011-2022.xlsx,North West,E40000014,7109936
+2021,ons_pop_estimates_2011-2022.xlsx,South East,E40000005,8994117
+2021,ons_pop_estimates_2011-2022.xlsx,South West,E40000006,5719169
+2022,ons_pop_estimates_2022-2024.xlsx,East of England,E40000013,6702351
+2022,ons_pop_estimates_2022-2024.xlsx,London,E40000003,8871368
+2022,ons_pop_estimates_2022-2024.xlsx,Midlands,E40000011,10956530
+2022,ons_pop_estimates_2022-2024.xlsx,North East and Yorkshire,E40000012,8541881
+2022,ons_pop_estimates_2022-2024.xlsx,North West,E40000014,7210078
+2022,ons_pop_estimates_2022-2024.xlsx,South East,E40000005,9086407
+2022,ons_pop_estimates_2022-2024.xlsx,South West,E40000006,5775780
+2023,ons_pop_estimates_2022-2024.xlsx,East of England,E40000013,6800736
+2023,ons_pop_estimates_2022-2024.xlsx,London,E40000003,8999705
+2023,ons_pop_estimates_2022-2024.xlsx,Midlands,E40000011,11110198
+2023,ons_pop_estimates_2022-2024.xlsx,North East and Yorkshire,E40000012,8654398
+2023,ons_pop_estimates_2022-2024.xlsx,North West,E40000014,7315223
+2023,ons_pop_estimates_2022-2024.xlsx,South East,E40000005,9215038
+2023,ons_pop_estimates_2022-2024.xlsx,South West,E40000006,5837172
+2024,ons_pop_estimates_2022-2024.xlsx,East of England,E40000013,6889610
+2024,ons_pop_estimates_2022-2024.xlsx,London,E40000003,9089736
+2024,ons_pop_estimates_2022-2024.xlsx,Midlands,E40000011,11250368
+2024,ons_pop_estimates_2022-2024.xlsx,North East and Yorkshire,E40000012,8755647
+2024,ons_pop_estimates_2022-2024.xlsx,North West,E40000014,7415407
+2024,ons_pop_estimates_2022-2024.xlsx,South East,E40000005,9322323
+2024,ons_pop_estimates_2022-2024.xlsx,South West,E40000006,5897010
