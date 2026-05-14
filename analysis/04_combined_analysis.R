@@ -1,8 +1,9 @@
 source(here::here("analysis", "00_setup.R"))
 
-Primaryy_DDD_by_year <- read.csv(here(data_dir, "primary_DDD_by_year.csv"))
-Secondary_DDD_by_year <- read.csv(here(data_dir, "secondary_DDD_by_year.csv"))
-HospitalFP10_DDD_by_year <- read.csv(here(data_dir, "hospital_fp10_DDD_by_year.csv"))
+Primaryy_DDD_by_year <- read_ddd_by_year_export_csv(here(data_dir, "primary_DDD_by_year.csv"))
+Secondary_DDD_by_year <- read_ddd_by_year_export_csv(here(data_dir, "secondary_DDD_by_year.csv"))
+HospitalFP10_DDD_by_year <- read_ddd_by_year_export_csv(here(data_dir, "hospital_fp10_DDD_by_year.csv")) %>%
+  mutate(PERIOD = year)
 primary_lithium_df <- read.csv(here(data_dir, "primary_lithium_by_region.csv"))
 secondary_lithium_df <- read.csv(here(data_dir, "secondary_lithium_by_region.csv"))
 Hospital_FP10_total_DDD_by_region_2024 <- read.csv(here(data_dir, "hospital_fp10_DDD_by_region_2024.csv"))
@@ -307,7 +308,14 @@ Hospital_FP10_total_DDD_by_region_2024 <- Hospital_FP10_total_DDD_by_region_2024
   select(-region)
 
 combined_df_all <- bind_rows(primary_lithium_df, secondary_lithium_df, Hospital_FP10_total_DDD_by_region_2024) %>%
-  mutate(Source = factor(Source, levels = c("Primary", "Secondary", "Hospital FP10")))
+  mutate(Source = factor(Source, levels = c("Primary", "Secondary", "Hospital FP10"))) %>%
+  select(
+    Region,
+    population,
+    total_DDD_2024,
+    DDDs_per_1000,
+    Source
+  )
 
 stacked_bar_plot <- ggplot(combined_df_all, aes(x = Region, y = DDDs_per_1000, fill = Source)) +
   geom_col(color = "black") +
@@ -398,9 +406,56 @@ regional_trends_plot <- ggplot(summed_by_region, aes(x = year, y = DDDs_per_1000
   theme_lithium(base_size = 13)
 ggsave(here(plots_dir, "regional_ddd_trends.png"), regional_trends_plot, width = 10, height = 6, dpi = 300)
 
-write.csv(summed_data, here(data_dir, "national_DDD_summed.csv"), row.names = FALSE)
+national_ddd_summed_export <- summed_data %>%
+  transmute(
+    Year = year,
+    `Total DDDs` = format(
+      round(total_DDD_sum),
+      big.mark = ",",
+      scientific = FALSE,
+      trim = TRUE
+    )
+  )
+write.csv(national_ddd_summed_export, here(data_dir, "national_DDD_summed.csv"), row.names = FALSE)
 write.csv(summed_by_region, here(data_dir, "regional_DDD_trends.csv"), row.names = FALSE)
-write.csv(combined_df_all, here(data_dir, "combined_regional_by_care_2024.csv"), row.names = FALSE)
+
+combined_regional_by_care_for_export <- combined_df_all %>%
+  mutate(
+    population = if_else(
+      is.na(population),
+      NA_character_,
+      format(as.integer(round(population)), big.mark = ",", scientific = FALSE, trim = TRUE)
+    ),
+    total_DDD_2024 = if_else(
+      is.na(total_DDD_2024),
+      NA_character_,
+      format(round(total_DDD_2024, 2), big.mark = ",", nsmall = 2, scientific = FALSE, trim = TRUE)
+    ),
+    DDDs_per_1000 = if_else(
+      is.na(DDDs_per_1000),
+      NA_character_,
+      format(round(DDDs_per_1000, 2), big.mark = ",", nsmall = 2, scientific = FALSE, trim = TRUE)
+    )
+  )
+
+write.csv(
+  combined_regional_by_care_for_export,
+  here(data_dir, "combined_regional_by_care_2024.csv"),
+  row.names = FALSE,
+  na = ""
+)
+combined_regional_by_care_for_export %>%
+  filter(Source == "Primary") %>%
+  select(-Source) %>%
+  write.csv(here(data_dir, "combined_regional_by_care_2024_primary.csv"), row.names = FALSE, na = "")
+combined_regional_by_care_for_export %>%
+  filter(Source == "Secondary") %>%
+  select(-Source) %>%
+  write.csv(here(data_dir, "combined_regional_by_care_2024_secondary.csv"), row.names = FALSE, na = "")
+combined_regional_by_care_for_export %>%
+  filter(Source == "Hospital FP10") %>%
+  select(-Source) %>%
+  write.csv(here(data_dir, "combined_regional_by_care_2024_fp10.csv"), row.names = FALSE, na = "")
 write.csv(
   lithium_products_DDD_summary,
   here(data_dir, "lithium_products_DDD_summary.csv"),

@@ -1,22 +1,22 @@
-"Region","total_DDD","total_DDD_2024","population","DDDs_per_1000","Source","region","name"
-"East of England",13697698.1756204,1207062.73799868,6401418,188.56,"Primary",NA,NA
-"London",15184622.7868623,1497900.54447895,8869043,168.89,"Primary",NA,NA
-"Midlands",19740715.9492787,1699712.43283461,10951858,155.2,"Primary",NA,NA
-"North East And Yorkshire",16690147.1600848,1408070.03717996,8220282,171.29,"Primary",NA,NA
-"North West",16615282.353014,1384311.48247759,7515718,184.19,"Primary",NA,NA
-"South East",19028894.7036369,1694795.40282298,9387286,180.54,"Primary",NA,NA
-"South West",12193033.0770296,1096289.44169305,5766937,190.1,"Primary",NA,NA
-"East of England",281061.386323817,48386.4973726991,6401418,7.56,"Secondary","East Of England",NA
-"London",1173080.06384219,227666.731385391,8869043,25.67,"Secondary","London",NA
-"Midlands",1130304.47405777,214674.400011239,10951858,19.6,"Secondary","Midlands",NA
-"North East And Yorkshire",614624.653484755,107095.950858145,8220282,13.03,"Secondary","North East And Yorkshire",NA
-"North West",664240.421461986,118021.946658653,7515718,15.7,"Secondary","North West",NA
-"South East",623867.513416431,109345.962388509,9387286,11.65,"Secondary","South East",NA
-"South West",403734.096432776,73110.7186094113,5766937,12.68,"Secondary","South West",NA
-"East of England",NA,14518.5396508279,6401418,2.27,"Hospital FP10",NA,"UKH"
-"London",NA,37030.0635457163,8869043,4.18,"Hospital FP10",NA,"UKF"
-"Midlands",NA,49873.7446364291,10951858,4.55,"Hospital FP10",NA,"UKG"
-"North East And Yorkshire",NA,54723.9587832973,8220282,6.66,"Hospital FP10",NA,"UKE"
-"North West",NA,36126.7981425486,7515718,4.81,"Hospital FP10",NA,"UKD"
-"South East",NA,41751.3689668826,9387286,4.45,"Hospital FP10",NA,"UKJ"
-"South West",NA,17809.6882649388,5766937,3.09,"Hospital FP10",NA,"UKK"
+"Region","population","total_DDD_2024","DDDs_per_1000","Source"
+"East of England","6,401,418","1,207,062.74","188.56","Primary"
+"London","8,869,043","1,497,900.54","168.89","Primary"
+"Midlands","10,951,858","1,699,712.43","155.20","Primary"
+"North East And Yorkshire","8,220,282","1,408,070.04","171.29","Primary"
+"North West","7,515,718","1,384,311.48","184.19","Primary"
+"South East","9,387,286","1,694,795.40","180.54","Primary"
+"South West","5,766,937","1,096,289.44","190.10","Primary"
+"East of England","6,401,418","48,386.50","7.56","Secondary"
+"London","8,869,043","227,666.73","25.67","Secondary"
+"Midlands","10,951,858","214,674.40","19.60","Secondary"
+"North East And Yorkshire","8,220,282","107,095.95","13.03","Secondary"
+"North West","7,515,718","118,021.95","15.70","Secondary"
+"South East","9,387,286","109,345.96","11.65","Secondary"
+"South West","5,766,937","73,110.72","12.68","Secondary"
+"East of England","6,401,418","14,518.54","2.27","Hospital FP10"
+"London","8,869,043","37,030.06","4.18","Hospital FP10"
+"Midlands","10,951,858","49,873.74","4.55","Hospital FP10"
+"North East And Yorkshire","8,220,282","54,723.96","6.66","Hospital FP10"
+"North West","7,515,718","36,126.80","4.81","Hospital FP10"
+"South East","9,387,286","41,751.37","4.45","Hospital FP10"
+"South West","5,766,937","17,809.69","3.09","Hospital FP10"

@@ -189,7 +189,11 @@ seven_region_secondary <- Secondary_DDD_by_year_region %>%
   )
 ggsave(here(plots_dir, "secondary_seven_region_trends.png"), seven_region_secondary, width = 10, height = 6, dpi = 300)
 
-write.csv(Secondary_DDD_by_year, here(data_dir, "secondary_DDD_by_year.csv"), row.names = FALSE)
+write.csv(
+  format_ddd_by_year_for_export(Secondary_DDD_by_year, "year"),
+  here(data_dir, "secondary_DDD_by_year.csv"),
+  row.names = FALSE
+)
 write.csv(secondary_product_DDD, here(data_dir, "secondary_product_DDD.csv"), row.names = FALSE)
 write.csv(secondary_lithium_df, here(data_dir, "secondary_lithium_by_region.csv"), row.names = FALSE)
 write.csv(Secondary_DDD_by_year_region, here(data_dir, "secondary_DDD_by_year_region.csv"), row.names = FALSE)
