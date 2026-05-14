@@ -313,7 +313,6 @@ combined_df_all <- bind_rows(primary_lithium_df, secondary_lithium_df, Hospital_
     Region,
     population,
     total_DDD_2024,
-    total_DDD,
     DDDs_per_1000,
     Source
   )
@@ -431,11 +430,6 @@ combined_regional_by_care_for_export <- combined_df_all %>%
       is.na(total_DDD_2024),
       NA_character_,
       format(round(total_DDD_2024, 2), big.mark = ",", nsmall = 2, scientific = FALSE, trim = TRUE)
-    ),
-    total_DDD = if_else(
-      is.na(total_DDD),
-      NA_character_,
-      format(round(total_DDD, 2), big.mark = ",", nsmall = 2, scientific = FALSE, trim = TRUE)
     ),
     DDDs_per_1000 = if_else(
       is.na(DDDs_per_1000),
