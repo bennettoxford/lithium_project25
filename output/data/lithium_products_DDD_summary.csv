@@ -1,42 +1,30 @@
-"source","product_code","product_name","first_data_year","total_DDD_first_year","last_data_year","total_DDD_last_year","total_DDD"
-"Hospital FP10","0402030K0BFAAAF","Lithium carbonate 400mg modified-release tablets",2017,81107.3614110871,2024,133151.097912167,753504.769618431
-"Hospital FP10","0402030K0AAAFAF","Lithium carbonate 400mg modified-release tablets",2017,47362.7609791217,2024,47701.5838732901,392343.862491001
-"Hospital FP10","0402030K0BFABAI","Lithium carbonate 200mg modified-release tablets",2017,32198.2991360691,2024,47509.224262059,299783.342332613
-"Hospital FP10","0402030K0AAAIAI","Lithium carbonate 200mg modified-release tablets",2017,17344.7624190065,2024,16984.5662347012,142088.507919366
-"Hospital FP10","0402030K0AAACAC","Lithium carbonate 250mg tablets",2017,2250.38246940245,2024,3045.69384449244,22600.2857271418
-"Hospital FP10","0402030K0BDAAAG","Lithium carbonate 450mg modified-release tablets",2017,177.173326133909,2024,1094.93115550756,5018.05480561555
-"Hospital FP10","0402030K0AAAGAG","Lithium carbonate 450mg modified-release tablets",2017,209.064524838013,2024,847.394708423326,4550.82343412527
-"Hospital FP10","0402030P0AAAIAI","Lithium citrate 520mg/5ml oral solution sugar free",2017,651.825,2024,823.77,4233.375
-"Hospital FP10","0402030P0BCAAAI","Lithium citrate 520mg/5ml oral solution sugar free",2017,1092.105,2024,0,3357.18
-"Hospital FP10","0402030K0BBABAF","Lithium carbonate 400mg modified-release tablets",2017,937.27501799856,2024,0,3134.44924406047
-"Hospital FP10","0402030P0AAALAL","Lithium citrate 509mg/5ml oral solution",2017,318.78,2024,479.43,2468.745
-"Hospital FP10","0402030P0AAAKAK","Lithium citrate 1.018g/5ml oral solution",2017,243.09,2024,34.02,1111.95
-"Hospital FP10","0402030P0BDAAAL","Lithium citrate 509mg/5ml oral solution",2017,0,2024,118.35,846.81
-"Hospital FP10","0402030K0BBAAAC","Lithium carbonate 250mg tablets",2017,316.662167026638,2024,0,453.901187904968
-"Hospital FP10","0402030P0BDABAK","Lithium citrate 1.018g/5ml oral solution",2017,0,2024,44.1,221.85
-"Hospital FP10","0402030K0AAAPAP","Lithium carbonate 200mg/5ml oral suspension",2017,0,2024,0,0
-"Primary care","0402030K0BFAAAF","Lithium carbonate 400mg modified-release tablets",2015,7403981.73146148,2024,6169746.67026638,67724707.9733621
-"Primary care","0402030K0BFABAI","Lithium carbonate 200mg modified-release tablets",2015,2424810.56515479,2024,2514931.83045356,25750557.5053996
-"Primary care","0402030K0AAAFAF","Lithium carbonate 400mg modified-release tablets",2015,1359532.93736501,2024,424016.828653708,8410319.02447804
-"Primary care","0402030K0BBABAF","Lithium carbonate 400mg modified-release tablets",2015,300676.745860331,2024,321057.86537077,3233047.1562275
-"Primary care","0402030K0AAAIAI","Lithium carbonate 200mg modified-release tablets",2015,445517.908567315,2024,167694.834413247,3017178.27573794
-"Primary care","0402030K0AAACAC","Lithium carbonate 250mg tablets",2015,102240.539506839,2024,143838.305435565,1830203.5524658
-"Primary care","0402030P0BCAAAI","Lithium citrate 520mg/5ml oral solution sugar free",2015,120589.644660379,2024,109501.066971516,1133985.90073354
-"Primary care","0402030K0BDAAAG","Lithium carbonate 450mg modified-release tablets",2015,101749.122570194,2024,67169.4451943844,803471.92224622
-"Primary care","0402030K0AAAGAG","Lithium carbonate 450mg modified-release tablets",2015,43801.2958963283,2024,21788.2694384449,299074.142818575
-"Primary care","0402030K0BBAAAC","Lithium carbonate 250mg tablets",2015,247379.522138229,2024,0,288708.434575234
-"Primary care","0402030P0AAAIAI","Lithium citrate 520mg/5ml oral solution sugar free",2015,38161.1984376488,2024,12894.7318281414,228315.890254358
-"Primary care","0402030P0BDAAAL","Lithium citrate 509mg/5ml oral solution",2015,14140.0001190816,2024,19101.2590502048,192574.212394017
-"Primary care","0402030P0AAALAL","Lithium citrate 509mg/5ml oral solution",2015,14566.0457749833,2024,5934.57535486329,109023.865032866
-"Primary care","0402030P0BDABAK","Lithium citrate 1.018g/5ml oral solution",2015,6337.64885205297,2024,8164.99618938744,81825.6170810708
-"Primary care","0402030P0AAAKAK","Lithium citrate 1.018g/5ml oral solution",2015,7742.64789939983,2024,2214.78279508431,42398.4828998762
-"Primary care","0402030K0AAAPAP","Lithium carbonate 200mg/5ml oral suspension",2015,292.47660187185,2024,77.1688264938805,2550.39596832253
-"Primary care","0402030K0BGAAAF","Lithium carbonate 400mg modified-release tablets",2015,1912.34701223902,2024,9.44924406047516,2451.85385169186
-"Primary care","0402030P0AAAJAJ","Lithium citrate 10.8mmol/5ml oral solution sugar free",2015,0,2024,0,0
-"Secondary care","39110111000001104","Lithium carbonate 400mg modified-release tablets",2019,571839.00287977,2024,628060.655147588,3430973.78509719
-"Secondary care","39110011000001104","Lithium carbonate 200mg modified-release tablets",2019,182833.535817135,2024,207769.303455724,1102134.77321814
-"Secondary care","36040311000001104","Lithium citrate 520mg/5ml oral solution sugar free",2019,39927.7245561921,2024,50367.575500389,262569.070408091
-"Secondary care","42295911000001104","Lithium citrate 509mg/5ml oral solution",2019,8285.64988683782,2024,3840.44981964778,37269.022119669
-"Secondary care","42295711000001104","Lithium carbonate 250mg tablets",2019,3754.10592152628,2024,3830.59980201584,27760.5291576674
-"Secondary care","42295811000001112","Lithium citrate 1.018g/5ml oral solution",2019,3496.02252634557,2024,3337.17377466582,19932.4133602093
-"Secondary care","36040211000001104","Lithium carbonate 450mg modified-release tablets",2019,2012.68898488121,2024,1096.44978401728,10273.0156587473
+Primary care/community prescribing (FP10),BNF name (BNF code),Total DDDs,,,
+,,Primary care,,Community prescribing (FP10),
+,,2015,2024,2017,2024
+,Lithium carbonate 400mg modified-release tablets (0402030K0BFAAAF),"7,403,982","6,169,747","81,107","133,151"
+,Lithium carbonate 200mg modified-release tablets (0402030K0BFABAI),"2,424,811","2,514,932","32,198","47,509"
+,Lithium carbonate 400mg modified-release tablets (0402030K0AAAFAF),"1,359,533","424,017","47,363","47,702"
+,Lithium carbonate 400mg modified-release tablets (0402030K0BBABAF),"300,677","321,058",937,0
+,Lithium carbonate 200mg modified-release tablets (0402030K0AAAIAI),"445,518","167,695","17,345","16,985"
+,Lithium carbonate 250mg tablets (0402030K0AAACAC),"102,241","143,838","2,250","3,046"
+,Lithium citrate 520mg/5ml oral solution sugar free (0402030P0BCAAAI),"120,590","109,501","1,092",0
+,Lithium carbonate 450mg modified-release tablets (0402030K0BDAAAG),"101,749","67,169",177,"1,095"
+,Lithium carbonate 450mg modified-release tablets (0402030K0AAAGAG),"43,801","21,788",209,847
+,Lithium carbonate 250mg tablets (0402030K0BBAAAC),"247,380",0,317,0
+,Lithium citrate 520mg/5ml oral solution sugar free (0402030P0AAAIAI),"38,161","12,895",652,824
+,Lithium citrate 509mg/5ml oral solution (0402030P0BDAAAL),"14,140","19,101",0,118
+,Lithium citrate 509mg/5ml oral solution (0402030P0AAALAL),"14,566","5,935",319,479
+,Lithium citrate 1.018g/5ml oral solution (0402030P0BDABAK),"6,338","8,165",0,44
+,Lithium citrate 1.018g/5ml oral solution (0402030P0AAAKAK),"7,743","2,215",243,34
+,Lithium carbonate 200mg/5ml oral suspension (0402030K0AAAPAP),292,77,0,0
+,Lithium carbonate 400mg modified-release tablets (0402030K0BGAAAF),"1,912",9,0,0
+,Lithium citrate 10.8mmol/5ml oral solution sugar free (0402030P0AAAJAJ),0,0,0,0
+Secondary care,,,,,
+,,2019,,2024,
+,Lithium carbonate 400mg modified-release tablets (39110111000001104),"571,839",,"628,061",
+,Lithium carbonate 200mg modified-release tablets (39110011000001104),"182,834",,"207,769",
+,Lithium citrate 520mg/5ml oral solution sugar free (36040311000001104),"39,928",,"50,368",
+,Lithium citrate 509mg/5ml oral solution (42295911000001104),"8,286",,"3,840",
+,Lithium carbonate 250mg tablets (42295711000001104),"3,754",,"3,831",
+,Lithium citrate 1.018g/5ml oral solution (42295811000001112),"3,496",,"3,337",
+,Lithium carbonate 450mg modified-release tablets (36040211000001104),"2,013",,"1,096",

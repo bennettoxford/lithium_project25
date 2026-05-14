@@ -82,23 +82,127 @@ lithium_product_ddd_summary_from_by_year <- function(df, source_label) {
     )
 }
 
-lithium_products_DDD_summary <- bind_rows(
-  lithium_product_ddd_summary_from_by_year(primary_product_DDD_by_year, "Primary care"),
-  lithium_product_ddd_summary_from_by_year(secondary_product_DDD_by_year, "Secondary care"),
-  lithium_product_ddd_summary_from_by_year(hospital_fp10_product_DDD_by_year, "Hospital FP10")
+ddd_by_product_in_year <- function(df, y) {
+  df %>%
+    mutate(year_int = as.integer(year)) %>%
+    filter(year_int == y) %>%
+    group_by(product_code) %>%
+    summarise(ddd = sum(total_DDD, na.rm = TRUE), .groups = "drop") %>%
+    mutate(product_code = as.character(product_code))
+}
+
+primary_care_first_yr <- min(as.integer(primary_product_DDD_by_year$year), na.rm = TRUE)
+primary_care_last_yr <- max(as.integer(primary_product_DDD_by_year$year), na.rm = TRUE)
+fp10_first_yr <- min(as.integer(hospital_fp10_product_DDD_by_year$year), na.rm = TRUE)
+fp10_last_yr <- max(as.integer(hospital_fp10_product_DDD_by_year$year), na.rm = TRUE)
+
+prim_first <- ddd_by_product_in_year(primary_product_DDD_by_year, primary_care_first_yr)
+fp10_first <- ddd_by_product_in_year(hospital_fp10_product_DDD_by_year, fp10_first_yr)
+prim_last <- ddd_by_product_in_year(primary_product_DDD_by_year, primary_care_last_yr)
+fp10_last <- ddd_by_product_in_year(hospital_fp10_product_DDD_by_year, fp10_last_yr)
+
+format_ddd_int_comma <- function(x) {
+  ifelse(
+    is.na(x),
+    NA_character_,
+    format(as.integer(round(x)), big.mark = ",", scientific = FALSE, trim = TRUE)
+  )
+}
+
+secondary_summary_for_table <- lithium_product_ddd_summary_from_by_year(
+  secondary_product_DDD_by_year,
+  "Secondary care"
 ) %>%
   left_join(primary_care_product_lookup, by = "product_code") %>%
   mutate(product_name = if_else(
-    source %in% c("Primary care", "Hospital FP10") & !is.na(generic_product_name),
+    !is.na(generic_product_name),
+    generic_product_name,
+    product_name
+  ))
+
+secondary_earliest_yr <- as.integer(secondary_summary_for_table$first_data_year[1L])
+secondary_latest_yr <- as.integer(secondary_summary_for_table$last_data_year[1L])
+
+lithium_primary_fp10_summary_rows <- primary_fp10_product_DDD %>%
+  mutate(
+    product_code = as.character(product_code),
+    total_DDD_all_periods = replace_na(total_DDD_primary_care, 0) + replace_na(total_DDD_fp10, 0)
+  ) %>%
+  left_join(prim_first %>% rename(prim_first_ddd = ddd), by = "product_code") %>%
+  left_join(fp10_first %>% rename(fp10_first_ddd = ddd), by = "product_code") %>%
+  left_join(prim_last %>% rename(prim_last_ddd = ddd), by = "product_code") %>%
+  left_join(fp10_last %>% rename(fp10_last_ddd = ddd), by = "product_code") %>%
+  left_join(primary_care_product_lookup, by = "product_code") %>%
+  mutate(product_name = if_else(
+    !is.na(generic_product_name),
     generic_product_name,
     product_name
   )) %>%
-  select(
-    source, product_code, product_name,
-    first_data_year, total_DDD_first_year, last_data_year, total_DDD_last_year,
-    total_DDD
-  ) %>%
-  arrange(source, desc(total_DDD), product_name)
+  arrange(desc(total_DDD_all_periods), product_name) %>%
+  transmute(
+    V1 = NA_character_,
+    V2 = paste0(product_name, " (", product_code, ")"),
+    V3 = format_ddd_int_comma(replace_na(prim_first_ddd, 0)),
+    V4 = format_ddd_int_comma(replace_na(prim_last_ddd, 0)),
+    V5 = format_ddd_int_comma(replace_na(fp10_first_ddd, 0)),
+    V6 = format_ddd_int_comma(replace_na(fp10_last_ddd, 0))
+  )
+
+secondary_summary_rows <- secondary_summary_for_table %>%
+  arrange(desc(total_DDD), product_name) %>%
+  transmute(
+    V1 = NA_character_,
+    V2 = paste0(product_name, " (", as.character(product_code), ")"),
+    V3 = format_ddd_int_comma(total_DDD_first_year),
+    V4 = NA_character_,
+    V5 = format_ddd_int_comma(total_DDD_last_year),
+    V6 = NA_character_
+  )
+
+lithium_products_DDD_summary_csv <- bind_rows(
+  as_tibble(list(
+    V1 = "Primary care/community prescribing (FP10)",
+    V2 = "BNF name (BNF code)",
+    V3 = "Total DDDs",
+    V4 = NA_character_,
+    V5 = NA_character_,
+    V6 = NA_character_
+  )),
+  as_tibble(list(
+    V1 = NA_character_,
+    V2 = NA_character_,
+    V3 = "Primary care",
+    V4 = NA_character_,
+    V5 = "Community prescribing (FP10)",
+    V6 = NA_character_
+  )),
+  as_tibble(list(
+    V1 = NA_character_,
+    V2 = NA_character_,
+    V3 = as.character(primary_care_first_yr),
+    V4 = as.character(primary_care_last_yr),
+    V5 = as.character(fp10_first_yr),
+    V6 = as.character(fp10_last_yr)
+  )),
+  lithium_primary_fp10_summary_rows,
+  as_tibble(list(
+    V1 = "Secondary care",
+    V2 = NA_character_,
+    V3 = NA_character_,
+    V4 = NA_character_,
+    V5 = NA_character_,
+    V6 = NA_character_
+  )),
+  as_tibble(list(
+    V1 = NA_character_,
+    V2 = NA_character_,
+    V3 = as.character(secondary_earliest_yr),
+    V4 = NA_character_,
+    V5 = as.character(secondary_latest_yr),
+    V6 = NA_character_
+  )),
+  secondary_summary_rows
+)
 
 # Combined primary + secondary trends
 primary_line <- ggplot(Primaryy_DDD_by_year, aes(x = as.integer(year), y = total_DDD / 1e6)) +
@@ -492,10 +596,11 @@ combined_regional_by_care_for_export %>%
   filter(Source == "Hospital FP10") %>%
   select(-Source) %>%
   write.csv(here(data_dir, "combined_regional_by_care_2024_fp10.csv"), row.names = FALSE, na = "")
-write.csv(
-  lithium_products_DDD_summary,
+data.table::fwrite(
+  lithium_products_DDD_summary_csv,
   here(data_dir, "lithium_products_DDD_summary.csv"),
-  row.names = FALSE
+  col.names = FALSE,
+  na = ""
 )
 write.csv(primary_fp10_product_DDD, here(data_dir, "primary_fp10_product_DDD.csv"), row.names = FALSE)
 message("Combined analysis complete. Outputs saved to ", output_dir)
