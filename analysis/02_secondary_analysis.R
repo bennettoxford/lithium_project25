@@ -21,6 +21,10 @@ secondary_product_DDD <- Lithium_SCMD %>%
   summarise(total_DDD = sum(DDD, na.rm = TRUE), .groups = "drop") %>%
   arrange(desc(total_DDD), product_name)
 
+secondary_product_DDD_by_year <- Lithium_SCMD %>%
+  group_by(year, product_code = `VMP Code`, product_name = `VMP Name`) %>%
+  summarise(total_DDD = sum(DDD, na.rm = TRUE), .groups = "drop")
+
 secondary_line <- ggplot(Secondary_DDD_by_year, aes(x = as.integer(year), y = total_DDD / 1e6)) +
   geom_line(linewidth = 1.2, color = colour_care_secondary) +
   geom_point(size = 3, color = colour_care_secondary) +
@@ -195,6 +199,7 @@ write.csv(
   row.names = FALSE
 )
 write.csv(secondary_product_DDD, here(data_dir, "secondary_product_DDD.csv"), row.names = FALSE)
+write.csv(secondary_product_DDD_by_year, here(data_dir, "secondary_product_DDD_by_year.csv"), row.names = FALSE)
 write.csv(secondary_lithium_df, here(data_dir, "secondary_lithium_by_region.csv"), row.names = FALSE)
 write.csv(Secondary_DDD_by_year_region, here(data_dir, "secondary_DDD_by_year_region.csv"), row.names = FALSE)
 message("Secondary analysis complete. Outputs saved to ", output_dir)

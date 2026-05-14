@@ -82,6 +82,11 @@ primary_product_DDD <- PRIMARYCARE_dataset %>%
   summarise(total_DDD = sum(DDD, na.rm = TRUE), .groups = "drop") %>%
   arrange(desc(total_DDD), product_name)
 
+primary_product_DDD_by_year <- PRIMARYCARE_dataset %>%
+  filter(as.integer(year) <= 2024L) %>%
+  group_by(year, product_code = bnf_code, product_name = bnf_name) %>%
+  summarise(total_DDD = sum(DDD, na.rm = TRUE), .groups = "drop")
+
 primary_line <- ggplot(Primaryy_DDD_by_year, aes(x = as.integer(year), y = total_DDD / 1e6)) +
   geom_line(linewidth = 1.2, color = colour_care_primary) +
   geom_point(size = 3, color = colour_care_primary) +
@@ -236,6 +241,7 @@ write.csv(
   row.names = FALSE
 )
 write.csv(primary_product_DDD, here(data_dir, "primary_product_DDD.csv"), row.names = FALSE)
+write.csv(primary_product_DDD_by_year, here(data_dir, "primary_product_DDD_by_year.csv"), row.names = FALSE)
 write.csv(primary_lithium_df, here(data_dir, "primary_lithium_by_region.csv"), row.names = FALSE)
 write.csv(Primary_DDD_by_year_region, here(data_dir, "primary_DDD_by_year_region.csv"), row.names = FALSE)
 message("Primary analysis complete. Outputs saved to ", output_dir)
