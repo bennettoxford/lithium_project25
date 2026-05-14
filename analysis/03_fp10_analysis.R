@@ -164,27 +164,18 @@ hospital_fp10_product_DDD <- New_Hospital_FP10_data %>%
   summarise(total_DDD = sum(DDD, na.rm = TRUE), .groups = "drop") %>%
   arrange(desc(total_DDD), product_name)
 
-max_value <- max(HospitalFP10_DDD_by_year$total_DDD) / 1e6
 hospitalFP10_line <- ggplot(HospitalFP10_DDD_by_year,
                             aes(x = as.integer(PERIOD), y = total_DDD / 1e6)) +
-  geom_line(linewidth = 1.2, color = "#2E8B57") +
-  geom_point(size = 3, color = "#FFD700") +
-  labs(
-    title = "Secondary care (Hospital FP10): Lithium Prescribing Trends Over Time",
-    subtitle = "Total Daily Defined Doses (DDD) issued per year (2017–2024)",
-    x = "Year",
-    y = "Total DDD (millions)"
-  ) +
-  scale_y_continuous(
-    limits = c(0, max_value * 1.1),
-    expand = c(0, 0),
+  geom_line(linewidth = 1.2, color = colour_care_fp10) +
+  geom_point(size = 3, color = colour_care_fp10) +
+  labs(x = "Year", y = "Total DDD (millions)") +
+  scale_y_to_next_tick(
+    values = HospitalFP10_DDD_by_year$total_DDD / 1e6,
     labels = scales::label_number(accuracy = 0.01)
   ) +
-  scale_x_continuous(breaks = 2017:2024) +
-  theme_minimal(base_size = 13) +
+  scale_x_continuous(breaks = 2017:2024, expand = expansion(mult = c(0.02, 0.02))) +
+  theme_lithium(base_size = 13) +
   theme(
-    plot.title = element_text(face = "bold", size = 16),
-    plot.subtitle = element_text(size = 12),
     axis.title.x = element_text(face = "bold"),
     axis.title.y = element_text(face = "bold")
   )
@@ -195,7 +186,7 @@ HospitalFP10_DDD_by_year_region <- Hospital_FP10_data %>%
   group_by(year, region) %>%
   summarise(total_DDD = sum(DDD, na.rm = TRUE), .groups = "drop") %>%
   left_join(population_df %>% select(region, population), by = "region") %>%
-  mutate(DDD_population = total_DDD / population)
+  mutate(DDDs_per_1000 = round(total_DDD / population * 1000, 2))
 
 Hospital_FP10_total_DDD_by_region_2024 <- New_Hospital_FP10_data %>%
   mutate(PERIOD_date = as.Date(PERIOD)) %>%
@@ -217,63 +208,88 @@ Hospital_FP10_total_DDD_by_region_2024 <- New_Hospital_FP10_data %>%
   ) %>%
   filter(!is.na(region)) %>%
   left_join(population_df %>% select(region, population), by = "region") %>%
-  mutate(`DDD/population` = total_DDD_2024 / population)
+  mutate(DDDs_per_1000 = round(total_DDD_2024 / population * 1000, 2))
 
 coverage_data_fp10 <- nhs_regions_sf %>%
   left_join(Hospital_FP10_total_DDD_by_region_2024, by = "region")
-unique_values <- sort(unique(coverage_data_fp10$`DDD/population`))
-breaks <- c(0, unique_values, max(unique_values, na.rm = TRUE) + 10)
-labels <- scales::label_number(breaks)
 
-FP10_coverage_plot <- coverage_data_fp10 %>%
-  ggplot() +
-  geom_sf(aes(fill = `DDD/population`), colour = "black", linewidth = 0.8) +
-  geom_sf_text(aes(label = region), colour = "white", size = 3) +
+fp10_label_d <- coverage_map_label_layers_data(coverage_data_fp10, "region")
+fp10_label_pts <- dplyr::bind_rows(fp10_label_d$other, fp10_label_d$london_txt)
+fp10_label_halo <- coverage_map_label_halo_rect(fp10_label_pts)
+
+FP10_coverage_plot <- ggplot() +
+  geom_sf(data = coverage_data_fp10, aes(fill = DDDs_per_1000), colour = "black", linewidth = 0.8) +
+  geom_segment(
+    data = fp10_label_d$london_seg,
+    aes(x = lon, y = lat, xend = lon_end, yend = lat_end),
+    inherit.aes = FALSE,
+    colour = "black",
+    linewidth = coverage_map_leader_linewidth,
+    lineend = "round"
+  ) +
+  geom_polygon(
+    data = fp10_label_halo,
+    aes(x = lon, y = lat, group = group),
+    inherit.aes = FALSE,
+    fill = "white",
+    colour = "grey25",
+    linewidth = 0.35
+  ) +
+  geom_text(
+    data = fp10_label_pts,
+    aes(x = lon, y = lat, label = label),
+    inherit.aes = FALSE,
+    colour = "black",
+    fontface = "bold",
+    size = coverage_map_value_label_size
+  ) +
   scale_fill_gradientn(
-    colors = c("#ffd13a", "#ff7c00", "#f20c51"),
-    breaks = breaks,
-    labels = labels,
-    na.value = "grey90"
+    colors = colour_care_fp10_map,
+    breaks = function(lims) c(lims[1], lims[2]),
+    labels = coverage_map_colourbar_break_labels,
+    na.value = "grey90",
+    guide = guide_colourbar(
+      title = "DDDs per 1,000 population",
+      title.position = "top",
+      barheight = unit(3.2, "cm"),
+      barwidth = unit(0.55, "cm"),
+      ticks = FALSE,
+      reverse = TRUE,
+      frame.colour = "black",
+      frame.linewidth = 0.35
+    )
   ) +
-  theme_minimal() +
+  theme_lithium() +
   theme(
-    legend.position = c(0.2, 0.5),
-    legend.text = element_text(hjust = 1),
-    panel.background = element_rect(fill = "white"),
-    plot.title = element_text(face = "bold", size = 16)
+    legend.position = coverage_map_legend_position,
+    legend.text = element_text(size = coverage_map_legend_text_size),
+    legend.title = element_text(size = coverage_map_legend_title_size),
+    panel.border = element_blank(),
+    panel.background = element_rect(fill = "white", colour = NA),
+    plot.background = element_rect(fill = "white", colour = NA),
+    axis.line = element_blank(),
+    axis.ticks = element_blank(),
+    axis.text = element_blank(),
+    plot.margin = margin(5.5, coverage_map_plot_margin_right, 5.5, 5.5)
   ) +
-  guides(fill = guide_legend(title = "Lithium (DDD)/ population")) +
-  coord_sf(datum = NA) +
-  labs(
-    title = "Hospital FP10 data",
-    subtitle = "Total Daily Defined Dose of Lithium in 2024 regionally, per population estimates"
-  ) +
+  coord_sf(datum = NA, clip = "off") +
   xlab("") +
   ylab("")
 ggsave(here(plots_dir, "fp10_coverage_map.png"), FP10_coverage_plot, width = 8, height = 6, dpi = 300)
 
-max_y <- max(Hospital_FP10_total_DDD_by_region_2024$`DDD/population`, na.rm = TRUE)
-buffer <- max_y * 0.1
-FP10hist <- ggplot(Hospital_FP10_total_DDD_by_region_2024, aes(x = region, y = `DDD/population`)) +
-  geom_col(fill = "#FFD700", color = "#FFD700") +
-  geom_text(aes(label = round(`DDD/population`, 3)), vjust = -0.3, size = 3.5) +
-  theme_minimal() +
+FP10hist <- ggplot(Hospital_FP10_total_DDD_by_region_2024, aes(x = region, y = DDDs_per_1000)) +
+  geom_col(fill = colour_care_fp10, color = colour_care_fp10) +
+  geom_text(aes(label = sprintf("%.2f", DDDs_per_1000)), vjust = -0.3, size = 3.5) +
+  theme_lithium() +
   xlab("Region") +
-  ylab("Lithium usage (Total DDD for 2024) / population") +
-  labs(
-    title = "Regional Lithium Use in Secondary Care, FP10 hopsital data",
-    subtitle = "Average DDDs per Person (2024)"
-  ) +
-  scale_y_continuous(
-    limits = c(0, max_y + buffer),
-    breaks = scales::pretty_breaks(n = 5),
-    labels = scales::number_format(accuracy = 0.001)
+  ylab("DDDs per 1,000 population") +
+  scale_y_to_next_tick(
+    values = Hospital_FP10_total_DDD_by_region_2024$DDDs_per_1000,
+    labels = scales::number_format(accuracy = 0.01)
   ) +
   theme(
-    axis.text.x = element_text(angle = 45, hjust = 1, size = 10),
-    axis.text.y = element_text(size = 10),
-    plot.title = element_text(size = 12, face = "bold"),
-    plot.subtitle = element_text(size = 10, face = "italic"),
+    axis.text.x = element_text(angle = 45, hjust = 1, size = axis_tick_label_size),
+    axis.text.y = element_text(size = axis_tick_label_size),
     plot.margin = margin(10, 10, 10, 10)
   )
 ggsave(here(plots_dir, "fp10_hist_ddd_pop.png"), FP10hist, width = 8, height = 5, dpi = 300)

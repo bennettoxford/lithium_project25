@@ -65,54 +65,86 @@ lithium_products_DDD_summary <- bind_rows(
 
 # Combined primary + secondary trends
 primary_line <- ggplot(Primaryy_DDD_by_year, aes(x = as.integer(year), y = total_DDD / 1e6)) +
-  geom_line(linewidth = 1.2, color = "orange") +
-  geom_point(size = 3, color = "blue") +
-  labs(
-    title = "Primary Care: Lithium Prescribing Trends Over Time",
-    subtitle = "Total Daily Defined Doses (DDD) issued per year (2015–2024)",
-    x = "Year",
-    y = "Total DDD (millions)"
-  ) +
-  scale_y_continuous(
-    limits = c(0, 14),
-    expand = c(0, 0),
+  geom_line(linewidth = 1.2, color = colour_care_primary) +
+  geom_point(size = 3, color = colour_care_primary) +
+  labs(x = "Year", y = "Total DDD (millions)", tag = "(a)") +
+  scale_y_to_next_tick(
+    values = Primaryy_DDD_by_year$total_DDD / 1e6,
     labels = function(x) format(x, scientific = FALSE, big.mark = ",")
   ) +
-  scale_x_continuous(breaks = 2015:2024) +
-  theme_minimal(base_size = 13) +
+  scale_x_continuous(breaks = 2015:2024, expand = expansion(mult = c(0.02, 0.02))) +
+  theme_lithium(base_size = 13) +
   theme(
-    plot.title = element_text(face = "bold", size = 16),
-    plot.subtitle = element_text(size = 12),
     axis.title.x = element_text(face = "bold"),
-    axis.title.y = element_text(face = "bold")
+    axis.title.y = element_text(face = "bold"),
+    plot.tag = element_text(face = "bold", size = 13),
+    plot.tag.position = c(0, 1)
   )
 
 secondary_line <- ggplot(Secondary_DDD_by_year, aes(x = as.integer(year), y = total_DDD / 1e6)) +
-  geom_line(linewidth = 1.2, color = "#00BFC4") +
-  geom_point(size = 3, color = "#F8766D") +
-  labs(
-    title = "Secondary Care: Lithium Prescribing Trends Over Time",
-    subtitle = "Total Daily Defined Doses (DDD) issued per year (2019–2024)",
-    x = "Year",
-    y = "Total DDD (millions)"
+  geom_line(linewidth = 1.2, color = colour_care_secondary) +
+  geom_point(size = 3, color = colour_care_secondary) +
+  labs(x = "Year", y = "Total DDD (millions)", tag = "(b)") +
+  scale_y_to_next_tick(
+    values = Secondary_DDD_by_year$total_DDD / 1e6,
+    labels = scales::label_number(accuracy = 0.1),
+    min_upper = 1.2
   ) +
-  scale_y_continuous(
-    limits = c(0, 1.2),
-    expand = c(0, 0),
-    labels = scales::label_number(accuracy = 0.1)
-  ) +
-  scale_x_continuous(breaks = 2019:2024) +
-  coord_cartesian(ylim = c(0, 1.2)) +
-  theme_minimal(base_size = 13) +
+  scale_x_continuous(breaks = 2019:2024, expand = expansion(mult = c(0.02, 0.02))) +
+  theme_lithium(base_size = 13) +
   theme(
-    plot.title = element_text(face = "bold", size = 16),
-    plot.subtitle = element_text(size = 12),
     axis.title.x = element_text(face = "bold"),
-    axis.title.y = element_text(face = "bold")
+    axis.title.y = element_text(face = "bold"),
+    plot.tag = element_text(face = "bold", size = 13),
+    plot.tag.position = c(0, 1)
   )
 
 combined_plot <- primary_line / secondary_line
 ggsave(here(plots_dir, "combined_primary_secondary_trends.png"), combined_plot, width = 8, height = 10, dpi = 300)
+
+coverage_map_panel_tag_theme <- theme(
+  plot.tag = element_text(face = "bold", size = 18),
+  plot.tag.position = c(0, 1)
+)
+
+primary_coverage_map_combined <- primary_coverage_plot +
+  labs(tag = "(a)") +
+  coverage_map_panel_tag_theme +
+  theme(plot.margin = margin(
+    5.5,
+    coverage_map_plot_margin_right,
+    5.5,
+    coverage_map_combined_margin_left_pt
+  ))
+secondary_coverage_map_combined <- secondary_coverage_plot +
+  labs(tag = "(b)") +
+  coverage_map_panel_tag_theme
+fp10_coverage_map_combined <- FP10_coverage_plot +
+  labs(tag = "(c)") +
+  coverage_map_panel_tag_theme +
+  theme(plot.margin = margin(
+    5.5,
+    coverage_map_plot_margin_right,
+    5.5,
+    coverage_map_combined_margin_left_pt
+  ))
+
+combined_coverage_maps <- wrap_plots(
+  primary_coverage_map_combined,
+  secondary_coverage_map_combined,
+  fp10_coverage_map_combined,
+  plot_spacer(),
+  ncol = 2,
+  nrow = 2
+) +
+  plot_layout(widths = c(1, 1), heights = c(1, 1))
+ggsave(
+  here(plots_dir, "combined_coverage_maps.png"),
+  combined_coverage_maps,
+  width = 16,
+  height = 12,
+  dpi = 300
+)
 
 # Combined line plot (all three sources)
 all_years <- c(
@@ -121,125 +153,135 @@ all_years <- c(
   as.numeric(HospitalFP10_DDD_by_year$PERIOD)
 )
 
+combined_totals_by_year <- full_join(
+  Primaryy_DDD_by_year %>%
+    transmute(year = as.integer(year), primary_total_DDD = total_DDD),
+  Secondary_DDD_by_year %>%
+    transmute(year = as.integer(year), secondary_total_DDD = total_DDD),
+  by = "year"
+) %>%
+  full_join(
+    HospitalFP10_DDD_by_year %>%
+      transmute(year = as.integer(PERIOD), fp10_total_DDD = total_DDD),
+    by = "year"
+  ) %>%
+  mutate(
+    primary_total_DDD = replace_na(primary_total_DDD, 0),
+    secondary_total_DDD = replace_na(secondary_total_DDD, 0),
+    fp10_total_DDD = replace_na(fp10_total_DDD, 0),
+    total_DDD = primary_total_DDD + secondary_total_DDD + fp10_total_DDD
+  ) %>%
+  filter(year >= 2019) %>%
+  arrange(year)
+
 combined_line_plot <- ggplot() +
   geom_line(data = Primaryy_DDD_by_year,
             aes(x = as.integer(year), y = total_DDD / 1e6),
-            color = "orange", linewidth = 1.2) +
+            color = colour_care_primary, linewidth = 1.2) +
   geom_point(data = Primaryy_DDD_by_year,
              aes(x = as.integer(year), y = total_DDD / 1e6),
-             color = "blue", size = 3) +
+             color = colour_care_primary, size = 3) +
   geom_line(data = Secondary_DDD_by_year,
             aes(x = as.integer(year), y = total_DDD / 1e6),
-            color = "#00BFC4", linewidth = 1.2) +
+            color = colour_care_secondary, linewidth = 1.2) +
   geom_point(data = Secondary_DDD_by_year,
              aes(x = as.integer(year), y = total_DDD / 1e6),
-             color = "#F8766D", size = 3) +
+             color = colour_care_secondary, size = 3) +
   geom_line(data = HospitalFP10_DDD_by_year,
             aes(x = as.integer(PERIOD), y = total_DDD / 1e6),
-            color = "#2E8B57", linewidth = 1.2) +
+            color = colour_care_fp10, linewidth = 1.2) +
   geom_point(data = HospitalFP10_DDD_by_year,
              aes(x = as.integer(PERIOD), y = total_DDD / 1e6),
-             color = "#FFD700", size = 3) +
-  labs(
-    title = "Lithium Prescribing Trends Over Time",
-    subtitle = "Total Daily Defined Doses (DDD) issued per year",
-    x = "Year",
-    y = "Total DDD (millions)"
-  ) +
-  scale_y_continuous(
-    limits = c(0, ceiling(max(
-      max(Primaryy_DDD_by_year$total_DDD / 1e6, na.rm = TRUE),
-      max(Secondary_DDD_by_year$total_DDD / 1e6, na.rm = TRUE),
-      max(HospitalFP10_DDD_by_year$total_DDD / 1e6, na.rm = TRUE),
-      1.2
-    ) * 1.1)),
-    breaks = seq(0, ceiling(max(
-      max(Primaryy_DDD_by_year$total_DDD / 1e6, na.rm = TRUE),
-      max(Secondary_DDD_by_year$total_DDD / 1e6, na.rm = TRUE),
-      max(HospitalFP10_DDD_by_year$total_DDD / 1e6, na.rm = TRUE),
-      1.2
-    ) * 1.1), by = 1),
-    expand = c(0, 0),
-    labels = scales::label_number(accuracy = 1)
+             color = colour_care_fp10, size = 3) +
+  geom_line(data = combined_totals_by_year,
+            aes(x = year, y = total_DDD / 1e6),
+            color = colour_care_combined_aggregate, linewidth = 1.2) +
+  geom_point(data = combined_totals_by_year,
+             aes(x = year, y = total_DDD / 1e6),
+             color = colour_care_combined_aggregate, size = 3) +
+  labs(x = "Year", y = "Total DDD (millions)") +
+  scale_y_to_next_tick(
+    values = c(
+      Primaryy_DDD_by_year$total_DDD / 1e6,
+      Secondary_DDD_by_year$total_DDD / 1e6,
+      HospitalFP10_DDD_by_year$total_DDD / 1e6,
+      combined_totals_by_year$total_DDD / 1e6
+    ),
+    labels = scales::label_number(accuracy = 1),
+    min_upper = 1.2
   ) +
   scale_x_continuous(
     breaks = seq(min(all_years, na.rm = TRUE), max(all_years, na.rm = TRUE)),
-    limits = c(min(all_years, na.rm = TRUE), max(all_years, na.rm = TRUE))
+    limits = c(min(all_years, na.rm = TRUE), max(all_years, na.rm = TRUE)),
+    expand = expansion(mult = c(0.02, 0.02))
   ) +
-  theme_minimal(base_size = 13) +
+  theme_lithium(base_size = 13) +
   theme(
     panel.grid.major = element_line(color = "grey80"),
     panel.grid.minor = element_blank(),
     axis.line = element_line(color = "black"),
     axis.title.x = element_text(face = "bold"),
-    axis.title.y = element_text(face = "bold"),
-    plot.title = element_text(face = "bold", size = 16),
-    plot.subtitle = element_text(size = 12)
+    axis.title.y = element_text(face = "bold")
   )
 ggsave(here(plots_dir, "combined_line_all_sources.png"), combined_line_plot, width = 10, height = 6, dpi = 300)
 
 combined_line_plot_legend <- ggplot() +
   geom_line(data = Primaryy_DDD_by_year,
-            aes(x = as.integer(year), y = total_DDD / 1e6, color = "Primary Care"),
+            aes(x = as.integer(year), y = total_DDD / 1e6, color = "Primary care"),
             linewidth = 1.2) +
   geom_point(data = Primaryy_DDD_by_year,
-             aes(x = as.integer(year), y = total_DDD / 1e6),
-             color = "blue", size = 3) +
+             aes(x = as.integer(year), y = total_DDD / 1e6, color = "Primary care"),
+             size = 3) +
   geom_line(data = Secondary_DDD_by_year,
-            aes(x = as.integer(year), y = total_DDD / 1e6, color = "Secondary Care"),
+            aes(x = as.integer(year), y = total_DDD / 1e6, color = "Secondary care"),
             linewidth = 1.2) +
   geom_point(data = Secondary_DDD_by_year,
-             aes(x = as.integer(year), y = total_DDD / 1e6),
-             color = "#F8766D", size = 3) +
+             aes(x = as.integer(year), y = total_DDD / 1e6, color = "Secondary care"),
+             size = 3) +
   geom_line(data = HospitalFP10_DDD_by_year,
-            aes(x = as.integer(PERIOD), y = total_DDD / 1e6, color = "Hospital FP10 Care"),
+            aes(x = as.integer(PERIOD), y = total_DDD / 1e6, color = "Hospital FP10"),
             linewidth = 1.2) +
   geom_point(data = HospitalFP10_DDD_by_year,
-             aes(x = as.integer(PERIOD), y = total_DDD / 1e6),
-             color = "#FFD700", size = 3) +
+             aes(x = as.integer(PERIOD), y = total_DDD / 1e6, color = "Hospital FP10"),
+             size = 3) +
+  geom_line(data = combined_totals_by_year,
+            aes(x = year, y = total_DDD / 1e6, color = "Total"),
+            linewidth = 1.2) +
+  geom_point(data = combined_totals_by_year,
+             aes(x = year, y = total_DDD / 1e6, color = "Total"),
+             size = 3) +
   scale_color_manual(
     name = "Care Type",
     values = c(
-      "Primary Care" = "orange",
-      "Secondary Care" = "#00BFC4",
-      "Hospital FP10 Care" = "#2E8B57"
+      "Primary care" = colour_care_primary,
+      "Secondary care" = colour_care_secondary,
+      "Hospital FP10" = colour_care_fp10,
+      "Total" = colour_care_combined_aggregate
     )
   ) +
-  labs(
-    title = "Lithium Prescribing Trends Over Time",
-    subtitle = "Total Daily Defined Doses (DDD) issued per year",
-    x = "Year",
-    y = "Total DDD (millions)"
-  ) +
-  scale_y_continuous(
-    limits = c(0, ceiling(max(
-      max(Primaryy_DDD_by_year$total_DDD / 1e6, na.rm = TRUE),
-      max(Secondary_DDD_by_year$total_DDD / 1e6, na.rm = TRUE),
-      max(HospitalFP10_DDD_by_year$total_DDD / 1e6, na.rm = TRUE),
-      1.2
-    ) * 1.1)),
-    breaks = seq(0, ceiling(max(
-      max(Primaryy_DDD_by_year$total_DDD / 1e6, na.rm = TRUE),
-      max(Secondary_DDD_by_year$total_DDD / 1e6, na.rm = TRUE),
-      max(HospitalFP10_DDD_by_year$total_DDD / 1e6, na.rm = TRUE),
-      1.2
-    ) * 1.1), by = 1),
-    expand = c(0, 0),
-    labels = scales::label_number(accuracy = 1)
+  labs(x = "Year", y = "DDDs (millions)") +
+  scale_y_to_next_tick(
+    values = c(
+      Primaryy_DDD_by_year$total_DDD / 1e6,
+      Secondary_DDD_by_year$total_DDD / 1e6,
+      HospitalFP10_DDD_by_year$total_DDD / 1e6,
+      combined_totals_by_year$total_DDD / 1e6
+    ),
+    labels = scales::label_number(accuracy = 1),
+    min_upper = 1.2
   ) +
   scale_x_continuous(
     breaks = seq(min(all_years, na.rm = TRUE), max(all_years, na.rm = TRUE)),
-    limits = c(min(all_years, na.rm = TRUE), max(all_years, na.rm = TRUE))
+    limits = c(min(all_years, na.rm = TRUE), max(all_years, na.rm = TRUE)),
+    expand = expansion(mult = c(0.02, 0.02))
   ) +
-  theme_minimal(base_size = 13) +
+  theme_lithium(base_size = 13) +
   theme(
     panel.grid.major = element_line(color = "grey80"),
     panel.grid.minor = element_blank(),
     axis.line = element_line(color = "black"),
     axis.title.x = element_text(face = "plain"),
     axis.title.y = element_text(face = "plain"),
-    plot.title = element_text(face = "bold", size = 16),
-    plot.subtitle = element_text(size = 12),
     legend.position = "right",
     legend.background = element_rect(color = "black", linewidth = 0.5),
     legend.key = element_rect(fill = "white", color = NA)
@@ -267,54 +309,42 @@ Hospital_FP10_total_DDD_by_region_2024 <- Hospital_FP10_total_DDD_by_region_2024
 combined_df_all <- bind_rows(primary_lithium_df, secondary_lithium_df, Hospital_FP10_total_DDD_by_region_2024) %>%
   mutate(Source = factor(Source, levels = c("Primary", "Secondary", "Hospital FP10")))
 
-stacked_bar_plot <- ggplot(combined_df_all, aes(x = Region, y = `DDD.population`, fill = Source)) +
+stacked_bar_plot <- ggplot(combined_df_all, aes(x = Region, y = DDDs_per_1000, fill = Source)) +
   geom_col(color = "black") +
+  scale_y_continuous(labels = scales::label_number(accuracy = 0.01)) +
   scale_fill_manual(
-    values = c("Primary" = "orange", "Secondary" = "#00BFC4", "Hospital FP10" = "#2E8B57")
+    values = c(
+      "Primary" = colour_care_primary,
+      "Secondary" = colour_care_secondary,
+      "Hospital FP10" = colour_care_fp10
+    )
   ) +
-  theme_minimal() +
-  labs(
-    title = "Regional Lithium Use by Care Level",
-    subtitle = "Primary, Secondary, Hospital (FP10) in 2024",
-    x = "Region",
-    y = "Lithium usage (DDD/population)",
-    fill = "Care Level"
-  ) +
-  theme(
-    axis.text.x = element_text(angle = 45, hjust = 1),
-    plot.title = element_text(size = 12, face = "bold")
-  )
+  theme_lithium() +
+  labs(x = "Region", y = "DDDs per 1,000 population", fill = "Care Level") +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
 ggsave(here(plots_dir, "stacked_bar_regional_by_care.png"), stacked_bar_plot, width = 10, height = 6, dpi = 300)
 
 # National DDD trends
-standardise_region <- function(region) {
-  region <- tolower(region)
-  region <- trimws(region)
-  region <- gsub(" of ", " Of ", region)
-  region <- tools::toTitleCase(region)
-  return(region)
-}
-
 Primary_clean <- Primary_DDD_by_year_region %>%
   mutate(
     year = as.integer(year),
     region = if ("Region" %in% names(.)) standardise_region(Region) else standardise_region(region)
   ) %>%
-  select(year, region, total_DDD, population, DDD_population)
+  select(year, region, total_DDD, population, DDDs_per_1000)
 
 Secondary_clean <- Secondary_DDD_by_year_region %>%
   mutate(
     year = as.integer(year),
     region = standardise_region(region)
   ) %>%
-  select(year, region, total_DDD, population, DDD_population)
+  select(year, region, total_DDD, population, DDDs_per_1000)
 
 Hospital_clean <- HospitalFP10_DDD_by_year_region %>%
   mutate(
     year = as.integer(year),
     region = standardise_region(region)
   ) %>%
-  select(year, region, total_DDD, population, DDD_population)
+  select(year, region, total_DDD, population, DDDs_per_1000)
 
 combined_data <- bind_rows(Primary_clean, Secondary_clean, Hospital_clean)
 filtered_data <- combined_data %>% filter(year >= 2019, year <= 2024)
@@ -322,28 +352,16 @@ summed_data <- filtered_data %>%
   group_by(year) %>%
   summarise(total_DDD_sum = sum(total_DDD, na.rm = TRUE))
 
-max_total_millions <- max(summed_data$total_DDD_sum) / 1e6
 national_ddd_plot <- ggplot(summed_data, aes(x = as.integer(year), y = total_DDD_sum / 1e6)) +
-  geom_line(color = "#1f78b4", linewidth = 1.2) +
-  geom_point(color = "#e31a1c", size = 3) +
-  labs(
-    title = "National DDD Trends from All Sources",
-    subtitle = "Summed total DDD (in millions) across Primary, Secondary, and Hospital FP10 (2019–2024)",
-    x = "Year",
-    y = "Total DDD (Millions)"
-  ) +
-  scale_y_continuous(
-    expand = expansion(mult = c(0, 0.1)),
-    limits = c(0, max_total_millions * 1.1),
+  geom_line(color = colour_care_combined_aggregate, linewidth = 1.2) +
+  geom_point(color = colour_care_combined_aggregate, size = 3) +
+  labs(x = "Year", y = "Total DDD (Millions)") +
+  scale_y_to_next_tick(
+    values = summed_data$total_DDD_sum / 1e6,
     labels = scales::label_number(accuracy = 0.1)
   ) +
-  scale_x_continuous(breaks = 2019:2024) +
-  theme_minimal(base_size = 13) +
-  theme(
-    plot.title = element_text(face = "bold", size = 16),
-    plot.subtitle = element_text(size = 12)
-  )
-ggsave(here(plots_dir, "national_ddd_trends.png"), national_ddd_plot, width = 8, height = 5, dpi = 300)
+  scale_x_continuous(breaks = 2019:2024, expand = expansion(mult = c(0.02, 0.02))) +
+  theme_lithium(base_size = 13)
 
 # Regional DDD trends
 Primary_clean_reg <- Primary_DDD_by_year_region %>%
@@ -351,41 +369,33 @@ Primary_clean_reg <- Primary_DDD_by_year_region %>%
     year = as.integer(year),
     region = if ("Region" %in% names(.)) standardise_region(Region) else standardise_region(region)
   ) %>%
-  select(year, region, total_DDD, population, DDD_population)
+  select(year, region, total_DDD, population, DDDs_per_1000)
 Secondary_clean_reg <- Secondary_DDD_by_year_region %>%
   mutate(year = as.integer(year), region = standardise_region(region)) %>%
-  select(year, region, total_DDD, population, DDD_population)
+  select(year, region, total_DDD, population, DDDs_per_1000)
 Hospital_clean_reg <- HospitalFP10_DDD_by_year_region %>%
   mutate(year = as.integer(year), region = standardise_region(region)) %>%
-  select(year, region, total_DDD, population, DDD_population)
+  select(year, region, total_DDD, population, DDDs_per_1000)
 
 combined_data_reg <- bind_rows(Primary_clean_reg, Secondary_clean_reg, Hospital_clean_reg)
 filtered_data_reg <- combined_data_reg %>% filter(year >= 2019, year <= 2024)
 summed_by_region <- filtered_data_reg %>%
   group_by(year, region) %>%
-  summarise(total_DDD_pop_sum = sum(DDD_population, na.rm = TRUE), .groups = "drop")
+  summarise(DDDs_per_1000 = round(sum(DDDs_per_1000, na.rm = TRUE), 2), .groups = "drop") %>%
+  filter(!is.na(region))
 
-regional_trends_plot <- ggplot(summed_by_region, aes(x = year, y = total_DDD_pop_sum, color = region)) +
+regional_trends_plot <- ggplot(summed_by_region, aes(x = year, y = DDDs_per_1000, color = region)) +
   geom_line(linewidth = 1.2) +
   geom_point(size = 3) +
-  labs(
-    title = "DDD Trends by Region (All Data Sources Combined)",
-    subtitle = "Summed total DDD per year by region across Primary, Secondary, and Hospital FP10 (2019–2024)",
-    x = "Year",
-    y = "Total DDD (Millions)/Population",
-    color = "Region"
+  labs(x = "Year", y = "DDDs per 1,000 population", color = "Region") +
+  scale_colour_nhs_region(drop = FALSE) +
+  scale_y_to_next_tick(
+    values = summed_by_region$DDDs_per_1000,
+    labels = scales::label_number(accuracy = 0.01),
+    min_upper = 300
   ) +
-  scale_y_continuous(
-    limits = c(0, 0.3),
-    breaks = c(0.0, 0.05, 0.1, 0.15, 0.2),
-    labels = function(x) format(x, nsmall = 1)
-  ) +
-  scale_x_continuous(breaks = 2019:2024) +
-  theme_minimal(base_size = 13) +
-  theme(
-    plot.title = element_text(face = "bold", size = 16),
-    plot.subtitle = element_text(size = 12)
-  )
+  scale_x_continuous(breaks = 2019:2024, expand = expansion(mult = c(0.02, 0.02))) +
+  theme_lithium(base_size = 13)
 ggsave(here(plots_dir, "regional_ddd_trends.png"), regional_trends_plot, width = 10, height = 6, dpi = 300)
 
 write.csv(summed_data, here(data_dir, "national_DDD_summed.csv"), row.names = FALSE)

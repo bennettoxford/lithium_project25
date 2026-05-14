@@ -22,52 +22,38 @@ secondary_product_DDD <- Lithium_SCMD %>%
   arrange(desc(total_DDD), product_name)
 
 secondary_line <- ggplot(Secondary_DDD_by_year, aes(x = as.integer(year), y = total_DDD / 1e6)) +
-  geom_line(linewidth = 1.2, color = "#00BFC4") +
-  geom_point(size = 3, color = "#F8766D") +
-  labs(
-    title = "Secondary Care: Lithium Prescribing Trends Over Time",
-    subtitle = "Total Daily Defined Doses (DDD) issued per year (2019–2024)",
-    x = "Year",
-    y = "Total DDD (millions)"
+  geom_line(linewidth = 1.2, color = colour_care_secondary) +
+  geom_point(size = 3, color = colour_care_secondary) +
+  labs(x = "Year", y = "Total DDD (millions)") +
+  scale_y_to_next_tick(
+    values = Secondary_DDD_by_year$total_DDD / 1e6,
+    labels = scales::label_number(accuracy = 0.1),
+    min_upper = 1.2
   ) +
-  scale_y_continuous(
-    limits = c(0, 1.2),
-    expand = c(0, 0),
-    labels = scales::label_number(accuracy = 0.1)
-  ) +
-  scale_x_continuous(breaks = 2019:2024) +
-  coord_cartesian(ylim = c(0, 1.2)) +
-  theme_minimal(base_size = 13) +
+  scale_x_continuous(breaks = 2019:2024, expand = expansion(mult = c(0.02, 0.02))) +
+  theme_lithium(base_size = 13) +
   theme(
-    plot.title = element_text(face = "bold", size = 16),
-    plot.subtitle = element_text(size = 12),
     axis.title.x = element_text(face = "bold"),
     axis.title.y = element_text(face = "bold")
   )
 ggsave(here(plots_dir, "secondary_line_trends.png"), secondary_line, width = 8, height = 5, dpi = 300)
 
 secondary_bar <- ggplot(Secondary_DDD_by_year, aes(x = as.factor(year), y = total_DDD / 1e6)) +
-  geom_bar(stat = "identity", fill = "#00BFC4", width = 0.6) +
+  geom_bar(stat = "identity", fill = colour_care_secondary, width = 0.6) +
   geom_text(
     aes(label = format(round(total_DDD / 1e6, 1), nsmall = 1)),
     vjust = -0.5,
     size = 4.2,
     fontface = "bold"
   ) +
-  labs(
-    title = "Secondary Care: Lithium Prescribing Trends Over Time",
-    subtitle = "Total Daily Defined Doses (DDD) issued per year (2019–2024)",
-    x = "Year",
-    y = "Total DDD (millions)"
+  labs(x = "Year", y = "Total DDD (millions)") +
+  scale_y_to_next_tick(
+    values = Secondary_DDD_by_year$total_DDD / 1e6,
+    labels = function(x) format(x, scientific = FALSE, big.mark = ",")
   ) +
-  scale_y_continuous(
-    labels = function(x) format(x, scientific = FALSE, big.mark = ","),
-    expand = expansion(mult = c(0, 0.1))
-  ) +
-  theme_minimal(base_size = 13) +
+  scale_x_discrete(expand = expansion(mult = c(0.02, 0.02))) +
+  theme_lithium(base_size = 13) +
   theme(
-    plot.title = element_text(face = "bold", size = 16),
-    plot.subtitle = element_text(size = 12),
     axis.title.x = element_text(face = "bold"),
     axis.title.y = element_text(face = "bold"),
     axis.text.x = element_text(face = "bold")
@@ -88,57 +74,89 @@ total_DDD_by_region_2024 <- Lithium_SCMD %>%
 secondary_lithium_df <- lithium_df %>%
   left_join(total_DDD_by_region_2024, by = "region") %>%
   left_join(population_df %>% select(region, population), by = "region") %>%
-  mutate(`DDD/population` = total_DDD_2024 / population)
+  mutate(DDDs_per_1000 = round(total_DDD_2024 / population * 1000, 2))
 
 coverage_data_secondary <- nhs_regions_sf %>%
   left_join(secondary_lithium_df, by = "region")
-unique_values <- sort(unique(coverage_data_secondary$`DDD/population`))
-breaks <- c(0, unique_values, max(unique_values, na.rm = TRUE) + 10)
-labels <- scales::label_number(breaks)
 
-secondary_coverage_plot <- coverage_data_secondary %>%
-  ggplot() +
-  geom_sf(aes(fill = `DDD/population`), colour = "black", linewidth = 0.8) +
-  geom_sf_text(aes(label = region), colour = "white", size = 3) +
+secondary_label_d <- coverage_map_label_layers_data(coverage_data_secondary, "region")
+secondary_label_pts <- dplyr::bind_rows(secondary_label_d$other, secondary_label_d$london_txt)
+secondary_label_halo <- coverage_map_label_halo_rect(secondary_label_pts)
+
+secondary_coverage_plot <- ggplot() +
+  geom_sf(data = coverage_data_secondary, aes(fill = DDDs_per_1000), colour = "black", linewidth = 0.8) +
+  geom_segment(
+    data = secondary_label_d$london_seg,
+    aes(x = lon, y = lat, xend = lon_end, yend = lat_end),
+    inherit.aes = FALSE,
+    colour = "black",
+    linewidth = coverage_map_leader_linewidth,
+    lineend = "round"
+  ) +
+  geom_polygon(
+    data = secondary_label_halo,
+    aes(x = lon, y = lat, group = group),
+    inherit.aes = FALSE,
+    fill = "white",
+    colour = "grey25",
+    linewidth = 0.35
+  ) +
+  geom_text(
+    data = secondary_label_pts,
+    aes(x = lon, y = lat, label = label),
+    inherit.aes = FALSE,
+    colour = "black",
+    fontface = "bold",
+    size = coverage_map_value_label_size
+  ) +
   scale_fill_gradientn(
-    colors = c("#ffd13a", "#ff7c00", "#f20c51"),
-    breaks = breaks,
-    labels = labels,
-    na.value = "grey90"
+    colors = colour_care_secondary_map,
+    breaks = function(lims) c(lims[1], lims[2]),
+    labels = coverage_map_colourbar_break_labels,
+    na.value = "grey90",
+    guide = guide_colourbar(
+      title = "DDDs per 1,000 population",
+      title.position = "top",
+      barheight = unit(3.2, "cm"),
+      barwidth = unit(0.55, "cm"),
+      ticks = FALSE,
+      reverse = TRUE,
+      frame.colour = "black",
+      frame.linewidth = 0.35
+    )
   ) +
-  theme_minimal() +
+  theme_lithium() +
   theme(
-    legend.position = c(0.2, 0.5),
-    legend.text = element_text(hjust = 1),
-    panel.background = element_rect(fill = "white"),
-    plot.title = element_text(face = "bold")
+    legend.position = coverage_map_legend_position,
+    legend.text = element_text(size = coverage_map_legend_text_size),
+    legend.title = element_text(size = coverage_map_legend_title_size),
+    panel.border = element_blank(),
+    panel.background = element_rect(fill = "white", colour = NA),
+    plot.background = element_rect(fill = "white", colour = NA),
+    axis.line = element_blank(),
+    axis.ticks = element_blank(),
+    axis.text = element_blank(),
+    plot.margin = margin(5.5, coverage_map_plot_margin_right, 5.5, 5.5)
   ) +
-  guides(fill = guide_legend(title = "Lithium (DDD)/ population")) +
-  coord_sf(datum = NA) +
+  coord_sf(datum = NA, clip = "off") +
   xlab("") +
   ylab("")
 ggsave(here(plots_dir, "secondary_coverage_map.png"), secondary_coverage_plot, width = 8, height = 6, dpi = 300)
 
-secondaryhist <- ggplot(secondary_lithium_df, aes(x = region, y = `DDD/population`)) +
-  geom_col(fill = "#FF0000", color = "#FF6f6f") +
-  geom_text(aes(label = round(`DDD/population`, 3)), vjust = -0.3, size = 3.5) +
-  theme_minimal() +
+secondaryhist <- ggplot(secondary_lithium_df, aes(x = region, y = DDDs_per_1000)) +
+  geom_col(fill = colour_care_secondary, color = colour_care_secondary) +
+  geom_text(aes(label = sprintf("%.2f", DDDs_per_1000)), vjust = -0.3, size = 3.5) +
+  theme_lithium() +
   xlab("Region") +
-  ylab("Lithium usage (Total DDD for 2024) / population") +
-  labs(
-    title = "Regional Lithium Use in Secondary Care",
-    subtitle = "Average DDDs per Person (2024) (stock movement)"
-  ) +
-  scale_y_continuous(
-    limits = c(0, 0.03),
-    breaks = seq(0, 0.03, by = 0.01),
-    labels = scales::number_format(accuracy = 0.001)
+  ylab("DDDs per 1,000 population") +
+  scale_y_to_next_tick(
+    values = secondary_lithium_df$DDDs_per_1000,
+    labels = scales::number_format(accuracy = 0.01),
+    min_upper = 30
   ) +
   theme(
-    axis.text.x = element_text(angle = 45, hjust = 1, size = 10),
-    axis.text.y = element_text(size = 10),
-    plot.title = element_text(size = 12, face = "bold"),
-    plot.subtitle = element_text(size = 10, face = "italic"),
+    axis.text.x = element_text(angle = 45, hjust = 1, size = axis_tick_label_size),
+    axis.text.y = element_text(size = axis_tick_label_size),
     plot.margin = margin(10, 10, 10, 10)
   )
 ggsave(here(plots_dir, "secondary_hist_ddd_pop.png"), secondaryhist, width = 8, height = 5, dpi = 300)
@@ -148,28 +166,23 @@ Secondary_DDD_by_year_region <- Lithium_SCMD %>%
   summarise(total_DDD = sum(DDD, na.rm = TRUE)) %>%
   ungroup() %>%
   left_join(population_df %>% select(region, population), by = "region") %>%
-  mutate(DDD_population = total_DDD / population)
+  mutate(DDDs_per_1000 = round(total_DDD / population * 1000, 2))
 
-seven_region_secondary <- ggplot(Secondary_DDD_by_year_region, aes(x = as.integer(year), y = DDD_population, color = region)) +
+seven_region_secondary <- Secondary_DDD_by_year_region %>%
+  mutate(region = standardise_region(as.character(region))) %>%
+  ggplot(aes(x = as.integer(year), y = DDDs_per_1000, color = region)) +
   geom_line(linewidth = 1.2) +
   geom_point(size = 3) +
-  labs(
-    title = "Secondary Care: Lithium Prescribing Trends Per Population",
-    subtitle = "DDD per population issued per year by region (2019–2024)",
-    x = "Year",
-    y = NULL,
-    color = "Region"
+  labs(x = "Year", y = "DDDs per 1,000 population", color = "Region") +
+  scale_colour_nhs_region(drop = FALSE) +
+  scale_y_to_next_tick(
+    values = Secondary_DDD_by_year_region$DDDs_per_1000,
+    labels = scales::number_format(accuracy = 0.01),
+    min_upper = 30
   ) +
-  scale_y_continuous(
-    limits = c(0, 0.03),
-    expand = c(0, 0),
-    labels = scales::number_format(accuracy = 0.001)
-  ) +
-  scale_x_continuous(breaks = 2019:2024) +
-  theme_minimal(base_size = 13) +
+  scale_x_continuous(breaks = 2019:2024, expand = expansion(mult = c(0.02, 0.02))) +
+  theme_lithium(base_size = 13) +
   theme(
-    plot.title = element_text(face = "bold", size = 16),
-    plot.subtitle = element_text(size = 12),
     axis.title.x = element_text(face = "bold"),
     axis.title.y = element_text(face = "bold"),
     legend.title = element_text(face = "bold")
