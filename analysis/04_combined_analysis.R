@@ -314,9 +314,7 @@ combined_df_all <- bind_rows(primary_lithium_df, secondary_lithium_df, Hospital_
     total_DDD_2024,
     total_DDD,
     DDDs_per_1000,
-    Source,
-    region,
-    name
+    Source
   )
 
 stacked_bar_plot <- ggplot(combined_df_all, aes(x = Region, y = DDDs_per_1000, fill = Source)) +
@@ -410,16 +408,49 @@ ggsave(here(plots_dir, "regional_ddd_trends.png"), regional_trends_plot, width =
 
 write.csv(summed_data, here(data_dir, "national_DDD_summed.csv"), row.names = FALSE)
 write.csv(summed_by_region, here(data_dir, "regional_DDD_trends.csv"), row.names = FALSE)
-write.csv(combined_df_all, here(data_dir, "combined_regional_by_care_2024.csv"), row.names = FALSE)
-combined_df_all %>%
+
+combined_regional_by_care_for_export <- combined_df_all %>%
+  mutate(
+    population = if_else(
+      is.na(population),
+      NA_character_,
+      format(as.integer(round(population)), big.mark = ",", scientific = FALSE, trim = TRUE)
+    ),
+    total_DDD_2024 = if_else(
+      is.na(total_DDD_2024),
+      NA_character_,
+      format(round(total_DDD_2024, 2), big.mark = ",", nsmall = 2, scientific = FALSE, trim = TRUE)
+    ),
+    total_DDD = if_else(
+      is.na(total_DDD),
+      NA_character_,
+      format(round(total_DDD, 2), big.mark = ",", nsmall = 2, scientific = FALSE, trim = TRUE)
+    ),
+    DDDs_per_1000 = if_else(
+      is.na(DDDs_per_1000),
+      NA_character_,
+      format(round(DDDs_per_1000, 2), big.mark = ",", nsmall = 2, scientific = FALSE, trim = TRUE)
+    )
+  )
+
+write.csv(
+  combined_regional_by_care_for_export,
+  here(data_dir, "combined_regional_by_care_2024.csv"),
+  row.names = FALSE,
+  na = ""
+)
+combined_regional_by_care_for_export %>%
   filter(Source == "Primary") %>%
-  write.csv(here(data_dir, "combined_regional_by_care_2024_primary.csv"), row.names = FALSE)
-combined_df_all %>%
+  select(-Source) %>%
+  write.csv(here(data_dir, "combined_regional_by_care_2024_primary.csv"), row.names = FALSE, na = "")
+combined_regional_by_care_for_export %>%
   filter(Source == "Secondary") %>%
-  write.csv(here(data_dir, "combined_regional_by_care_2024_secondary.csv"), row.names = FALSE)
-combined_df_all %>%
+  select(-Source) %>%
+  write.csv(here(data_dir, "combined_regional_by_care_2024_secondary.csv"), row.names = FALSE, na = "")
+combined_regional_by_care_for_export %>%
   filter(Source == "Hospital FP10") %>%
-  write.csv(here(data_dir, "combined_regional_by_care_2024_fp10.csv"), row.names = FALSE)
+  select(-Source) %>%
+  write.csv(here(data_dir, "combined_regional_by_care_2024_fp10.csv"), row.names = FALSE, na = "")
 write.csv(
   lithium_products_DDD_summary,
   here(data_dir, "lithium_products_DDD_summary.csv"),
