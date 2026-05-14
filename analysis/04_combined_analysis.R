@@ -113,7 +113,7 @@ secondary_summary_for_table <- lithium_product_ddd_summary_from_by_year(
 secondary_earliest_yr <- as.integer(secondary_summary_for_table$first_data_year[1L])
 secondary_latest_yr <- as.integer(secondary_summary_for_table$last_data_year[1L])
 
-lithium_primary_fp10_summary_rows <- primary_fp10_product_DDD %>%
+lithium_primary_fp10_detail <- primary_fp10_product_DDD %>%
   mutate(
     product_code = as.character(product_code),
     total_DDD_all_periods = replace_na(total_DDD_primary_care, 0) + replace_na(total_DDD_fp10, 0)
@@ -122,7 +122,26 @@ lithium_primary_fp10_summary_rows <- primary_fp10_product_DDD %>%
   left_join(fp10_first %>% rename(fp10_first_ddd = ddd), by = "product_code") %>%
   left_join(prim_last %>% rename(prim_last_ddd = ddd), by = "product_code") %>%
   left_join(fp10_last %>% rename(fp10_last_ddd = ddd), by = "product_code") %>%
-  arrange(desc(total_DDD_all_periods), product_name) %>%
+  arrange(desc(total_DDD_all_periods), product_name)
+
+primary_fp10_total_row <- lithium_primary_fp10_detail %>%
+  summarise(
+    prim_first_ddd = sum(replace_na(prim_first_ddd, 0)),
+    prim_last_ddd = sum(replace_na(prim_last_ddd, 0)),
+    fp10_first_ddd = sum(replace_na(fp10_first_ddd, 0)),
+    fp10_last_ddd = sum(replace_na(fp10_last_ddd, 0)),
+    .groups = "drop"
+  ) %>%
+  transmute(
+    V1 = NA_character_,
+    V2 = "Total (all products)",
+    V3 = format_ddd_int_comma(prim_first_ddd),
+    V4 = format_ddd_int_comma(prim_last_ddd),
+    V5 = format_ddd_int_comma(fp10_first_ddd),
+    V6 = format_ddd_int_comma(fp10_last_ddd)
+  )
+
+lithium_primary_fp10_summary_rows <- lithium_primary_fp10_detail %>%
   transmute(
     V1 = NA_character_,
     V2 = paste0(product_name, " (", product_code, ")"),
@@ -132,8 +151,25 @@ lithium_primary_fp10_summary_rows <- primary_fp10_product_DDD %>%
     V6 = format_ddd_int_comma(replace_na(fp10_last_ddd, 0))
   )
 
-secondary_summary_rows <- secondary_summary_for_table %>%
-  arrange(desc(total_DDD), product_name) %>%
+secondary_summary_detail <- secondary_summary_for_table %>%
+  arrange(desc(total_DDD), product_name)
+
+secondary_total_row <- secondary_summary_detail %>%
+  summarise(
+    total_DDD_first_year = sum(total_DDD_first_year, na.rm = TRUE),
+    total_DDD_last_year = sum(total_DDD_last_year, na.rm = TRUE),
+    .groups = "drop"
+  ) %>%
+  transmute(
+    V1 = NA_character_,
+    V2 = "Total (all products)",
+    V3 = format_ddd_int_comma(total_DDD_first_year),
+    V4 = NA_character_,
+    V5 = format_ddd_int_comma(total_DDD_last_year),
+    V6 = NA_character_
+  )
+
+secondary_summary_rows <- secondary_summary_detail %>%
   transmute(
     V1 = NA_character_,
     V2 = paste0(product_name, " (", as.character(product_code), ")"),
@@ -168,6 +204,7 @@ lithium_products_DDD_summary_csv <- bind_rows(
     V5 = as.character(fp10_first_yr),
     V6 = as.character(fp10_last_yr)
   )),
+  primary_fp10_total_row,
   lithium_primary_fp10_summary_rows,
   as_tibble(list(
     V1 = "Secondary care",
@@ -185,6 +222,7 @@ lithium_products_DDD_summary_csv <- bind_rows(
     V5 = as.character(secondary_latest_yr),
     V6 = NA_character_
   )),
+  secondary_total_row,
   secondary_summary_rows
 )
 
