@@ -401,6 +401,15 @@ ggsave(here(plots_dir, "regional_ddd_trends.png"), regional_trends_plot, width =
 write.csv(summed_data, here(data_dir, "national_DDD_summed.csv"), row.names = FALSE)
 write.csv(summed_by_region, here(data_dir, "regional_DDD_trends.csv"), row.names = FALSE)
 write.csv(combined_df_all, here(data_dir, "combined_regional_by_care_2024.csv"), row.names = FALSE)
+combined_df_all %>%
+  filter(Source == "Primary") %>%
+  write.csv(here(data_dir, "combined_regional_by_care_2024_primary.csv"), row.names = FALSE)
+combined_df_all %>%
+  filter(Source == "Secondary") %>%
+  write.csv(here(data_dir, "combined_regional_by_care_2024_secondary.csv"), row.names = FALSE)
+combined_df_all %>%
+  filter(Source == "Hospital FP10") %>%
+  write.csv(here(data_dir, "combined_regional_by_care_2024_fp10.csv"), row.names = FALSE)
 write.csv(
   lithium_products_DDD_summary,
   here(data_dir, "lithium_products_DDD_summary.csv"),
