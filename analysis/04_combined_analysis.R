@@ -406,7 +406,17 @@ regional_trends_plot <- ggplot(summed_by_region, aes(x = year, y = DDDs_per_1000
   theme_lithium(base_size = 13)
 ggsave(here(plots_dir, "regional_ddd_trends.png"), regional_trends_plot, width = 10, height = 6, dpi = 300)
 
-write.csv(summed_data, here(data_dir, "national_DDD_summed.csv"), row.names = FALSE)
+national_ddd_summed_export <- summed_data %>%
+  transmute(
+    Year = year,
+    `Total DDDs` = format(
+      round(total_DDD_sum),
+      big.mark = ",",
+      scientific = FALSE,
+      trim = TRUE
+    )
+  )
+write.csv(national_ddd_summed_export, here(data_dir, "national_DDD_summed.csv"), row.names = FALSE)
 write.csv(summed_by_region, here(data_dir, "regional_DDD_trends.csv"), row.names = FALSE)
 
 combined_regional_by_care_for_export <- combined_df_all %>%
