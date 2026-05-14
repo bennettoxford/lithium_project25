@@ -102,6 +102,50 @@ secondary_line <- ggplot(Secondary_DDD_by_year, aes(x = as.integer(year), y = to
 combined_plot <- primary_line / secondary_line
 ggsave(here(plots_dir, "combined_primary_secondary_trends.png"), combined_plot, width = 8, height = 10, dpi = 300)
 
+coverage_map_panel_tag_theme <- theme(
+  plot.tag = element_text(face = "bold", size = 18),
+  plot.tag.position = c(0, 1)
+)
+
+primary_coverage_map_combined <- primary_coverage_plot +
+  labs(tag = "(a)") +
+  coverage_map_panel_tag_theme +
+  theme(plot.margin = margin(
+    5.5,
+    coverage_map_plot_margin_right,
+    5.5,
+    coverage_map_combined_margin_left_pt
+  ))
+secondary_coverage_map_combined <- secondary_coverage_plot +
+  labs(tag = "(b)") +
+  coverage_map_panel_tag_theme
+fp10_coverage_map_combined <- FP10_coverage_plot +
+  labs(tag = "(c)") +
+  coverage_map_panel_tag_theme +
+  theme(plot.margin = margin(
+    5.5,
+    coverage_map_plot_margin_right,
+    5.5,
+    coverage_map_combined_margin_left_pt
+  ))
+
+combined_coverage_maps <- wrap_plots(
+  primary_coverage_map_combined,
+  secondary_coverage_map_combined,
+  fp10_coverage_map_combined,
+  plot_spacer(),
+  ncol = 2,
+  nrow = 2
+) +
+  plot_layout(widths = c(1, 1), heights = c(1, 1))
+ggsave(
+  here(plots_dir, "combined_coverage_maps.png"),
+  combined_coverage_maps,
+  width = 16,
+  height = 12,
+  dpi = 300
+)
+
 # Combined line plot (all three sources)
 all_years <- c(
   as.numeric(Primaryy_DDD_by_year$year),

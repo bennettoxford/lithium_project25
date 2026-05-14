@@ -89,6 +89,8 @@ coverage_map_colourbar_break_labels <- c("lower", "higher")
 
 coverage_map_plot_margin_right <- 36
 
+coverage_map_combined_margin_left_pt <- 100
+
 coverage_map_legend_position <- c(0.07, 0.5)
 coverage_map_legend_title_size <- 11
 coverage_map_legend_text_size <- 11
