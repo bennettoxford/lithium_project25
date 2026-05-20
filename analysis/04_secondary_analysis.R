@@ -1,31 +1,42 @@
 source(here::here("analysis", "00_setup.R"))
 
-secondary_care <- read_csv(here("data", "secondary_care", "secondary_care.csv"), show_col_types = FALSE)
+secondary_care <- read_csv(
+  here("data", "secondary_care", "secondary_care.csv"),
+  col_types = cols(`VMP Code` = col_character()),
+  show_col_types = FALSE
+)
 
 Lithium_SCMD <- secondary_care %>%
   mutate(
     year_month = as.Date(Date),
-    year = format(year_month, "%Y"),
+    year = year(year_month),
     region = Region,
+    product_code = `VMP Code`,
     DDD = Value  # already in DDDs
   ) %>%
-  filter(year_month <= as.Date("2024-12-31"))
+  filter(
+    year_month >= as.Date("2019-01-01"),
+    year_month <= as.Date("2024-12-31")
+  )
+
+if (nrow(Lithium_SCMD) == 0L) {
+  stop("No secondary care rows after filters.")
+}
 
 Secondary_DDD_by_year <- Lithium_SCMD %>%
   group_by(year) %>%
-  summarise(total_DDD = sum(DDD, na.rm = TRUE)) %>%
-  ungroup()
+  summarise(total_DDD = sum(DDD, na.rm = TRUE), .groups = "drop")
 
 secondary_product_DDD <- Lithium_SCMD %>%
-  group_by(product_code = `VMP Code`, product_name = `VMP Name`) %>%
+  group_by(product_code, product_name = `VMP Name`) %>%
   summarise(total_DDD = sum(DDD, na.rm = TRUE), .groups = "drop") %>%
   arrange(desc(total_DDD), product_name)
 
 secondary_product_DDD_by_year <- Lithium_SCMD %>%
-  group_by(year, product_code = `VMP Code`, product_name = `VMP Name`) %>%
+  group_by(year, product_code, product_name = `VMP Name`) %>%
   summarise(total_DDD = sum(DDD, na.rm = TRUE), .groups = "drop")
 
-secondary_line <- ggplot(Secondary_DDD_by_year, aes(x = as.integer(year), y = total_DDD / 1e6)) +
+secondary_line <- ggplot(Secondary_DDD_by_year, aes(x = year, y = total_DDD / 1e6)) +
   geom_line(linewidth = 1.2, color = colour_care_secondary) +
   geom_point(size = 3, color = colour_care_secondary) +
   labs(x = "Year", y = "Total DDD (millions)") +
@@ -64,19 +75,15 @@ secondary_bar <- ggplot(Secondary_DDD_by_year, aes(x = as.factor(year), y = tota
   )
 ggsave(here(plots_dir, "secondary_bar_trends.png"), secondary_bar, width = 8, height = 5, dpi = 300)
 
-lithium_df <- Lithium_SCMD %>%
+secondary_lithium_df <- Lithium_SCMD %>%
+  filter(!is.na(region)) %>%
   group_by(region) %>%
-  summarise(total_DDD = sum(DDD, na.rm = TRUE)) %>%
+  summarise(
+    total_DDD = sum(DDD, na.rm = TRUE),
+    total_DDD_2024 = sum(DDD[year == 2024L], na.rm = TRUE),
+    .groups = "drop"
+  ) %>%
   mutate(region = as.factor(region)) %>%
-  filter(!is.na(region))
-
-total_DDD_by_region_2024 <- Lithium_SCMD %>%
-  filter(year(year_month) == 2024) %>%
-  group_by(region) %>%
-  summarise(total_DDD_2024 = sum(DDD, na.rm = TRUE))
-
-secondary_lithium_df <- lithium_df %>%
-  left_join(total_DDD_by_region_2024, by = "region") %>%
   add_population_for_year(region_col = "region", population_year = 2024L) %>%
   mutate(DDDs_per_1000 = round(total_DDD_2024 / population * 1000, 2))
 
@@ -167,14 +174,13 @@ ggsave(here(plots_dir, "secondary_hist_ddd_pop.png"), secondaryhist, width = 8, 
 
 Secondary_DDD_by_year_region <- Lithium_SCMD %>%
   group_by(year, region) %>%
-  summarise(total_DDD = sum(DDD, na.rm = TRUE)) %>%
-  ungroup() %>%
+  summarise(total_DDD = sum(DDD, na.rm = TRUE), .groups = "drop") %>%
   add_population_by_year(year_col = "year", region_col = "region") %>%
   mutate(DDDs_per_1000 = round(total_DDD / population * 1000, 2))
 
 seven_region_secondary <- Secondary_DDD_by_year_region %>%
   mutate(region = standardise_region(as.character(region))) %>%
-  ggplot(aes(x = as.integer(year), y = DDDs_per_1000, color = region)) +
+  ggplot(aes(x = year, y = DDDs_per_1000, color = region)) +
   geom_line(linewidth = 1.2) +
   geom_point(size = 3) +
   labs(x = "Year", y = "DDDs per 1,000 population", color = "Region") +
