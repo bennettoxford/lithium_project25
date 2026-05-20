@@ -164,6 +164,11 @@ hospital_fp10_product_DDD <- New_Hospital_FP10_data %>%
   summarise(total_DDD = sum(DDD, na.rm = TRUE), .groups = "drop") %>%
   arrange(desc(total_DDD), product_name)
 
+hospital_fp10_product_DDD_by_year <- New_Hospital_FP10_data %>%
+  mutate(year = format(as.Date(PERIOD), "%Y")) %>%
+  group_by(year, product_code = BNF_CODE, product_name = BNF_NAME) %>%
+  summarise(total_DDD = sum(DDD, na.rm = TRUE), .groups = "drop")
+
 hospitalFP10_line <- ggplot(HospitalFP10_DDD_by_year,
                             aes(x = as.integer(PERIOD), y = total_DDD / 1e6)) +
   geom_line(linewidth = 1.2, color = colour_care_fp10) +
@@ -300,6 +305,7 @@ write.csv(
   row.names = FALSE
 )
 write.csv(hospital_fp10_product_DDD, here(data_dir, "hospital_fp10_product_DDD.csv"), row.names = FALSE)
+write.csv(hospital_fp10_product_DDD_by_year, here(data_dir, "hospital_fp10_product_DDD_by_year.csv"), row.names = FALSE)
 write.csv(Hospital_FP10_total_DDD_by_region_2024, here(data_dir, "hospital_fp10_DDD_by_region_2024.csv"), row.names = FALSE)
 write.csv(HospitalFP10_DDD_by_year_region, here(data_dir, "hospital_fp10_DDD_by_year_region.csv"), row.names = FALSE)
 message("FP10 analysis complete. Outputs saved to ", output_dir)
