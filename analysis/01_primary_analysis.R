@@ -48,7 +48,7 @@ PRIMARYCARE_dataset <- PRIMARYCARE_dataset %>%
     quantity_mg = quantity * strnt_nmrtr_val,
     mmol = case_when(
       chemical == "Lithium Carbonate" ~ quantity_mg / 37.04,
-      chemical == "Lithium Citrate" ~ quantity_mg / 69.98,
+      chemical == "Lithium Citrate" ~ quantity_mg / 94.26,
       TRUE ~ NA_real_
     ),
     DDD = mmol / 24
