@@ -2,42 +2,31 @@ source(here::here("analysis", "00_setup.R"))
 
 # Import primary care dataset
 Practice_codes <- read_excel(here("data", "primary_care", "practice_codes.xlsx"))
-df_primarycare2 <- read.csv(here("data", "primary_care", "primary_care.csv"))
+product_mapping <- read.csv(
+  here("data", "primary_care_fp10_products_strength.csv"),
+  colClasses = c(bnf_code = "character")
+)
 
-PRIMARYCARE_dataset <- read.csv(gzfile(here("data", "primary_care", "primary_lithium.csv.gz"))) %>%
+PRIMARYCARE_dataset <- read.csv(
+  gzfile(here("data", "primary_care", "primary_lithium.csv.gz")),
+  colClasses = c(bnf_code = "character")
+) %>%
   mutate(month = as.Date(month)) %>%
+  group_by(month, practice, sicbl, icb, regional_team, bnf_code) %>%
+  summarise(
+    quantity = sum(quantity, na.rm = TRUE),
+    items = sum(items, na.rm = TRUE),
+    actual_cost = sum(actual_cost, na.rm = TRUE),
+    .groups = "drop"
+  ) %>%
   left_join(Practice_codes, by = c("practice" = "code")) %>%
   filter(setting == 4) %>% # GP practices only
-  left_join(
-    df_primarycare2 %>% select(bnf_code, nm, strnt_nmrtr_val),
+  inner_join(
+    product_mapping %>%
+      select(bnf_code, bnf_name, nm, strnt_nmrtr_val, chemical),
     by = "bnf_code"
   ) %>%
   mutate(
-    chemical = case_when(
-      bnf_code %in% c(
-        "0402030K0BBAAAC", # Camcolit 250 tablets
-        "0402030K0BBABAF", # Camcolit 400 modified-release tablets
-        "0402030K0BDAAAG", # Liskonum 450mg modified-release tablets
-        "0402030K0AAAIAI", # Lithium carbonate 200mg modified-release tablets
-        "0402030K0AAAPAP", # Lithium carbonate 200mg/5ml oral suspension
-        "0402030K0AAACAC", # Lithium carbonate 250mg tablets
-        "0402030K0AAAFAF", # Lithium carbonate 400mg modified-release tablets
-        "0402030K0AAAGAG", # Lithium carbonate 450mg modified-release tablets
-        "0402030K0BGAAAF", # Lithonate 400mg modified-release tablets
-        "0402030K0BFABAI", # Priadel 200mg modified-release tablets
-        "0402030K0BFAAAF"  # Priadel 400mg modified-release tablets
-      ) ~ "Lithium Carbonate",
-      bnf_code %in% c(
-        "0402030P0BDABAK", # Li-Liquid 1.018g/5ml oral solution
-        "0402030P0BDAAAL", # Li-Liquid 509mg/5ml oral solution
-        "0402030P0AAAKAK", # Lithium citrate 1.018g/5ml oral solution
-        "0402030P0AAALAL", # Lithium citrate 509mg/5ml oral solution
-        "0402030P0AAAIAI", # Lithium citrate 520mg/5ml oral solution sugar free
-        "0402030P0BCAAAI", # Priadel 520mg/5ml liquid
-        "0402030P0AAAJAJ"  # Lithium citrate 10.8mmol/5ml oral solution sugar free
-      ) ~ "Lithium Citrate",
-      TRUE ~ "Other"
-    ),
     quantity_mg = quantity * strnt_nmrtr_val,
     mmol = case_when(
       chemical == "Lithium Carbonate" ~ quantity_mg / 37.04,
