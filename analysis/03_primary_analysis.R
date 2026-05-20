@@ -1,5 +1,3 @@
-source(here::here("analysis", "00_setup.R"))
-
 # Import primary care dataset
 Practice_codes <- read_excel(
   here("data", "primary_care", "practice_codes.xlsx"),
@@ -8,13 +6,14 @@ Practice_codes <- read_excel(
     "numeric",
     rep("text", 5)
   )
-)
+) %>%
+  distinct(code, .keep_all = TRUE)
 product_mapping <- read.csv(
   here("data", "primary_care_fp10_products_strength.csv"),
   colClasses = c(bnf_code = "character")
 )
 
-PRIMARYCARE_dataset <- read.csv(
+prescribing_base <- read.csv(
   gzfile(here("data", "primary_care", "primary_lithium.csv.gz")),
   colClasses = c(bnf_code = "character")
 ) %>%
@@ -25,9 +24,16 @@ PRIMARYCARE_dataset <- read.csv(
     items = sum(items, na.rm = TRUE),
     actual_cost = sum(actual_cost, na.rm = TRUE),
     .groups = "drop"
-  ) %>%
+  )
+
+message("Primary care: ", nrow(prescribing_base), " rows before practice codes join")
+after_practice <- prescribing_base %>%
   left_join(Practice_codes, by = c("practice" = "code")) %>%
-  filter(setting == 4) %>% # GP practices only
+  filter(setting == 4) # GP practices only
+message("Primary care: ", nrow(after_practice), " rows after practice codes join (GP only)")
+
+message("Primary care: ", nrow(after_practice), " rows before product mapping join")
+after_product <- after_practice %>%
   inner_join(
     product_mapping %>%
       select(bnf_code, bnf_name, nm, strnt_nmrtr_val, chemical),
@@ -43,8 +49,25 @@ PRIMARYCARE_dataset <- read.csv(
     DDD = mmol / 24,
     Region = nhser_to_Region[as.character(regional_team)],
     year = year(month)
-  ) %>%
+  )
+n_unmapped <- nrow(after_practice) - nrow(after_product)
+message(
+  "Primary care: ",
+  nrow(after_product),
+  " rows after product mapping join (",
+  n_unmapped,
+  " rows dropped, unmapped BNF)"
+)
+PRIMARYCARE_dataset <- after_product %>%
   filter(month >= as.Date("2015-01-01"), month <= as.Date("2024-12-31"))
+n_out_of_range <- nrow(after_product) - nrow(PRIMARYCARE_dataset)
+message(
+  "Primary care: ",
+  nrow(PRIMARYCARE_dataset),
+  " rows after 2015-2024 date filter (",
+  n_out_of_range,
+  " rows dropped, out of date range)"
+)
 
 if (nrow(PRIMARYCARE_dataset) == 0L) {
   stop("No primary care rows after filters.")
