@@ -43,7 +43,9 @@ Hospital_FP10_data2024 <- read_excel(here("data", "secondary_care_fp10", "FP10_2
 
 Hospital_FP10_all <- bind_rows(Hospital_FP10_data, Hospital_FP10_data2024)
 
-df_primarycare2 <- read.csv(here("data", "primary_care", "primary_care.csv"))
+df_primarycare2 <- read.csv(
+  here("data", "primary_care_fp10_products_strength.csv")
+)
 Hospital_FP10_all <- merge(
   Hospital_FP10_all,
   df_primarycare2[, c("bnf_code", "strnt_nmrtr_val")],

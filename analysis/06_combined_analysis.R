@@ -1,6 +1,6 @@
 source(here::here("analysis", "00_setup.R"))
 
-Primaryy_DDD_by_year <- read_ddd_by_year_export_csv(here(data_dir, "primary_DDD_by_year.csv"))
+Primary_DDD_by_year <- read_ddd_by_year_export_csv(here(data_dir, "primary_DDD_by_year.csv"))
 Secondary_DDD_by_year <- read_ddd_by_year_export_csv(here(data_dir, "secondary_DDD_by_year.csv"))
 HospitalFP10_DDD_by_year <- read_ddd_by_year_export_csv(here(data_dir, "hospital_fp10_DDD_by_year.csv")) %>%
   mutate(PERIOD = year)
@@ -227,12 +227,12 @@ lithium_products_DDD_summary_csv <- bind_rows(
 )
 
 # Combined primary + secondary trends
-primary_line <- ggplot(Primaryy_DDD_by_year, aes(x = as.integer(year), y = total_DDD / 1e6)) +
+primary_line <- ggplot(Primary_DDD_by_year, aes(x = as.integer(year), y = total_DDD / 1e6)) +
   geom_line(linewidth = 1.2, color = colour_care_primary) +
   geom_point(size = 3, color = colour_care_primary) +
   labs(x = "Year", y = "Total DDD (millions)", tag = "(a)") +
   scale_y_to_next_tick(
-    values = Primaryy_DDD_by_year$total_DDD / 1e6,
+    values = Primary_DDD_by_year$total_DDD / 1e6,
     labels = function(x) format(x, scientific = FALSE, big.mark = ",")
   ) +
   scale_x_continuous(breaks = 2015:2024, expand = expansion(mult = c(0.02, 0.02))) +
@@ -311,13 +311,13 @@ ggsave(
 
 # Combined line plot (all three sources)
 all_years <- c(
-  as.numeric(Primaryy_DDD_by_year$year),
+  as.numeric(Primary_DDD_by_year$year),
   as.numeric(Secondary_DDD_by_year$year),
   as.numeric(HospitalFP10_DDD_by_year$PERIOD)
 )
 
 combined_totals_by_year <- full_join(
-  Primaryy_DDD_by_year %>%
+  Primary_DDD_by_year %>%
     transmute(year = as.integer(year), primary_total_DDD = total_DDD),
   Secondary_DDD_by_year %>%
     transmute(year = as.integer(year), secondary_total_DDD = total_DDD),
@@ -338,10 +338,10 @@ combined_totals_by_year <- full_join(
   arrange(year)
 
 combined_line_plot <- ggplot() +
-  geom_line(data = Primaryy_DDD_by_year,
+  geom_line(data = Primary_DDD_by_year,
             aes(x = as.integer(year), y = total_DDD / 1e6),
             color = colour_care_primary, linewidth = 1.2) +
-  geom_point(data = Primaryy_DDD_by_year,
+  geom_point(data = Primary_DDD_by_year,
              aes(x = as.integer(year), y = total_DDD / 1e6),
              color = colour_care_primary, size = 3) +
   geom_line(data = Secondary_DDD_by_year,
@@ -365,7 +365,7 @@ combined_line_plot <- ggplot() +
   labs(x = "Year", y = "Total DDD (millions)") +
   scale_y_to_next_tick(
     values = c(
-      Primaryy_DDD_by_year$total_DDD / 1e6,
+      Primary_DDD_by_year$total_DDD / 1e6,
       Secondary_DDD_by_year$total_DDD / 1e6,
       HospitalFP10_DDD_by_year$total_DDD / 1e6,
       combined_totals_by_year$total_DDD / 1e6
@@ -389,10 +389,10 @@ combined_line_plot <- ggplot() +
 ggsave(here(plots_dir, "combined_line_all_sources.png"), combined_line_plot, width = 10, height = 6, dpi = 300)
 
 combined_line_plot_legend <- ggplot() +
-  geom_line(data = Primaryy_DDD_by_year,
+  geom_line(data = Primary_DDD_by_year,
             aes(x = as.integer(year), y = total_DDD / 1e6, color = "Primary care"),
             linewidth = 1.2) +
-  geom_point(data = Primaryy_DDD_by_year,
+  geom_point(data = Primary_DDD_by_year,
              aes(x = as.integer(year), y = total_DDD / 1e6, color = "Primary care"),
              size = 3) +
   geom_line(data = Secondary_DDD_by_year,
@@ -425,7 +425,7 @@ combined_line_plot_legend <- ggplot() +
   labs(x = "Year", y = "DDDs (millions)") +
   scale_y_to_next_tick(
     values = c(
-      Primaryy_DDD_by_year$total_DDD / 1e6,
+      Primary_DDD_by_year$total_DDD / 1e6,
       Secondary_DDD_by_year$total_DDD / 1e6,
       HospitalFP10_DDD_by_year$total_DDD / 1e6,
       combined_totals_by_year$total_DDD / 1e6
