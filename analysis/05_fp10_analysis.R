@@ -43,52 +43,50 @@ Hospital_FP10_data2024 <- read_excel(here("data", "secondary_care_fp10", "FP10_2
 
 Hospital_FP10_all <- bind_rows(Hospital_FP10_data, Hospital_FP10_data2024)
 
-df_primarycare2 <- read.csv(
-  here("data", "primary_care_fp10_products_strength.csv")
-)
-Hospital_FP10_all <- merge(
-  Hospital_FP10_all,
-  df_primarycare2[, c("bnf_code", "strnt_nmrtr_val")],
-  by.x = "BNF_CODE",
-  by.y = "bnf_code",
-  all.x = TRUE
+product_mapping <- read.csv(
+  here("data", "primary_care_fp10_products_strength.csv"),
+  colClasses = c(bnf_code = "character")
 )
 
-New_Hospital_FP10_data <- Hospital_FP10_all %>%
+message("Hospital FP10: ", nrow(Hospital_FP10_all), " rows before BNF aggregation")
+Hospital_FP10_base <- Hospital_FP10_all %>%
+  group_by(PERIOD, HOSPITAL_TRUST_CODE, HOSPITAL_TRUST, BNF_CODE) %>%
+  summarise(
+    TOTAL_QUANTITY = sum(TOTAL_QUANTITY, na.rm = TRUE),
+    TOTAL_ITEMS = sum(TOTAL_ITEMS, na.rm = TRUE),
+    TOTAL_ACTUAL_COST = sum(TOTAL_ACTUAL_COST, na.rm = TRUE),
+    TOTAL_NIC = sum(TOTAL_NIC, na.rm = TRUE),
+    .groups = "drop"
+  ) %>%
+  rename(bnf_code = BNF_CODE)
+message("Hospital FP10: ", nrow(Hospital_FP10_base), " rows after BNF aggregation")
+
+message("Hospital FP10: ", nrow(Hospital_FP10_base), " rows before product mapping join")
+after_product <- Hospital_FP10_base %>%
+  inner_join(
+    product_mapping %>%
+      select(bnf_code, bnf_name, nm, strnt_nmrtr_val, chemical),
+    by = "bnf_code"
+  ) %>%
   mutate(
-    chemical = case_when(
-      BNF_CODE %in% c(
-        "0402030K0BBAAAC", # Camcolit 250 tablets
-        "0402030K0BBABAF", # Camcolit 400 modified-release tablets
-        "0402030K0BDAAAG", # Liskonum 450mg modified-release tablets
-        "0402030K0AAAIAI", # Lithium carbonate 200mg modified-release tablets
-        "0402030K0AAAPAP", # Lithium carbonate 200mg/5ml oral suspension
-        "0402030K0AAACAC", # Lithium carbonate 250mg tablets
-        "0402030K0AAAFAF", # Lithium carbonate 400mg modified-release tablets
-        "0402030K0AAAGAG", # Lithium carbonate 450mg modified-release tablets
-        "0402030K0BGAAAF", # Lithonate 400mg modified-release tablets
-        "0402030K0BFABAI", # Priadel 200mg modified-release tablets
-        "0402030K0BFAAAF"  # Priadel 400mg modified-release tablets
-      ) ~ "Lithium carbonate",
-      BNF_CODE %in% c(
-        "0402030P0BDABAK", # Li-Liquid 1.018g/5ml oral solution
-        "0402030P0BDAAAL", # Li-Liquid 509mg/5ml oral solution
-        "0402030P0AAAKAK", # Lithium citrate 1.018g/5ml oral solution
-        "0402030P0AAALAL", # Lithium citrate 509mg/5ml oral solution
-        "0402030P0AAAIAI", # Lithium citrate 520mg/5ml oral solution sugar free
-        "0402030P0BCAAAI", # Priadel 520mg/5ml liquid
-        "0402030P0AAAJAJ"  # Lithium citrate 10.8mmol/5ml oral solution sugar free
-      ) ~ "Lithium citrate",
-      TRUE ~ "Other"
-    ),
     quantity_mg = TOTAL_QUANTITY * strnt_nmrtr_val,
     mmol = case_when(
-      chemical == "Lithium carbonate" ~ quantity_mg / 37.04,
-      chemical == "Lithium citrate" ~ quantity_mg / 94.26,
+      chemical == "Lithium Carbonate" ~ quantity_mg / 37.04,
+      chemical == "Lithium Citrate" ~ quantity_mg / 94.26,
       TRUE ~ NA_real_
     ),
     DDD = mmol / 24
   )
+n_unmapped <- nrow(Hospital_FP10_base) - nrow(after_product)
+message(
+  "Hospital FP10: ",
+  nrow(after_product),
+  " rows after product mapping join (",
+  n_unmapped,
+  " rows dropped, unmapped BNF)"
+)
+
+New_Hospital_FP10_data <- after_product
 
 secondary_care_trusts <- read_csv(here("data", "secondary_care", "secondary_care_trusts.csv"), show_col_types = FALSE)
 trust_mapping <- secondary_care_trusts %>%
@@ -134,13 +132,13 @@ HospitalFP10_DDD_by_year <- Hospital_FP10_data %>%
   ungroup()
 
 hospital_fp10_product_DDD <- New_Hospital_FP10_data %>%
-  group_by(product_code = BNF_CODE, product_name = BNF_NAME) %>%
+  group_by(product_code = bnf_code, product_name = bnf_name) %>%
   summarise(total_DDD = sum(DDD, na.rm = TRUE), .groups = "drop") %>%
   arrange(desc(total_DDD), product_name)
 
 hospital_fp10_product_DDD_by_year <- New_Hospital_FP10_data %>%
   mutate(year = format(as.Date(PERIOD), "%Y")) %>%
-  group_by(year, product_code = BNF_CODE, product_name = BNF_NAME) %>%
+  group_by(year, product_code = bnf_code, product_name = bnf_name) %>%
   summarise(total_DDD = sum(DDD, na.rm = TRUE), .groups = "drop")
 
 hospitalFP10_line <- ggplot(HospitalFP10_DDD_by_year,
