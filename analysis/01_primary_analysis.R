@@ -2,20 +2,16 @@ source(here::here("analysis", "00_setup.R"))
 
 # Import primary care dataset
 Practice_codes <- read_excel(here("data", "primary_care", "practice_codes.xlsx"))
-merged_data <- read.csv(gzfile(here("data", "primary_care", "primary_lithium.csv.gz"))) %>%
+df_primarycare2 <- read.csv(here("data", "primary_care", "primary_care.csv"))
+
+PRIMARYCARE_dataset <- read.csv(gzfile(here("data", "primary_care", "primary_lithium.csv.gz"))) %>%
   mutate(month = as.Date(month)) %>%
   left_join(Practice_codes, by = c("practice" = "code")) %>%
-  filter(setting == 4)
-
-df_primarycare2 <- read.csv(here("data", "primary_care", "primary_care.csv"))
-PRIMARYCARE_dataset <- merge(
-  merged_data,
-  df_primarycare2[, c("bnf_code", "nm", "strnt_nmrtr_val")],
-  by = "bnf_code",
-  all.x = TRUE
-)
-
-PRIMARYCARE_dataset <- PRIMARYCARE_dataset %>%
+  filter(setting == 4) %>% # GP practices only
+  left_join(
+    df_primarycare2 %>% select(bnf_code, nm, strnt_nmrtr_val),
+    by = "bnf_code"
+  ) %>%
   mutate(
     chemical = case_when(
       bnf_code %in% c(
@@ -54,6 +50,10 @@ PRIMARYCARE_dataset <- PRIMARYCARE_dataset %>%
   ) %>%
   filter(month >= as.Date("2015-01-01"), month <= as.Date("2024-12-31"))
 
+if (nrow(PRIMARYCARE_dataset) == 0L) {
+  stop("No primary care rows after filters.")
+}
+
 Primary_DDD_by_year <- PRIMARYCARE_dataset %>%
   group_by(year) %>%
   summarise(total_DDD = sum(DDD, na.rm = TRUE), .groups = "drop")
@@ -73,7 +73,7 @@ primary_line <- ggplot(Primary_DDD_by_year, aes(x = year, y = total_DDD / 1e6)) 
   labs(x = "Year", y = "Total DDD (millions)") +
   scale_y_to_next_tick(
     values = Primary_DDD_by_year$total_DDD / 1e6,
-    labels = function(x) format(x, scientific = FALSE, big.mark = ",")
+    labels = scales::label_number(accuracy = 0.1)
   ) +
   scale_x_continuous(breaks = 2015:2024, expand = expansion(mult = c(0.02, 0.02))) +
   theme_lithium(base_size = 13) +
