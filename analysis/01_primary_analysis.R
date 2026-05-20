@@ -1,12 +1,9 @@
 source(here::here("analysis", "00_setup.R"))
 
 # Import primary care dataset
-PrimaryCare_Lithium <- read.csv(gzfile(here("data", "primary_care", "primary_lithium.csv.gz")))
-PrimaryCare_Lithium <- PrimaryCare_Lithium %>%
-  mutate(month = as.Date(month))
-
 Practice_codes <- read_excel(here("data", "primary_care", "practice_codes.xlsx"))
-merged_data <- PrimaryCare_Lithium %>%
+merged_data <- read.csv(gzfile(here("data", "primary_care", "primary_lithium.csv.gz"))) %>%
+  mutate(month = as.Date(month)) %>%
   left_join(Practice_codes, by = c("practice" = "code")) %>%
   filter(setting == 4)
 
@@ -59,8 +56,7 @@ PRIMARYCARE_dataset <- PRIMARYCARE_dataset %>%
 
 Primary_DDD_by_year <- PRIMARYCARE_dataset %>%
   group_by(year) %>%
-  summarise(total_DDD = sum(DDD, na.rm = TRUE)) %>%
-  ungroup()
+  summarise(total_DDD = sum(DDD, na.rm = TRUE), .groups = "drop")
 
 primary_product_DDD <- PRIMARYCARE_dataset %>%
   group_by(product_code = bnf_code, product_name = bnf_name) %>%
@@ -109,19 +105,15 @@ primary_bar <- ggplot(Primary_DDD_by_year, aes(x = as.factor(year), y = total_DD
   )
 ggsave(here(plots_dir, "primary_bar_trends.png"), primary_bar, width = 8, height = 5, dpi = 300)
 
-lithium_df_primary <- PRIMARYCARE_dataset %>%
+primary_lithium_df <- PRIMARYCARE_dataset %>%
+  filter(!is.na(Region)) %>%
   group_by(Region) %>%
-  summarise(total_DDD = sum(DDD, na.rm = TRUE)) %>%
+  summarise(
+    total_DDD = sum(DDD, na.rm = TRUE),
+    total_DDD_2024 = sum(DDD[year == 2024L], na.rm = TRUE),
+    .groups = "drop"
+  ) %>%
   mutate(Region = as.factor(Region)) %>%
-  filter(!is.na(Region))
-
-total_primary_DDD_by_region_2024 <- PRIMARYCARE_dataset %>%
-  filter(year == 2024L) %>%
-  group_by(Region) %>%
-  summarise(total_DDD_2024 = sum(DDD, na.rm = TRUE))
-
-primary_lithium_df <- lithium_df_primary %>%
-  left_join(total_primary_DDD_by_region_2024, by = "Region") %>%
   add_population_for_year(region_col = "Region", population_year = 2024L) %>%
   mutate(DDDs_per_1000 = round(total_DDD_2024 / population * 1000, 2))
 
@@ -211,8 +203,7 @@ ggsave(here(plots_dir, "primary_hist_ddd_pop.png"), primaryhist, width = 8, heig
 
 Primary_DDD_by_year_region <- PRIMARYCARE_dataset %>%
   group_by(year, Region) %>%
-  summarise(total_DDD = sum(DDD, na.rm = TRUE)) %>%
-  ungroup() %>%
+  summarise(total_DDD = sum(DDD, na.rm = TRUE), .groups = "drop") %>%
   add_population_by_year(year_col = "year", region_col = "Region") %>%
   mutate(DDDs_per_1000 = round(total_DDD / population * 1000, 2))
 
