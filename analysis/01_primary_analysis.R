@@ -21,34 +21,34 @@ PRIMARYCARE_dataset <- merge(
 PRIMARYCARE_dataset <- PRIMARYCARE_dataset %>%
   mutate(
     chemical = case_when(
-      bnf_name %in% c(
-        "Camcolit 250 tablets",
-        "Camcolit 400 modified-release tablets",
-        "Liskonum 450mg modified-release tablets",
-        "Lithium carbonate 200mg modified-release tablets",
-        "Lithium carbonate 200mg/5ml oral suspension",
-        "Lithium carbonate 250mg tablets",
-        "Lithium carbonate 400mg modified-release tablets",
-        "Lithium carbonate 450mg modified-release tablets",
-        "Lithonate 400mg modified-release tablets",
-        "Priadel 200mg modified-release tablets",
-        "Priadel 400mg modified-release tablets"
+      bnf_code %in% c(
+        "0402030K0BBAAAC", # Camcolit 250 tablets
+        "0402030K0BBABAF", # Camcolit 400 modified-release tablets
+        "0402030K0BDAAAG", # Liskonum 450mg modified-release tablets
+        "0402030K0AAAIAI", # Lithium carbonate 200mg modified-release tablets
+        "0402030K0AAAPAP", # Lithium carbonate 200mg/5ml oral suspension
+        "0402030K0AAACAC", # Lithium carbonate 250mg tablets
+        "0402030K0AAAFAF", # Lithium carbonate 400mg modified-release tablets
+        "0402030K0AAAGAG", # Lithium carbonate 450mg modified-release tablets
+        "0402030K0BGAAAF", # Lithonate 400mg modified-release tablets
+        "0402030K0BFABAI", # Priadel 200mg modified-release tablets
+        "0402030K0BFAAAF"  # Priadel 400mg modified-release tablets
       ) ~ "Lithium Carbonate",
-      bnf_name %in% c(
-        "Li-Liquid 1.018g/5ml oral solution",
-        "Li-Liquid 509mg/5ml oral solution",
-        "Lithium citrate 1.018g/5ml oral solution",
-        "Lithium citrate 509mg/5ml oral solution",
-        "Lithium citrate 520mg/5ml oral solution sugar free",
-        "Priadel 520mg/5ml liquid",
-        "Lithium citrate 10.8mmol/5ml oral solution sugar free"
+      bnf_code %in% c(
+        "0402030P0BDABAK", # Li-Liquid 1.018g/5ml oral solution
+        "0402030P0BDAAAL", # Li-Liquid 509mg/5ml oral solution
+        "0402030P0AAAKAK", # Lithium citrate 1.018g/5ml oral solution
+        "0402030P0AAALAL", # Lithium citrate 509mg/5ml oral solution
+        "0402030P0AAAIAI", # Lithium citrate 520mg/5ml oral solution sugar free
+        "0402030P0BCAAAI", # Priadel 520mg/5ml liquid
+        "0402030P0AAAJAJ"  # Lithium citrate 10.8mmol/5ml oral solution sugar free
       ) ~ "Lithium Citrate",
       TRUE ~ "Other"
     ),
     quantity_mg = quantity * strnt_nmrtr_val,
     mmol = case_when(
       chemical == "Lithium Carbonate" ~ quantity_mg / 37.04,
-      chemical == "Lithium Citrate" ~ quantity_mg / 69.98,
+      chemical == "Lithium Citrate" ~ quantity_mg / 94.26,
       TRUE ~ NA_real_
     ),
     DDD = mmol / 24

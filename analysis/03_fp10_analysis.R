@@ -43,74 +43,46 @@ Hospital_FP10_data2024 <- read_excel(here("data", "secondary_care_fp10", "FP10_2
 
 Hospital_FP10_all <- bind_rows(Hospital_FP10_data, Hospital_FP10_data2024)
 
+df_primarycare2 <- read.csv(here("data", "primary_care", "primary_care.csv"))
+Hospital_FP10_all <- merge(
+  Hospital_FP10_all,
+  df_primarycare2[, c("bnf_code", "strnt_nmrtr_val")],
+  by.x = "BNF_CODE",
+  by.y = "bnf_code",
+  all.x = TRUE
+)
+
 New_Hospital_FP10_data <- Hospital_FP10_all %>%
   mutate(
     chemical = case_when(
-      BNF_NAME %in% c(
-        "Lithium carbonate 400mg modified-release tablets",
-        "Lithium carbonate 200mg modified-release tablets",
-        "Priadel 200mg modified-release tablets",
-        "Priadel 400mg modified-release tablets",
-        "Lithium carbonate 450mg modified-release tablets",
-        "Priadel 520mg/5ml liquid",
-        "Lithium carbonate 250mg tablets",
-        "Camcolit 400 modified-release tablets",
-        "Priadel_Tab 400mg",
-        "Lithium Carb_Tab 400mg M/R",
-        "Lithium Carb_Tab 200mg M/R",
-        "Priadel_Tab 200mg",
-        "Camcolit 400_Tab 400mg",
-        "Lithium Carb_Tab 250mg",
-        "Camcolit 250_Tab 250mg",
-        "Lithium Carb_Tab 450mg M/R",
-        "Lithium Carb_Liq Spec 200mg/5ml",
-        "Lithium carbonate 200mg/5ml oral suspension",
-        "Camcolit 250 tablets",
-        "Liskonum 450mg modified-release tablets",
-        "Liskonum_Tab 450mg M/R"
-      ) ~ "Lithium Carbonate",
-      BNF_NAME %in% c(
-        "Li-Liquid 509mg/5ml oral solution",
-        "Lithium citrate 509mg/5ml oral solution",
-        "Lithium citrate 520mg/5ml oral solution sugar free",
-        "Lithium Cit_Oral Soln 1.018g/5ml",
-        "Lithium Cit_Oral Soln 520mg/5ml S/F",
-        "Lithium Cit_Oral Soln 509mg/5ml",
-        "Li-Liquid_Syr 10.8mmol/5ml",
-        "Priadel_Liq 520mg/5ml S/F",
-        "Li-Liquid_Syr 5.4mmol/5ml",
-        "Lithium citrate 1.018g/5ml oral solution",
-        "Li-Liquid 1.018g/5ml oral solution"
-      ) ~ "Lithium Citrate",
-      TRUE ~ "Other"
-    )
-  ) %>%
-  mutate(
-    chemical = case_when(
-      str_detect(chemical, regex("Lithium Carbonate", ignore_case = TRUE)) ~ "Lithium carbonate",
-      str_detect(chemical, regex("Lithium Citrate", ignore_case = TRUE)) ~ "Lithium citrate",
+      BNF_CODE %in% c(
+        "0402030K0BBAAAC", # Camcolit 250 tablets
+        "0402030K0BBABAF", # Camcolit 400 modified-release tablets
+        "0402030K0BDAAAG", # Liskonum 450mg modified-release tablets
+        "0402030K0AAAIAI", # Lithium carbonate 200mg modified-release tablets
+        "0402030K0AAAPAP", # Lithium carbonate 200mg/5ml oral suspension
+        "0402030K0AAACAC", # Lithium carbonate 250mg tablets
+        "0402030K0AAAFAF", # Lithium carbonate 400mg modified-release tablets
+        "0402030K0AAAGAG", # Lithium carbonate 450mg modified-release tablets
+        "0402030K0BGAAAF", # Lithonate 400mg modified-release tablets
+        "0402030K0BFABAI", # Priadel 200mg modified-release tablets
+        "0402030K0BFAAAF"  # Priadel 400mg modified-release tablets
+      ) ~ "Lithium carbonate",
+      BNF_CODE %in% c(
+        "0402030P0BDABAK", # Li-Liquid 1.018g/5ml oral solution
+        "0402030P0BDAAAL", # Li-Liquid 509mg/5ml oral solution
+        "0402030P0AAAKAK", # Lithium citrate 1.018g/5ml oral solution
+        "0402030P0AAALAL", # Lithium citrate 509mg/5ml oral solution
+        "0402030P0AAAIAI", # Lithium citrate 520mg/5ml oral solution sugar free
+        "0402030P0BCAAAI", # Priadel 520mg/5ml liquid
+        "0402030P0AAAJAJ"  # Lithium citrate 10.8mmol/5ml oral solution sugar free
+      ) ~ "Lithium citrate",
       TRUE ~ "Other"
     ),
-    quantity_basis = case_when(
-      str_detect(BNF_NAME, regex("liq|oral soln|solution|syrup|ml", ignore_case = TRUE)) ~ "ml",
-      str_detect(BNF_NAME, regex("tab|tablet", ignore_case = TRUE)) ~ "tablet",
-      TRUE ~ NA_character_
-    ),
-    strength_numerator_value = case_when(
-      str_detect(BNF_NAME, "mg/5ml") ~ as.numeric(str_extract(BNF_NAME, "(?i)(\\d+\\.?\\d*)(?=mg/5ml)")),
-      str_detect(BNF_NAME, "mg") & !str_detect(BNF_NAME, "mg/5ml") ~ as.numeric(str_extract(BNF_NAME, "(?i)(\\d+\\.?\\d*)(?=mg)")),
-      str_detect(BNF_NAME, "g/5ml") ~ as.numeric(str_extract(BNF_NAME, "(?i)(\\d+\\.?\\d*)(?=g/5ml)")) * 1000,
-      TRUE ~ NA_real_
-    ),
-    total_mg = case_when(
-      chemical == "Lithium carbonate" & quantity_basis == "tablet" ~ TOTAL_QUANTITY * strength_numerator_value,
-      TRUE ~ NA_real_
-    ),
+    quantity_mg = TOTAL_QUANTITY * strnt_nmrtr_val,
     mmol = case_when(
-      chemical == "Lithium carbonate" ~ total_mg / 37.04,
-      chemical == "Lithium citrate" & str_detect(BNF_NAME, "509") ~ (TOTAL_QUANTITY / 5) * 5.4,
-      chemical == "Lithium citrate" & str_detect(BNF_NAME, "520") ~ (TOTAL_QUANTITY / 5) * 5.4,
-      chemical == "Lithium citrate" & str_detect(BNF_NAME, "1.018") ~ (TOTAL_QUANTITY / 5) * 10.8,
+      chemical == "Lithium carbonate" ~ quantity_mg / 37.04,
+      chemical == "Lithium citrate" ~ quantity_mg / 94.26,
       TRUE ~ NA_real_
     ),
     DDD = mmol / 24
