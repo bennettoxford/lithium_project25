@@ -1,7 +1,14 @@
 source(here::here("analysis", "00_setup.R"))
 
 # Import primary care dataset
-Practice_codes <- read_excel(here("data", "primary_care", "practice_codes.xlsx"))
+Practice_codes <- read_excel(
+  here("data", "primary_care", "practice_codes.xlsx"),
+  col_types = c(
+    rep("text", 11),
+    "numeric",
+    rep("text", 5)
+  )
+)
 product_mapping <- read.csv(
   here("data", "primary_care_fp10_products_strength.csv"),
   colClasses = c(bnf_code = "character")
