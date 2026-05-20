@@ -51,20 +51,9 @@ PRIMARYCARE_dataset <- PRIMARYCARE_dataset %>%
       chemical == "Lithium Citrate" ~ quantity_mg / 94.26,
       TRUE ~ NA_real_
     ),
-    DDD = mmol / 24
-  )
-
-region_mapping <- c(
-  "Y60" = "Midlands",
-  "Y63" = "North East And Yorkshire",
-  "Y59" = "South East",
-  "Y61" = "East of England",
-  "Y62" = "North West",
-  "Y56" = "London",
-  "Y58" = "South West"
-)
-PRIMARYCARE_dataset$Region <- region_mapping[PRIMARYCARE_dataset$regional_team]
-PRIMARYCARE_dataset <- PRIMARYCARE_dataset %>%
+    DDD = mmol / 24,
+    Region = nhser_to_Region[as.character(regional_team)]
+  ) %>%
   filter(month >= as.Date("2015-01-01") & month <= as.Date("2024-12-31"))
 
 PRIMARYCARE_dataset <- PRIMARYCARE_dataset %>%
