@@ -175,7 +175,9 @@ coverage_map_label_layers_data <- function(
     ))
   }
 
-  pts <- sf::st_point_on_surface(sf::st_geometry(coverage_sf))
+  coverage_proj <- sf::st_transform(coverage_sf, 27700)
+  pts <- sf::st_point_on_surface(sf::st_geometry(coverage_proj))
+  pts <- sf::st_transform(pts, 4326)
   crd <- sf::st_coordinates(pts)
   nm <- coverage_sf[[region_col]]
   val <- coverage_sf[[value_col]]
