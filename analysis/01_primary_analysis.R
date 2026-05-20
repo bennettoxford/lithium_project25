@@ -52,31 +52,26 @@ PRIMARYCARE_dataset <- PRIMARYCARE_dataset %>%
       TRUE ~ NA_real_
     ),
     DDD = mmol / 24,
-    Region = nhser_to_Region[as.character(regional_team)]
+    Region = nhser_to_Region[as.character(regional_team)],
+    year = year(month)
   ) %>%
-  filter(month >= as.Date("2015-01-01") & month <= as.Date("2024-12-31"))
-
-PRIMARYCARE_dataset <- PRIMARYCARE_dataset %>%
-  mutate(year = format(as.Date(month), "%Y"))
+  filter(month >= as.Date("2015-01-01"), month <= as.Date("2024-12-31"))
 
 Primary_DDD_by_year <- PRIMARYCARE_dataset %>%
-  filter(as.integer(year) <= 2024L) %>%
   group_by(year) %>%
   summarise(total_DDD = sum(DDD, na.rm = TRUE)) %>%
   ungroup()
 
 primary_product_DDD <- PRIMARYCARE_dataset %>%
-  filter(as.integer(year) <= 2024L) %>%
   group_by(product_code = bnf_code, product_name = bnf_name) %>%
   summarise(total_DDD = sum(DDD, na.rm = TRUE), .groups = "drop") %>%
   arrange(desc(total_DDD), product_name)
 
 primary_product_DDD_by_year <- PRIMARYCARE_dataset %>%
-  filter(as.integer(year) <= 2024L) %>%
   group_by(year, product_code = bnf_code, product_name = bnf_name) %>%
   summarise(total_DDD = sum(DDD, na.rm = TRUE), .groups = "drop")
 
-primary_line <- ggplot(Primary_DDD_by_year, aes(x = as.integer(year), y = total_DDD / 1e6)) +
+primary_line <- ggplot(Primary_DDD_by_year, aes(x = year, y = total_DDD / 1e6)) +
   geom_line(linewidth = 1.2, color = colour_care_primary) +
   geom_point(size = 3, color = colour_care_primary) +
   labs(x = "Year", y = "Total DDD (millions)") +
@@ -121,7 +116,7 @@ lithium_df_primary <- PRIMARYCARE_dataset %>%
   filter(!is.na(Region))
 
 total_primary_DDD_by_region_2024 <- PRIMARYCARE_dataset %>%
-  filter(year(month) == 2024) %>%
+  filter(year == 2024L) %>%
   group_by(Region) %>%
   summarise(total_DDD_2024 = sum(DDD, na.rm = TRUE))
 
@@ -215,9 +210,6 @@ primaryhist <- ggplot(primary_lithium_df, aes(x = Region, y = DDDs_per_1000)) +
 ggsave(here(plots_dir, "primary_hist_ddd_pop.png"), primaryhist, width = 8, height = 5, dpi = 300)
 
 Primary_DDD_by_year_region <- PRIMARYCARE_dataset %>%
-  mutate(month = as.Date(month)) %>%
-  mutate(year = year(month)) %>%
-  filter(year <= 2024L) %>%
   group_by(year, Region) %>%
   summarise(total_DDD = sum(DDD, na.rm = TRUE)) %>%
   ungroup() %>%
