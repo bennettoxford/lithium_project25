@@ -70,7 +70,7 @@ PRIMARYCARE_dataset <- PRIMARYCARE_dataset %>%
 PRIMARYCARE_dataset <- PRIMARYCARE_dataset %>%
   mutate(year = format(as.Date(month), "%Y"))
 
-Primaryy_DDD_by_year <- PRIMARYCARE_dataset %>%
+Primary_DDD_by_year <- PRIMARYCARE_dataset %>%
   filter(as.integer(year) <= 2024L) %>%
   group_by(year) %>%
   summarise(total_DDD = sum(DDD, na.rm = TRUE)) %>%
@@ -87,12 +87,12 @@ primary_product_DDD_by_year <- PRIMARYCARE_dataset %>%
   group_by(year, product_code = bnf_code, product_name = bnf_name) %>%
   summarise(total_DDD = sum(DDD, na.rm = TRUE), .groups = "drop")
 
-primary_line <- ggplot(Primaryy_DDD_by_year, aes(x = as.integer(year), y = total_DDD / 1e6)) +
+primary_line <- ggplot(Primary_DDD_by_year, aes(x = as.integer(year), y = total_DDD / 1e6)) +
   geom_line(linewidth = 1.2, color = colour_care_primary) +
   geom_point(size = 3, color = colour_care_primary) +
   labs(x = "Year", y = "Total DDD (millions)") +
   scale_y_to_next_tick(
-    values = Primaryy_DDD_by_year$total_DDD / 1e6,
+    values = Primary_DDD_by_year$total_DDD / 1e6,
     labels = function(x) format(x, scientific = FALSE, big.mark = ",")
   ) +
   scale_x_continuous(breaks = 2015:2024, expand = expansion(mult = c(0.02, 0.02))) +
@@ -103,7 +103,7 @@ primary_line <- ggplot(Primaryy_DDD_by_year, aes(x = as.integer(year), y = total
   )
 ggsave(here(plots_dir, "primary_line_trends.png"), primary_line, width = 8, height = 5, dpi = 300)
 
-primary_bar <- ggplot(Primaryy_DDD_by_year, aes(x = as.factor(year), y = total_DDD / 1e6)) +
+primary_bar <- ggplot(Primary_DDD_by_year, aes(x = as.factor(year), y = total_DDD / 1e6)) +
   geom_bar(stat = "identity", fill = colour_care_primary, width = 0.6) +
   geom_text(
     aes(label = format(round(total_DDD / 1e6, 1), nsmall = 1)),
@@ -113,7 +113,7 @@ primary_bar <- ggplot(Primaryy_DDD_by_year, aes(x = as.factor(year), y = total_D
   ) +
   labs(x = "Year", y = "Total DDD (millions)") +
   scale_y_to_next_tick(
-    values = Primaryy_DDD_by_year$total_DDD / 1e6,
+    values = Primary_DDD_by_year$total_DDD / 1e6,
     labels = function(x) format(x, scientific = FALSE, big.mark = ",")
   ) +
   scale_x_discrete(expand = expansion(mult = c(0.02, 0.02))) +
@@ -236,7 +236,7 @@ Primary_DDD_by_year_region <- PRIMARYCARE_dataset %>%
   mutate(DDDs_per_1000 = round(total_DDD / population * 1000, 2))
 
 write.csv(
-  format_ddd_by_year_for_export(Primaryy_DDD_by_year, "year"),
+  format_ddd_by_year_for_export(Primary_DDD_by_year, "year"),
   here(data_dir, "primary_DDD_by_year.csv"),
   row.names = FALSE
 )
