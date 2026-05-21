@@ -119,7 +119,6 @@ primary_bar <- ggplot(Primary_DDD_by_year, aes(x = as.factor(year), y = total_DD
 ggsave(here(plots_dir, "primary_bar_trends.png"), primary_bar, width = 8, height = 5, dpi = 300)
 
 primary_lithium_df <- PRIMARYCARE_dataset %>%
-  filter(!is.na(Region)) %>%
   group_by(Region) %>%
   summarise(
     total_DDD = sum(DDD, na.rm = TRUE),

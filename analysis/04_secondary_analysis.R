@@ -76,7 +76,6 @@ secondary_bar <- ggplot(Secondary_DDD_by_year, aes(x = as.factor(year), y = tota
 ggsave(here(plots_dir, "secondary_bar_trends.png"), secondary_bar, width = 8, height = 5, dpi = 300)
 
 secondary_lithium_df <- Lithium_SCMD %>%
-  filter(!is.na(region)) %>%
   group_by(region) %>%
   summarise(
     total_DDD = sum(DDD, na.rm = TRUE),
