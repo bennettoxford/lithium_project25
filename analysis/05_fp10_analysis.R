@@ -42,12 +42,15 @@ message("Hospital FP10: ", nrow(hospital_fp10_base), " rows after BNF aggregatio
 secondary_care_trusts <- read_csv(here("data", "secondary_care", "secondary_care_trusts.csv"), show_col_types = FALSE)
 trust_mapping <- secondary_care_trusts %>%
   mutate(trust_code_prefix = substr(`Trust Code`, 1, 3)) %>%
-  select(trust_code_prefix, region = Region) %>%
+  transmute(
+    trust_code_prefix,
+    region = normalise_nhs_region(Region)
+  ) %>%
   distinct(trust_code_prefix, .keep_all = TRUE)
 
 region_mapping <- c(
-  "RCE" = "North East And Yorkshire",
-  "RK7" = "North East And Yorkshire",
+  "RCE" = "North East and Yorkshire",
+  "RK7" = "North East and Yorkshire",
   "RQ4" = "Midlands",
   "RRQ" = "London",
   "RNJ" = "London",
@@ -74,12 +77,10 @@ hospital_fp10_dataset <- hospital_fp10_base %>%
   mutate(trust_code_prefix = substr(HOSPITAL_TRUST_CODE, 1, 3)) %>%
   left_join(trust_mapping, by = "trust_code_prefix") %>%
   mutate(
-    region = if_else(
-      is.na(region) & trust_code_prefix %in% names(region_mapping),
-      region_mapping[trust_code_prefix],
-      region
-    ),
-    Region = normalise_nhs_region(region),
+    region = normalise_nhs_region(coalesce(
+      region,
+      region_mapping[trust_code_prefix]
+    )),
     year = year(PERIOD)
   ) %>%
   filter(
@@ -158,24 +159,24 @@ hospital_fp10_line <- ggplot(hospital_fp10_DDD_by_year, aes(x = year, y = total_
 ggsave(here(plots_dir, "hospital_fp10_line_trends.png"), hospital_fp10_line, width = 8, height = 5, dpi = 300)
 
 hospital_fp10_DDD_by_year_region <- hospital_fp10_regional %>%
-  group_by(year, Region) %>%
+  group_by(year, region) %>%
   summarise(total_DDD = sum(DDD, na.rm = TRUE), .groups = "drop") %>%
-  add_population_by_year(year_col = "year", region_col = "Region") %>%
+  add_population_by_year(year_col = "year", region_col = "region") %>%
   mutate(DDDs_per_1000 = round(total_DDD / population * 1000, 2))
 
 hospital_fp10_DDD_by_region_2024 <- hospital_fp10_DDD_by_year_region %>%
   filter(year == 2024L) %>%
   transmute(
-    Region = as.factor(Region),
+    region = as.factor(region),
     total_DDD_2024 = total_DDD,
     population,
     DDDs_per_1000
   )
 
 coverage_data_fp10 <- nhs_regions_sf %>%
-  left_join(hospital_fp10_DDD_by_region_2024, by = "Region")
+  left_join(hospital_fp10_DDD_by_region_2024, by = "region")
 
-fp10_label_d <- coverage_map_label_layers_data(coverage_data_fp10, "Region")
+fp10_label_d <- coverage_map_label_layers_data(coverage_data_fp10, "region")
 fp10_label_pts <- dplyr::bind_rows(fp10_label_d$other, fp10_label_d$london_txt)
 fp10_label_halo <- coverage_map_label_halo_rect(fp10_label_pts)
 
@@ -239,7 +240,7 @@ hospital_fp10_coverage_plot <- ggplot() +
   ylab("")
 ggsave(here(plots_dir, "fp10_coverage_map.png"), hospital_fp10_coverage_plot, width = 8, height = 6, dpi = 300)
 
-hospital_fp10_hist <- ggplot(hospital_fp10_DDD_by_region_2024, aes(x = Region, y = DDDs_per_1000)) +
+hospital_fp10_hist <- ggplot(hospital_fp10_DDD_by_region_2024, aes(x = region, y = DDDs_per_1000)) +
   geom_col(fill = colour_care_fp10) +
   geom_text(aes(label = sprintf("%.2f", DDDs_per_1000)), vjust = -0.3, size = 3.5) +
   theme_lithium() +

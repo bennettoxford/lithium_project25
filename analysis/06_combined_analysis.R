@@ -4,12 +4,18 @@ Primary_DDD_by_year <- read_ddd_by_year_export_csv(here(data_dir, "primary_DDD_b
 Secondary_DDD_by_year <- read_ddd_by_year_export_csv(here(data_dir, "secondary_DDD_by_year.csv"))
 hospital_fp10_DDD_by_year <- read_ddd_by_year_export_csv(here(data_dir, "hospital_fp10_DDD_by_year.csv")) %>%
   mutate(PERIOD = year)
-primary_lithium_df <- read.csv(here(data_dir, "primary_lithium_by_region.csv"))
-secondary_lithium_df <- read.csv(here(data_dir, "secondary_lithium_by_region.csv"))
-hospital_fp10_DDD_by_region_2024 <- read.csv(here(data_dir, "hospital_fp10_DDD_by_region_2024.csv"))
-Primary_DDD_by_year_region <- read.csv(here(data_dir, "primary_DDD_by_year_region.csv"))
-Secondary_DDD_by_year_region <- read.csv(here(data_dir, "secondary_DDD_by_year_region.csv"))
-hospital_fp10_DDD_by_year_region <- read.csv(here(data_dir, "hospital_fp10_DDD_by_year_region.csv"))
+primary_lithium_df <- read.csv(here(data_dir, "primary_lithium_by_region.csv")) %>%
+  ensure_region_column()
+secondary_lithium_df <- read.csv(here(data_dir, "secondary_lithium_by_region.csv")) %>%
+  ensure_region_column()
+hospital_fp10_DDD_by_region_2024 <- read.csv(here(data_dir, "hospital_fp10_DDD_by_region_2024.csv")) %>%
+  ensure_region_column()
+Primary_DDD_by_year_region <- read.csv(here(data_dir, "primary_DDD_by_year_region.csv")) %>%
+  ensure_region_column()
+Secondary_DDD_by_year_region <- read.csv(here(data_dir, "secondary_DDD_by_year_region.csv")) %>%
+  ensure_region_column()
+hospital_fp10_DDD_by_year_region <- read.csv(here(data_dir, "hospital_fp10_DDD_by_year_region.csv")) %>%
+  ensure_region_column()
 primary_product_DDD <- read.csv(here(data_dir, "primary_product_DDD.csv"), colClasses = c(product_code = "character"))
 secondary_product_DDD <- read.csv(here(data_dir, "secondary_product_DDD.csv"), colClasses = c(product_code = "character"))
 hospital_fp10_product_DDD <- read.csv(here(data_dir, "hospital_fp10_product_DDD.csv"), colClasses = c(product_code = "character"))
@@ -453,36 +459,23 @@ ggsave(here(plots_dir, "combined_line_all_sources_legend.png"), combined_line_pl
 
 # Stacked bar plot
 primary_lithium_df <- primary_lithium_df %>%
-  mutate(
-    Region = ifelse(tolower(Region) == "east of england", "East of England", as.character(Region)),
-    Source = "Primary"
-  )
+  mutate(Source = "Primary")
 secondary_lithium_df <- secondary_lithium_df %>%
-  mutate(
-    Region = ifelse(tolower(region) == "east of england", "East of England", as.character(region)),
-    Source = "Secondary"
-  )
+  mutate(Source = "Secondary")
 hospital_fp10_DDD_by_region_2024 <- hospital_fp10_DDD_by_region_2024 %>%
-  mutate(
-    Region = ifelse(
-      tolower(if ("Region" %in% names(.)) Region else region) == "east of england",
-      "East of England",
-      as.character(if ("Region" %in% names(.)) Region else region)
-    ),
-    Source = "Hospital FP10"
-  )
+  mutate(Source = "Hospital FP10")
 
 combined_df_all <- bind_rows(primary_lithium_df, secondary_lithium_df, hospital_fp10_DDD_by_region_2024) %>%
   mutate(Source = factor(Source, levels = c("Primary", "Secondary", "Hospital FP10"))) %>%
   select(
-    Region,
+    region,
     population,
     total_DDD_2024,
     DDDs_per_1000,
     Source
   )
 
-stacked_bar_plot <- ggplot(combined_df_all, aes(x = Region, y = DDDs_per_1000, fill = Source)) +
+stacked_bar_plot <- ggplot(combined_df_all, aes(x = region, y = DDDs_per_1000, fill = Source)) +
   geom_col(color = "black") +
   scale_y_continuous(labels = scales::label_number(accuracy = 0.01)) +
   scale_fill_manual(
@@ -499,24 +492,15 @@ ggsave(here(plots_dir, "stacked_bar_regional_by_care.png"), stacked_bar_plot, wi
 
 # National DDD trends
 Primary_clean <- Primary_DDD_by_year_region %>%
-  mutate(
-    year = as.integer(year),
-    region = if ("Region" %in% names(.)) standardise_region(Region) else standardise_region(region)
-  ) %>%
+  mutate(year = as.integer(year)) %>%
   select(year, region, total_DDD, population, DDDs_per_1000)
 
 Secondary_clean <- Secondary_DDD_by_year_region %>%
-  mutate(
-    year = as.integer(year),
-    region = standardise_region(region)
-  ) %>%
+  mutate(year = as.integer(year)) %>%
   select(year, region, total_DDD, population, DDDs_per_1000)
 
 Hospital_clean <- hospital_fp10_DDD_by_year_region %>%
-  mutate(
-    year = as.integer(year),
-    region = if ("Region" %in% names(.)) standardise_region(Region) else standardise_region(region)
-  ) %>%
+  mutate(year = as.integer(year)) %>%
   select(year, region, total_DDD, population, DDDs_per_1000)
 
 combined_data <- bind_rows(Primary_clean, Secondary_clean, Hospital_clean)
@@ -538,19 +522,13 @@ national_ddd_plot <- ggplot(summed_data, aes(x = as.integer(year), y = total_DDD
 
 # Regional DDD trends
 Primary_clean_reg <- Primary_DDD_by_year_region %>%
-  mutate(
-    year = as.integer(year),
-    region = if ("Region" %in% names(.)) standardise_region(Region) else standardise_region(region)
-  ) %>%
+  mutate(year = as.integer(year)) %>%
   select(year, region, total_DDD, population, DDDs_per_1000)
 Secondary_clean_reg <- Secondary_DDD_by_year_region %>%
-  mutate(year = as.integer(year), region = standardise_region(region)) %>%
+  mutate(year = as.integer(year)) %>%
   select(year, region, total_DDD, population, DDDs_per_1000)
 Hospital_clean_reg <- hospital_fp10_DDD_by_year_region %>%
-  mutate(
-    year = as.integer(year),
-    region = if ("Region" %in% names(.)) standardise_region(Region) else standardise_region(region)
-  ) %>%
+  mutate(year = as.integer(year)) %>%
   select(year, region, total_DDD, population, DDDs_per_1000)
 
 combined_data_reg <- bind_rows(Primary_clean_reg, Secondary_clean_reg, Hospital_clean_reg)
