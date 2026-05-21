@@ -1,136 +1,123 @@
 "year","product_code","product_name","total_DDD"
-"2017","0402030K0AAACAC","Lithium Carb_Tab 250mg",2250.38246940245
-"2017","0402030K0AAAFAF","Lithium Carb_Tab 400mg M/R",47362.7609791217
-"2017","0402030K0AAAGAG","Lithium Carb_Tab 450mg M/R",209.064524838013
-"2017","0402030K0AAAIAI","Lithium Carb_Tab 200mg M/R",17344.7624190065
-"2017","0402030K0AAAPAP","Lithium Carb_Liq Spec 200mg/5ml",92.2426205903528
-"2017","0402030K0BBAAAC","Camcolit 250_Tab 250mg",316.662167026638
-"2017","0402030K0BBABAF","Camcolit 400_Tab 400mg",937.27501799856
-"2017","0402030K0BDAAAG","Liskonum_Tab 450mg M/R",177.173326133909
-"2017","0402030K0BFAAAF","Priadel_Tab 400mg",81107.3614110871
-"2017","0402030K0BFABAI","Priadel_Tab 200mg",32198.2991360691
-"2017","0402030P0AAAIAI","Lithium Cit_Oral Soln 520mg/5ml S/F",665.906358299738
-"2017","0402030P0AAAKAK","Lithium Cit_Oral Soln 1.018g/5ml",243.088089681024
-"2017","0402030P0AAALAL","Lithium Cit_Oral Soln 509mg/5ml",318.777494872339
-"2017","0402030P0BCAAAI","Priadel_Liq 520mg/5ml S/F",1115.69771553858
-"2017","0402030P0BDAAAL","Li-Liquid_Syr 5.4mmol/5ml",92.5642725793903
-"2017","0402030P0BDABAK","Li-Liquid_Syr 10.8mmol/5ml",131.398967395148
-"2018","0402030K0AAACAC","Lithium Carb_Tab 250mg",2553.82694384449
-"2018","0402030K0AAAFAF","Lithium Carb_Tab 400mg M/R",52702.033837293
-"2018","0402030K0AAAGAG","Lithium Carb_Tab 450mg M/R",432.302915766739
-"2018","0402030K0AAAIAI","Lithium Carb_Tab 200mg M/R",19240.6857451404
-"2018","0402030K0AAAPAP","Lithium Carb_Liq Spec 200mg/5ml",34.6472282217423
-"2018","0402030K0BBAAAC","Camcolit 250_Tab 250mg",96.4610331173506
-"2018","0402030K0BBABAF","Camcolit 400_Tab 400mg",1461.93304535637
-"2018","0402030K0BDAAAG","Liskonum_Tab 450mg M/R",307.775377969762
-"2018","0402030K0BFAAAF","Priadel_Tab 400mg",79818.6645068395
-"2018","0402030K0BFABAI","Priadel_Tab 200mg",31661.4920806336
-"2018","0402030P0AAAIAI","Lithium Cit_Oral Soln 520mg/5ml S/F",515.255675790367
-"2018","0402030P0AAAKAK","Lithium Cit_Oral Soln 1.018g/5ml",91.6192800056581
-"2018","0402030P0AAALAL","Lithium Cit_Oral Soln 509mg/5ml",309.417568427753
-"2018","0402030P0BCAAAI","Priadel_Liq 520mg/5ml S/F",1128.61588514039
-"2018","0402030P0BDAAAL","Li-Liquid_Syr 5.4mmol/5ml",90.4492892000849
-"2019","0402030K0AAACAC","Lithium Carb_Tab 250mg",1493.31803455724
-"2019","0402030K0AAACAC","Lithium carbonate 250mg tablets",570.610601151908
-"2019","0402030K0AAAFAF","Lithium Carb_Tab 400mg M/R",41726.0619150468
-"2019","0402030K0AAAFAF","Lithium carbonate 400mg modified-release tablets",14487.4910007199
-"2019","0402030K0AAAGAG","Lithium Carb_Tab 450mg M/R",402.942764578834
-"2019","0402030K0AAAGAG","Lithium carbonate 450mg modified-release tablets",251.079913606911
-"2019","0402030K0AAAIAI","Lithium Carb_Tab 200mg M/R",14982.0014398848
-"2019","0402030K0AAAIAI","Lithium carbonate 200mg modified-release tablets",5466.38768898488
-"2019","0402030K0BBAAAC","Camcolit 250_Tab 250mg",40.7779877609791
-"2019","0402030K0BBABAF","Camcolit 400 modified-release tablets",179.535637149028
-"2019","0402030K0BBABAF","Camcolit 400_Tab 400mg",735.241180705544
-"2019","0402030K0BDAAAG","Liskonum 450mg modified-release tablets",85.0431965442765
-"2019","0402030K0BDAAAG","Liskonum_Tab 450mg M/R",48.0899028077754
-"2019","0402030K0BFAAAF","Priadel 400mg modified-release tablets",23850.7919366451
-"2019","0402030K0BFAAAF","Priadel_Tab 400mg",72333.0633549316
-"2019","0402030K0BFABAI","Priadel 200mg modified-release tablets",10520.3833693305
-"2019","0402030K0BFABAI","Priadel_Tab 200mg",29135.619150468
-"2019","0402030P0AAAIAI","Lithium Cit_Oral Soln 520mg/5ml S/F",456.089539571398
-"2019","0402030P0AAAIAI","Lithium citrate 520mg/5ml oral solution sugar free",162.971214371596
-"2019","0402030P0AAAKAK","Lithium Cit_Oral Soln 1.018g/5ml",146.698847160337
-"2019","0402030P0AAAKAK","Lithium citrate 1.018g/5ml oral solution",108.899144211047
-"2019","0402030P0AAALAL","Lithium Cit_Oral Soln 509mg/5ml",287.772738524648
-"2019","0402030P0AAALAL","Lithium citrate 509mg/5ml oral solution",132.073962090671
-"2019","0402030P0BCAAAI","Priadel 520mg/5ml liquid",510.796378810383
-"2019","0402030P0BCAAAI","Priadel_Liq 520mg/5ml S/F",1185.39147040102
-"2019","0402030P0BDAAAL","Li-Liquid 509mg/5ml oral solution",61.649515524436
-"2019","0402030P0BDAAAL","Li-Liquid_Syr 5.4mmol/5ml",126.899002758328
-"2019","0402030P0BDABAK","Li-Liquid_Syr 10.8mmol/5ml",37.7997029492892
-"2020","0402030K0AAACAC","Lithium carbonate 250mg tablets",3187.99496040317
-"2020","0402030K0AAAFAF","Lithium carbonate 400mg modified-release tablets",48829.6436285097
-"2020","0402030K0AAAGAG","Lithium carbonate 450mg modified-release tablets",930.919276457883
-"2020","0402030K0AAAIAI","Lithium carbonate 200mg modified-release tablets",18596.3372930166
-"2020","0402030K0AAAPAP","Lithium carbonate 200mg/5ml oral suspension",56.695464362851
-"2020","0402030K0BBABAF","Camcolit 400 modified-release tablets",5002.2498200144
-"2020","0402030K0BDAAAG","Liskonum 450mg modified-release tablets",464.194114470842
-"2020","0402030K0BFAAAF","Priadel 400mg modified-release tablets",75704.6436285097
-"2020","0402030K0BFABAI","Priadel 200mg modified-release tablets",36608.1713462923
-"2020","0402030P0AAAIAI","Lithium citrate 520mg/5ml oral solution sugar free",612.394794539925
-"2020","0402030P0AAAKAK","Lithium citrate 1.018g/5ml oral solution",167.398684489709
-"2020","0402030P0AAALAL","Lithium citrate 509mg/5ml oral solution",225.223230072848
-"2020","0402030P0BCAAAI","Priadel 520mg/5ml liquid",1093.30928637103
-"2020","0402030P0BDAAAL","Li-Liquid 509mg/5ml oral solution",114.974096470755
-"2020","0402030P0BDABAK","Li-Liquid 1.018g/5ml oral solution",82.7993493174906
-"2021","0402030K0AAACAC","Lithium carbonate 250mg tablets",3135.96787257019
-"2021","0402030K0AAAFAF","Lithium carbonate 400mg modified-release tablets",46592.8725701944
-"2021","0402030K0AAAGAG","Lithium carbonate 450mg modified-release tablets",962.810475161987
-"2021","0402030K0AAAIAI","Lithium carbonate 200mg modified-release tablets",16784.5572354212
-"2021","0402030K0AAAPAP","Lithium carbonate 200mg/5ml oral suspension",19.7984161267099
-"2021","0402030K0BBAAAC","Camcolit 250 tablets",11.811555075594
-"2021","0402030K0BBABAF","Camcolit 400 modified-release tablets",3653.25773938085
-"2021","0402030K0BDAAAG","Liskonum 450mg modified-release tablets",1460.41441684665
-"2021","0402030K0BFAAAF","Priadel 400mg modified-release tablets",81735.5111591073
-"2021","0402030K0BFABAI","Priadel 200mg modified-release tablets",36123.5601151908
-"2021","0402030P0AAAIAI","Lithium citrate 520mg/5ml oral solution sugar free",223.608458872622
-"2021","0402030P0AAAKAK","Lithium citrate 1.018g/5ml oral solution",56.6995544239338
-"2021","0402030P0AAALAL","Lithium citrate 509mg/5ml oral solution",451.841449183111
-"2021","0402030P0BCAAAI","Priadel 520mg/5ml liquid",559.113091449183
-"2021","0402030P0BDAAAL","Li-Liquid 509mg/5ml oral solution",211.858335101492
-"2021","0402030P0BDABAK","Li-Liquid 1.018g/5ml oral solution",79.1993776080345
-"2022","0402030K0AAACAC","Lithium carbonate 250mg tablets",3127.812275018
-"2022","0402030K0AAAFAF","Lithium carbonate 400mg modified-release tablets",47700.6839452844
-"2022","0402030K0AAAGAG","Lithium carbonate 450mg modified-release tablets",375.607451403888
-"2022","0402030K0AAAIAI","Lithium carbonate 200mg modified-release tablets",16761.1591072714
-"2022","0402030K0AAAPAP","Lithium carbonate 200mg/5ml oral suspension",44.0964722822174
-"2022","0402030K0BBABAF","Camcolit 400 modified-release tablets",1536.17710583153
-"2022","0402030K0BDAAAG","Liskonum 450mg modified-release tablets",777.537796976242
-"2022","0402030K0BFAAAF","Priadel 400mg modified-release tablets",95940.4247660187
-"2022","0402030K0BFABAI","Priadel 200mg modified-release tablets",37327.2138228942
-"2022","0402030P0AAAIAI","Lithium citrate 520mg/5ml oral solution sugar free",357.203479736898
-"2022","0402030P0AAAKAK","Lithium citrate 1.018g/5ml oral solution",92.5192729330221
-"2022","0402030P0AAALAL","Lithium citrate 509mg/5ml oral solution",106.244165075324
-"2022","0402030P0BCAAAI","Priadel 520mg/5ml liquid",938.245279015489
-"2022","0402030P0BDAAAL","Li-Liquid 509mg/5ml oral solution",263.742927364029
-"2023","0402030K0AAACAC","Lithium carbonate 250mg tablets",3234.67872570194
-"2023","0402030K0AAAFAF","Lithium carbonate 400mg modified-release tablets",45240.7307415407
-"2023","0402030K0AAAGAG","Lithium carbonate 450mg modified-release tablets",138.701403887689
-"2023","0402030K0AAAIAI","Lithium carbonate 200mg modified-release tablets",15928.0507559395
-"2023","0402030K0AAAPAP","Lithium carbonate 200mg/5ml oral suspension",25.1979841612671
-"2023","0402030K0BBABAF","Camcolit 400 modified-release tablets",1402.98776097912
-"2023","0402030K0BDAAAG","Liskonum 450mg modified-release tablets",602.895518358531
-"2023","0402030K0BFAAAF","Priadel 400mg modified-release tablets",109863.210943125
-"2023","0402030K0BFABAI","Priadel 200mg modified-release tablets",38699.379049676
-"2023","0402030P0AAAIAI","Lithium citrate 520mg/5ml oral solution sugar free",489.833085791074
-"2023","0402030P0AAAKAK","Lithium citrate 1.018g/5ml oral solution",170.998656199165
-"2023","0402030P0AAALAL","Lithium citrate 509mg/5ml oral solution",157.948758752387
-"2023","0402030P0BCAAAI","Priadel 520mg/5ml liquid",1538.54940236226
-"2023","0402030P0BDAAAL","Li-Liquid 509mg/5ml oral solution",76.2294009477332
-"2023","0402030P0BDABAK","Li-Liquid 1.018g/5ml oral solution",15.7498762288705
-"2024","0402030K0AAACAC","Lithium carbonate 250mg tablets",3045.69384449244
-"2024","0402030K0AAAFAF","Lithium carbonate 400mg modified-release tablets",47701.5838732901
-"2024","0402030K0AAAGAG","Lithium carbonate 450mg modified-release tablets",847.394708423326
-"2024","0402030K0AAAIAI","Lithium carbonate 200mg modified-release tablets",16984.5662347012
-"2024","0402030K0AAAPAP","Lithium carbonate 200mg/5ml oral suspension",157.487401007919
-"2024","0402030K0BBAAAC","Camcolit 250 tablets",7.87437005039597
-"2024","0402030K0BBABAF","Camcolit 400 modified-release tablets",642.998560115191
-"2024","0402030K0BDAAAG","Liskonum 450mg modified-release tablets",1094.93115550756
-"2024","0402030K0BFAAAF","Priadel 400mg modified-release tablets",133151.097912167
-"2024","0402030K0BFABAI","Priadel 200mg modified-release tablets",47509.224262059
-"2024","0402030P0AAAIAI","Lithium citrate 520mg/5ml oral solution sugar free",841.565881604074
-"2024","0402030P0AAAKAK","Lithium citrate 1.018g/5ml oral solution",34.0197326543603
-"2024","0402030P0AAALAL","Lithium citrate 509mg/5ml oral solution",479.426232406818
-"2024","0402030P0BCAAAI","Priadel 520mg/5ml liquid",2145.56545724592
-"2024","0402030P0BDAAAL","Li-Liquid 509mg/5ml oral solution",118.34906994837
-"2024","0402030P0BDABAK","Li-Liquid 1.018g/5ml oral solution",44.0996534408374
+2017,"0402030K0AAACAC","Lithium carbonate 250mg tablets",2250.38246940245
+2017,"0402030K0AAAFAF","Lithium carbonate 400mg modified-release tablets",47520.2483801296
+2017,"0402030K0AAAGAG","Lithium carbonate 450mg modified-release tablets",209.064524838013
+2017,"0402030K0AAAIAI","Lithium carbonate 200mg modified-release tablets",17404.382649388
+2017,"0402030K0AAAPAP","Lithium carbonate 200mg/5ml oral suspension",92.2426205903528
+2017,"0402030K0BBAAAC","Camcolit 250 tablets",316.662167026638
+2017,"0402030K0BBABAF","Camcolit 400 modified-release tablets",975.071994240461
+2017,"0402030K0BDAAAG","Liskonum 450mg modified-release tablets",177.173326133909
+2017,"0402030K0BFAAAF","Priadel 400mg modified-release tablets",81233.3513318935
+2017,"0402030K0BFABAI","Priadel 200mg modified-release tablets",32297.0662347012
+2017,"0402030P0AAAIAI","Lithium citrate 520mg/5ml oral solution sugar free",665.906358299738
+2017,"0402030P0AAAKAK","Lithium citrate 1.018g/5ml oral solution",243.088089681024
+2017,"0402030P0AAALAL","Lithium citrate 509mg/5ml oral solution",318.777494872339
+2017,"0402030P0BCAAAI","Priadel 520mg/5ml liquid",1115.69771553858
+2017,"0402030P0BDAAAL","Li-Liquid 509mg/5ml oral solution",92.5642725793903
+2017,"0402030P0BDABAK","Li-Liquid 1.018g/5ml oral solution",131.398967395148
+2018,"0402030K0AAACAC","Lithium carbonate 250mg tablets",2553.82694384449
+2018,"0402030K0AAAFAF","Lithium carbonate 400mg modified-release tablets",52733.5313174946
+2018,"0402030K0AAAGAG","Lithium carbonate 450mg modified-release tablets",432.302915766739
+2018,"0402030K0AAAIAI","Lithium carbonate 200mg modified-release tablets",19265.8837293017
+2018,"0402030K0AAAPAP","Lithium carbonate 200mg/5ml oral suspension",34.6472282217423
+2018,"0402030K0BBAAAC","Camcolit 250 tablets",96.4610331173506
+2018,"0402030K0BBABAF","Camcolit 400 modified-release tablets",1461.93304535637
+2018,"0402030K0BDAAAG","Liskonum 450mg modified-release tablets",307.775377969762
+2018,"0402030K0BFAAAF","Priadel 400mg modified-release tablets",79900.5579553636
+2018,"0402030K0BFABAI","Priadel 200mg modified-release tablets",31686.6900647948
+2018,"0402030P0AAAIAI","Lithium citrate 520mg/5ml oral solution sugar free",515.255675790367
+2018,"0402030P0AAAKAK","Lithium citrate 1.018g/5ml oral solution",91.6192800056581
+2018,"0402030P0AAALAL","Lithium citrate 509mg/5ml oral solution",309.417568427753
+2018,"0402030P0BCAAAI","Priadel 520mg/5ml liquid",1128.61588514039
+2018,"0402030P0BDAAAL","Li-Liquid 509mg/5ml oral solution",90.4492892000849
+2019,"0402030K0AAACAC","Lithium carbonate 250mg tablets",2063.92863570914
+2019,"0402030K0AAAFAF","Lithium carbonate 400mg modified-release tablets",56289.1468682505
+2019,"0402030K0AAAGAG","Lithium carbonate 450mg modified-release tablets",654.022678185745
+2019,"0402030K0AAAIAI","Lithium carbonate 200mg modified-release tablets",20457.8383729302
+2019,"0402030K0BBAAAC","Camcolit 250 tablets",40.7779877609791
+2019,"0402030K0BBABAF","Camcolit 400 modified-release tablets",914.776817854572
+2019,"0402030K0BDAAAG","Liskonum 450mg modified-release tablets",133.133099352052
+2019,"0402030K0BFAAAF","Priadel 400mg modified-release tablets",96221.6522678186
+2019,"0402030K0BFABAI","Priadel 200mg modified-release tablets",39687.5
+2019,"0402030P0AAAIAI","Lithium citrate 520mg/5ml oral solution sugar free",619.060753942995
+2019,"0402030P0AAAKAK","Lithium citrate 1.018g/5ml oral solution",255.597991371384
+2019,"0402030P0AAALAL","Lithium citrate 509mg/5ml oral solution",419.846700615319
+2019,"0402030P0BCAAAI","Priadel 520mg/5ml liquid",1696.1878492114
+2019,"0402030P0BDAAAL","Li-Liquid 509mg/5ml oral solution",188.548518282764
+2019,"0402030P0BDABAK","Li-Liquid 1.018g/5ml oral solution",37.7997029492892
+2020,"0402030K0AAACAC","Lithium carbonate 250mg tablets",3187.99496040317
+2020,"0402030K0AAAFAF","Lithium carbonate 400mg modified-release tablets",48829.6436285097
+2020,"0402030K0AAAGAG","Lithium carbonate 450mg modified-release tablets",930.919276457883
+2020,"0402030K0AAAIAI","Lithium carbonate 200mg modified-release tablets",18596.3372930166
+2020,"0402030K0AAAPAP","Lithium carbonate 200mg/5ml oral suspension",56.695464362851
+2020,"0402030K0BBABAF","Camcolit 400 modified-release tablets",5002.2498200144
+2020,"0402030K0BDAAAG","Liskonum 450mg modified-release tablets",464.194114470842
+2020,"0402030K0BFAAAF","Priadel 400mg modified-release tablets",75729.841612671
+2020,"0402030K0BFABAI","Priadel 200mg modified-release tablets",36611.3210943125
+2020,"0402030P0AAAIAI","Lithium citrate 520mg/5ml oral solution sugar free",612.394794539925
+2020,"0402030P0AAAKAK","Lithium citrate 1.018g/5ml oral solution",167.398684489709
+2020,"0402030P0AAALAL","Lithium citrate 509mg/5ml oral solution",225.223230072848
+2020,"0402030P0BCAAAI","Priadel 520mg/5ml liquid",1093.30928637103
+2020,"0402030P0BDAAAL","Li-Liquid 509mg/5ml oral solution",114.974096470755
+2020,"0402030P0BDABAK","Li-Liquid 1.018g/5ml oral solution",82.7993493174906
+2021,"0402030K0AAACAC","Lithium carbonate 250mg tablets",3143.84224262059
+2021,"0402030K0AAAFAF","Lithium carbonate 400mg modified-release tablets",46592.8725701944
+2021,"0402030K0AAAGAG","Lithium carbonate 450mg modified-release tablets",962.810475161987
+2021,"0402030K0AAAIAI","Lithium carbonate 200mg modified-release tablets",16784.5572354212
+2021,"0402030K0AAAPAP","Lithium carbonate 200mg/5ml oral suspension",19.7984161267099
+2021,"0402030K0BBAAAC","Camcolit 250 tablets",11.811555075594
+2021,"0402030K0BBABAF","Camcolit 400 modified-release tablets",3653.25773938085
+2021,"0402030K0BDAAAG","Liskonum 450mg modified-release tablets",1460.41441684665
+2021,"0402030K0BFAAAF","Priadel 400mg modified-release tablets",81744.9604031677
+2021,"0402030K0BFABAI","Priadel 200mg modified-release tablets",36125.1349892009
+2021,"0402030P0AAAIAI","Lithium citrate 520mg/5ml oral solution sugar free",223.608458872622
+2021,"0402030P0AAAKAK","Lithium citrate 1.018g/5ml oral solution",56.6995544239338
+2021,"0402030P0AAALAL","Lithium citrate 509mg/5ml oral solution",451.841449183111
+2021,"0402030P0BCAAAI","Priadel 520mg/5ml liquid",559.113091449183
+2021,"0402030P0BDAAAL","Li-Liquid 509mg/5ml oral solution",211.858335101492
+2021,"0402030P0BDABAK","Li-Liquid 1.018g/5ml oral solution",79.1993776080345
+2022,"0402030K0AAACAC","Lithium carbonate 250mg tablets",3127.812275018
+2022,"0402030K0AAAFAF","Lithium carbonate 400mg modified-release tablets",47858.1713462923
+2022,"0402030K0AAAGAG","Lithium carbonate 450mg modified-release tablets",375.607451403888
+2022,"0402030K0AAAIAI","Lithium carbonate 200mg modified-release tablets",16802.1058315335
+2022,"0402030K0AAAPAP","Lithium carbonate 200mg/5ml oral suspension",44.0964722822174
+2022,"0402030K0BBABAF","Camcolit 400 modified-release tablets",1536.17710583153
+2022,"0402030K0BDAAAG","Liskonum 450mg modified-release tablets",777.537796976242
+2022,"0402030K0BFAAAF","Priadel 400mg modified-release tablets",95988.120950324
+2022,"0402030K0BFABAI","Priadel 200mg modified-release tablets",37360.0611951044
+2022,"0402030P0AAAIAI","Lithium citrate 520mg/5ml oral solution sugar free",357.203479736898
+2022,"0402030P0AAAKAK","Lithium citrate 1.018g/5ml oral solution",92.5192729330221
+2022,"0402030P0AAALAL","Lithium citrate 509mg/5ml oral solution",106.244165075324
+2022,"0402030P0BCAAAI","Priadel 520mg/5ml liquid",938.245279015489
+2022,"0402030P0BDAAAL","Li-Liquid 509mg/5ml oral solution",263.742927364029
+2023,"0402030K0AAACAC","Lithium carbonate 250mg tablets",3234.67872570194
+2023,"0402030K0AAAFAF","Lithium carbonate 400mg modified-release tablets",45294.2764578834
+2023,"0402030K0AAAGAG","Lithium carbonate 450mg modified-release tablets",138.701403887689
+2023,"0402030K0AAAIAI","Lithium carbonate 200mg modified-release tablets",15929.6256299496
+2023,"0402030K0AAAPAP","Lithium carbonate 200mg/5ml oral suspension",25.1979841612671
+2023,"0402030K0BBABAF","Camcolit 400 modified-release tablets",1402.98776097912
+2023,"0402030K0BDAAAG","Liskonum 450mg modified-release tablets",602.895518358531
+2023,"0402030K0BFAAAF","Priadel 400mg modified-release tablets",109886.159107271
+2023,"0402030K0BFABAI","Priadel 200mg modified-release tablets",38706.5784737221
+2023,"0402030P0AAAIAI","Lithium citrate 520mg/5ml oral solution sugar free",489.833085791074
+2023,"0402030P0AAAKAK","Lithium citrate 1.018g/5ml oral solution",170.998656199165
+2023,"0402030P0AAALAL","Lithium citrate 509mg/5ml oral solution",157.948758752387
+2023,"0402030P0BCAAAI","Priadel 520mg/5ml liquid",1538.54940236226
+2023,"0402030P0BDAAAL","Li-Liquid 509mg/5ml oral solution",76.2294009477332
+2023,"0402030P0BDABAK","Li-Liquid 1.018g/5ml oral solution",15.7498762288705
+2024,"0402030K0AAACAC","Lithium carbonate 250mg tablets",3045.69384449244
+2024,"0402030K0AAAFAF","Lithium carbonate 400mg modified-release tablets",47701.5838732901
+2024,"0402030K0AAAGAG","Lithium carbonate 450mg modified-release tablets",847.394708423326
+2024,"0402030K0AAAIAI","Lithium carbonate 200mg modified-release tablets",17011.3390928726
+2024,"0402030K0AAAPAP","Lithium carbonate 200mg/5ml oral suspension",157.487401007919
+2024,"0402030K0BBAAAC","Camcolit 250 tablets",7.87437005039597
+2024,"0402030K0BBABAF","Camcolit 400 modified-release tablets",642.998560115191
+2024,"0402030K0BDAAAG","Liskonum 450mg modified-release tablets",1094.93115550756
+2024,"0402030K0BFAAAF","Priadel 400mg modified-release tablets",133176.295896328
+2024,"0402030K0BFABAI","Priadel 200mg modified-release tablets",47513.9488840893
+2024,"0402030P0AAAIAI","Lithium citrate 520mg/5ml oral solution sugar free",841.565881604074
+2024,"0402030P0AAAKAK","Lithium citrate 1.018g/5ml oral solution",34.0197326543603
+2024,"0402030P0AAALAL","Lithium citrate 509mg/5ml oral solution",479.426232406818
+2024,"0402030P0BCAAAI","Priadel 520mg/5ml liquid",2145.56545724592
+2024,"0402030P0BDAAAL","Li-Liquid 509mg/5ml oral solution",118.34906994837
+2024,"0402030P0BDABAK","Li-Liquid 1.018g/5ml oral solution",44.0996534408374

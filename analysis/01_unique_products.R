@@ -40,12 +40,6 @@ products_secondary_care <- unique_product_pairs(
 )
 
 # --- Hospital FP10 ---
-periods_to_remove <- as.Date(paste0(c(
-  "202401", "202402", "202403", "202404",
-  "202405", "202406", "202407", "202408",
-  "202409", "202410", "202411", "202412"
-), "01"), format = "%Y%m%d")
-
 hospital_fp10_data <- read_excel(
   here("data", "secondary_care_fp10", "FP10_data.xlsx"),
   col_types = "text"
@@ -55,7 +49,7 @@ hospital_fp10_data <- read_excel(
     BNF_CODE = coalesce(BNF_CODE, `BNF CODE`),
     BNF_NAME = coalesce(BNF_NAME, `BNF NAME`)
   ) %>%
-  filter(!(PERIOD %in% periods_to_remove), !is.na(PERIOD)) %>%
+  filter(!is.na(PERIOD)) %>%
   select(BNF_CODE, BNF_NAME, PERIOD)
 
 products_hospital_fp10 <- unique_product_pairs(
