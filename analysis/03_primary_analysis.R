@@ -39,14 +39,8 @@ after_product <- after_practice %>%
       select(bnf_code, bnf_name, nm, strnt_nmrtr_val, chemical),
     by = "bnf_code"
   ) %>%
+  add_ddd_from_bnf_quantity("quantity") %>%
   mutate(
-    quantity_mg = quantity * strnt_nmrtr_val,
-    mmol = case_when(
-      chemical == "Lithium Carbonate" ~ quantity_mg / 37.04,
-      chemical == "Lithium Citrate" ~ quantity_mg / 94.26,
-      TRUE ~ NA_real_
-    ),
-    DDD = mmol / 24,
     Region = nhser_to_Region[as.character(regional_team)],
     year = year(month)
   )

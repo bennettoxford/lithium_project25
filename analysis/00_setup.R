@@ -313,6 +313,19 @@ scale_y_to_next_tick <- function(values, n_breaks = 5, labels = waiver(), min_up
   )
 }
 
+add_ddd_from_bnf_quantity <- function(df, quantity_col) {
+  df %>%
+    mutate(
+      quantity_mg = .data[[quantity_col]] * strnt_nmrtr_val,
+      mmol = case_when(
+        chemical == "Lithium Carbonate" ~ quantity_mg / 37.04,
+        chemical == "Lithium Citrate" ~ quantity_mg / 94.26,
+        TRUE ~ NA_real_
+      ),
+      DDD = mmol / 24
+    )
+}
+
 format_ddd_by_year_for_export <- function(df, year_col, ddd_col = "total_DDD") {
   df %>%
     transmute(
