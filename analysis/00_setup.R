@@ -21,53 +21,64 @@ if (st_crs(nhs_regions_sf)$input != "EPSG:4326") {
   nhs_regions_sf <- st_transform(nhs_regions_sf, 4326)
 }
 
-nhser_to_region <- c(
-  "Y56" = "London", "Y58" = "South West", "Y59" = "South East",
-  "Y60" = "Midlands", "Y61" = "East Of England", "Y62" = "North West",
-  "Y63" = "North East And Yorkshire",
-  "London" = "London", "South West" = "South West", "South East" = "South East",
-  "Midlands" = "Midlands", "East of England" = "East Of England",
-  "North West" = "North West", "North East and Yorkshire" = "North East And Yorkshire"
+region_levels_ordered <- c(
+  "North East and Yorkshire",
+  "North West",
+  "Midlands",
+  "East of England",
+  "London",
+  "South East",
+  "South West"
 )
-nhser_to_Region <- c(
-  "Y56" = "London", "Y58" = "South West", "Y59" = "South East",
-  "Y60" = "Midlands", "Y61" = "East of England", "Y62" = "North West",
-  "Y63" = "North East And Yorkshire",
-  "London" = "London", "South West" = "South West", "South East" = "South East",
-  "Midlands" = "Midlands", "East of England" = "East of England",
-  "North West" = "North West", "North East and Yorkshire" = "North East And Yorkshire"
+
+nhser_code_to_region <- c(
+  "Y56" = "London",
+  "Y58" = "South West",
+  "Y59" = "South East",
+  "Y60" = "Midlands",
+  "Y61" = "East of England",
+  "Y62" = "North West",
+  "Y63" = "North East and Yorkshire"
 )
+
+normalise_nhs_region <- function(region) {
+  cleaned <- str_squish(as.character(region))
+  out <- unname(nhser_code_to_region[cleaned])
+  needs_name_match <- is.na(out) & !is.na(cleaned) & cleaned != ""
+  idx <- match(tolower(cleaned[needs_name_match]), tolower(region_levels_ordered))
+  out[needs_name_match] <- region_levels_ordered[idx]
+  out
+}
+
+ensure_region_column <- function(df) {
+  if ("region" %in% names(df)) {
+    df %>% mutate(region = normalise_nhs_region(region))
+  } else if ("Region" %in% names(df)) {
+    df %>%
+      mutate(region = normalise_nhs_region(Region)) %>%
+      select(-Region)
+  } else {
+    df
+  }
+}
 
 code_col <- names(nhs_regions_sf)[grepl("NHSER.*CD|NHSER.*Code|^code$", names(nhs_regions_sf), ignore.case = TRUE)][1]
 name_col <- names(nhs_regions_sf)[grepl("NHSER.*NM|^name$|^NAME$", names(nhs_regions_sf), ignore.case = TRUE)][1]
 if (is.na(code_col)) code_col <- name_col
 if (is.na(code_col)) code_col <- names(nhs_regions_sf)[!names(nhs_regions_sf) %in% c("geometry")][1]
-region_from_code <- nhser_to_region[as.character(nhs_regions_sf[[code_col]])]
-region_from_name <- if (!is.na(name_col)) nhser_to_region[as.character(nhs_regions_sf[[name_col]])] else rep(NA_character_, nrow(nhs_regions_sf))
-Region_from_code <- nhser_to_Region[as.character(nhs_regions_sf[[code_col]])]
-Region_from_name <- if (!is.na(name_col)) nhser_to_Region[as.character(nhs_regions_sf[[name_col]])] else rep(NA_character_, nrow(nhs_regions_sf))
+region_from_code <- normalise_nhs_region(nhs_regions_sf[[code_col]])
+region_from_name <- if (!is.na(name_col)) {
+  normalise_nhs_region(nhs_regions_sf[[name_col]])
+} else {
+  rep(NA_character_, nrow(nhs_regions_sf))
+}
 
 nhs_regions_sf <- nhs_regions_sf %>%
-  mutate(
-    region = coalesce(region_from_code, region_from_name),
-    Region = coalesce(Region_from_code, Region_from_name)
-  ) %>%
+  mutate(region = coalesce(region_from_code, region_from_name)) %>%
   filter(!is.na(region))
 
 if (nrow(nhs_regions_sf) == 0) {
   stop("No NHS regions matched. ONS file columns: ", paste(names(st_read(nhs_regions_file, quiet = TRUE)), collapse = ", "))
-}
-
-normalise_nhs_region <- function(region) {
-  cleaned_region <- region %>%
-    as.character() %>%
-    str_squish()
-
-  case_when(
-    cleaned_region == "East Of England" ~ "East of England",
-    cleaned_region == "North East and Yorkshire" ~ "North East And Yorkshire",
-    TRUE ~ cleaned_region
-  )
 }
 
 population_path <- here("output", "data", "ons_nhs_england_region_population_estimates.csv")
@@ -238,30 +249,10 @@ coverage_map_label_halo_rect <- function(
   dplyr::bind_rows(out)
 }
 
-standardise_region <- function(region) {
-  region <- tolower(region)
-  region <- trimws(region)
-  region <- gsub(" of ", " Of ", region)
-  region <- tools::toTitleCase(region)
-  region
-}
-
-region_levels_ordered <- c(
-  "North East and Yorkshire",
-  "North West",
-  "Midlands",
-  "East of England",
-  "London",
-  "South East",
-  "South West"
-)
-
 colour_region_palette <- c(
-  "North East And Yorkshire" = "#4477AA",
   "North East and Yorkshire" = "#4477AA",
   "North West"               = "#EE6677",
   "Midlands"                 = "#228833",
-  "East Of England"          = "#CCBB44",
   "East of England"          = "#CCBB44",
   "London"                   = "#66CCEE",
   "South East"               = "#AA3377",

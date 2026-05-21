@@ -41,7 +41,7 @@ after_product <- after_practice %>%
   ) %>%
   add_ddd_from_bnf_quantity("quantity") %>%
   mutate(
-    Region = nhser_to_Region[as.character(regional_team)],
+    region = normalise_nhs_region(regional_team),
     year = year(month)
   )
 n_unmapped <- nrow(after_practice) - nrow(after_product)
@@ -119,20 +119,20 @@ primary_bar <- ggplot(Primary_DDD_by_year, aes(x = as.factor(year), y = total_DD
 ggsave(here(plots_dir, "primary_bar_trends.png"), primary_bar, width = 8, height = 5, dpi = 300)
 
 primary_lithium_df <- PRIMARYCARE_dataset %>%
-  group_by(Region) %>%
+  group_by(region) %>%
   summarise(
     total_DDD = sum(DDD, na.rm = TRUE),
     total_DDD_2024 = sum(DDD[year == 2024L], na.rm = TRUE),
     .groups = "drop"
   ) %>%
-  mutate(Region = as.factor(Region)) %>%
-  add_population_for_year(region_col = "Region", population_year = 2024L) %>%
+  mutate(region = as.factor(region)) %>%
+  add_population_for_year(region_col = "region", population_year = 2024L) %>%
   mutate(DDDs_per_1000 = round(total_DDD_2024 / population * 1000, 2))
 
 coverage_data_primary <- nhs_regions_sf %>%
-  left_join(primary_lithium_df, by = "Region")
+  left_join(primary_lithium_df, by = "region")
 
-primary_label_d <- coverage_map_label_layers_data(coverage_data_primary, "Region")
+primary_label_d <- coverage_map_label_layers_data(coverage_data_primary, "region")
 primary_label_pts <- dplyr::bind_rows(primary_label_d$other, primary_label_d$london_txt)
 primary_label_halo <- coverage_map_label_halo_rect(primary_label_pts)
 
@@ -196,7 +196,7 @@ primary_coverage_plot <- ggplot() +
   ylab("")
 ggsave(here(plots_dir, "primary_coverage_map.png"), primary_coverage_plot, width = 8, height = 6, dpi = 300)
 
-primaryhist <- ggplot(primary_lithium_df, aes(x = Region, y = DDDs_per_1000)) +
+primaryhist <- ggplot(primary_lithium_df, aes(x = region, y = DDDs_per_1000)) +
   geom_col(fill = colour_care_primary, color = colour_care_primary) +
   geom_text(aes(label = sprintf("%.2f", DDDs_per_1000)), vjust = -0.3, size = 3.5) +
   theme_lithium() +
@@ -214,9 +214,9 @@ primaryhist <- ggplot(primary_lithium_df, aes(x = Region, y = DDDs_per_1000)) +
 ggsave(here(plots_dir, "primary_hist_ddd_pop.png"), primaryhist, width = 8, height = 5, dpi = 300)
 
 Primary_DDD_by_year_region <- PRIMARYCARE_dataset %>%
-  group_by(year, Region) %>%
+  group_by(year, region) %>%
   summarise(total_DDD = sum(DDD, na.rm = TRUE), .groups = "drop") %>%
-  add_population_by_year(year_col = "year", region_col = "Region") %>%
+  add_population_by_year(year_col = "year", region_col = "region") %>%
   mutate(DDDs_per_1000 = round(total_DDD / population * 1000, 2))
 
 write.csv(

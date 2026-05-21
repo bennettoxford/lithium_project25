@@ -10,7 +10,7 @@ Lithium_SCMD <- secondary_care %>%
   mutate(
     year_month = as.Date(Date),
     year = year(year_month),
-    region = Region,
+    region = normalise_nhs_region(Region),
     product_code = `VMP Code`,
     DDD = Value  # already in DDDs
   ) %>%
@@ -178,7 +178,6 @@ Secondary_DDD_by_year_region <- Lithium_SCMD %>%
   mutate(DDDs_per_1000 = round(total_DDD / population * 1000, 2))
 
 seven_region_secondary <- Secondary_DDD_by_year_region %>%
-  mutate(region = standardise_region(as.character(region))) %>%
   ggplot(aes(x = year, y = DDDs_per_1000, color = region)) +
   geom_line(linewidth = 1.2) +
   geom_point(size = 3) +
