@@ -79,13 +79,10 @@ population_annual_df <- read_csv(population_path, show_col_types = FALSE) %>%
   transmute(
     year = as.integer(estimate_year),
     region = normalise_nhs_region(nhs_region),
-    Region = region,
     population = as.numeric(population)
   ) %>%
   distinct(year, region, .keep_all = TRUE)
 
-population_df <- population_annual_df %>%
-  filter(year == 2024L)
 
 add_population_by_year <- function(df, year_col, region_col) {
   df %>%
