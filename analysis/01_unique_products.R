@@ -15,15 +15,13 @@ unique_product_pairs <- function(df, code_col, name_col) {
 }
 
 # --- Primary care ---
-primary_lithium_raw <- read.csv(
-  gzfile(here("data", "primary_care", "primary_lithium.csv.gz")),
-  colClasses = c(bnf_code = "character")
-)
+primary_lithium_raw <- load_epd_lithium() %>%
+  select(BNF_CODE, BNF_DESCRIPTION)
 
 products_primary_care <- unique_product_pairs(
   primary_lithium_raw,
-  code_col = "bnf_code",
-  name_col = "bnf_name"
+  code_col = "BNF_CODE",
+  name_col = "BNF_DESCRIPTION"
 )
 
 # --- Secondary care ---
@@ -40,20 +38,11 @@ products_secondary_care <- unique_product_pairs(
 )
 
 # --- Hospital FP10 ---
-hospital_fp10_data <- read_excel(
-  here("data", "secondary_care_fp10", "FP10_data.xlsx"),
-  col_types = "text"
-) %>%
-  mutate(
-    PERIOD = as.Date(paste0(PERIOD, "01"), format = "%Y%m%d"),
-    BNF_CODE = coalesce(BNF_CODE, `BNF CODE`),
-    BNF_NAME = coalesce(BNF_NAME, `BNF NAME`)
-  ) %>%
-  filter(!is.na(PERIOD)) %>%
-  select(BNF_CODE, BNF_NAME, PERIOD)
+hospital_fp10_raw <- load_fp10_monthly() %>%
+  select(BNF_CODE, BNF_NAME)
 
 products_hospital_fp10 <- unique_product_pairs(
-  hospital_fp10_data,
+  hospital_fp10_raw,
   code_col = "BNF_CODE",
   name_col = "BNF_NAME"
 )
