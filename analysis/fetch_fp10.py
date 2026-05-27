@@ -22,6 +22,14 @@ END_MONTH = 12
 OUTPUT_DIR = PROJECT_ROOT / "data" / "secondary_care_fp10"
 
 LITHIUM_PREFIXES = ("0402030K0", "0402030P0")
+FP10_OUTPUT_COLUMNS = [
+    "PERIOD",
+    "BNF_CODE",
+    "BNF_NAME",
+    "HOSPITAL_TRUST_CODE",
+    "HOSPITAL_TRUST",
+    "TOTAL_QUANTITY",
+]
 MONTH_ABBR = {
     "JAN": 1,
     "FEB": 2,
@@ -144,6 +152,10 @@ def download_bytes(url: str) -> bytes:
         return response.read()
 
 
+def select_fp10_output_columns(frame: pd.DataFrame) -> pd.DataFrame:
+    return frame.reindex(columns=[col for col in FP10_OUTPUT_COLUMNS if col in frame.columns])
+
+
 def filter_lithium_bnf(frame: pd.DataFrame) -> pd.DataFrame:
     if "BNF_CODE" not in frame.columns:
         raise RuntimeError("No BNF_CODE column in CSV")
@@ -158,7 +170,7 @@ def fetch_month_csv(download_url: str) -> pd.DataFrame | None:
     filtered = filter_lithium_bnf(frame)
     if filtered.empty:
         return None
-    return filtered
+    return select_fp10_output_columns(filtered)
 
 
 def fetch_month(

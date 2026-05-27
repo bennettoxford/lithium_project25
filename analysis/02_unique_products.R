@@ -1,4 +1,4 @@
-source(here::here("analysis", "00_setup.R"))
+source(here::here("analysis", "01_setup.R"))
 
 unique_product_pairs <- function(df, code_col, name_col) {
   df %>%

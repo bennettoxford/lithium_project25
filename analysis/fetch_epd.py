@@ -53,11 +53,9 @@ LEGACY_COLUMNS = [
     "BNF_DESCRIPTION",
     "BNF_CHAPTER_PLUS_CODE",
     "QUANTITY",
-    "ITEMS",
     "TOTAL_QUANTITY",
     "ADQUSAGE",
     "NIC",
-    "ACTUAL_COST",
     "UNIDENTIFIED",
     "SNOMED_CODE",
 ]
@@ -291,6 +289,10 @@ def fetch_month_snomed(resource_id: str) -> pd.DataFrame | None:
     return pd.DataFrame(records)
 
 
+def select_epd_output_columns(frame: pd.DataFrame) -> pd.DataFrame:
+    return frame.reindex(columns=[col for col in LEGACY_COLUMNS if col in frame.columns])
+
+
 def filter_lithium(frame: pd.DataFrame) -> pd.DataFrame:
     if "BNF_CHEMICAL_SUBSTANCE_CODE" in frame.columns:
         return frame.loc[frame["BNF_CHEMICAL_SUBSTANCE_CODE"].isin(LITHIUM_PREFIXES)].copy()
@@ -343,7 +345,10 @@ def fetch_month(resource: Resource) -> pd.DataFrame | None:
         if frame is None or frame.empty:
             return None
         return normalize_snomed_to_legacy(frame, resource.yyyymm)
-    return fetch_month_legacy(resource.resource_id)
+    frame = fetch_month_legacy(resource.resource_id)
+    if frame is None or frame.empty:
+        return None
+    return select_epd_output_columns(frame)
 
 
 def run_pipeline(

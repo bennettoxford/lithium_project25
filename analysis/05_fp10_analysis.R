@@ -1,65 +1,23 @@
-source(here::here("analysis", "00_setup.R"))
+source(here::here("analysis", "01_setup.R"))
 
 product_mapping <- read.csv(
   here("data", "primary_care_fp10_products_strength.csv"),
   colClasses = c(bnf_code = "character")
 )
 
-hospital_fp10_data <- read_excel(
-  here("data", "secondary_care_fp10", "FP10_data.xlsx"),
-  col_types = "text"
-)
-hospital_fp10_data <- hospital_fp10_data %>%
-  mutate(PERIOD = as.Date(paste0(PERIOD, "01"), format = "%Y%m%d")) %>%
-  mutate(
-    BNF_CODE            = trimws(coalesce(BNF_CODE, `BNF CODE`)),
-    BNF_NAME            = coalesce(BNF_NAME, `BNF NAME`),
-    HOSPITAL_TRUST_CODE = coalesce(HOSPITAL_TRUST_CODE, `HOSPITAL TRUST CODE`),
-    HOSPITAL_TRUST      = coalesce(HOSPITAL_TRUST, `HOSPITAL TRUST`),
-    TOTAL_QUANTITY      = coalesce(TOTAL_QUANTITY, `TOTAL QUANTITY`),
-    TOTAL_ITEMS         = coalesce(TOTAL_ITEMS, `TOTAL ITEMS`),
-    TOTAL_ACTUAL_COST   = coalesce(TOTAL_ACTUAL_COST, `TOTAL ACTUAL COST`),
-    TOTAL_NIC           = coalesce(TOTAL_NIC, `TOTAL NIC`)
-  ) %>%
-  select(-`BNF CODE`, -`BNF NAME`, -`HOSPITAL TRUST CODE`, -`HOSPITAL TRUST`,
-         -`TOTAL QUANTITY`, -`TOTAL ITEMS`, -`TOTAL ACTUAL COST`, -`TOTAL NIC`) %>%
-  mutate(across(c(TOTAL_QUANTITY, TOTAL_ITEMS, TOTAL_ACTUAL_COST, TOTAL_NIC), as.numeric)) %>%
-  filter(!is.na(PERIOD))
+hospital_fp10_data <- load_fp10_monthly()
 
 message("Hospital FP10: ", nrow(hospital_fp10_data), " rows before BNF aggregation")
 hospital_fp10_base <- hospital_fp10_data %>%
   group_by(PERIOD, HOSPITAL_TRUST_CODE, HOSPITAL_TRUST, BNF_CODE) %>%
   summarise(
     TOTAL_QUANTITY = sum(TOTAL_QUANTITY, na.rm = TRUE),
-    TOTAL_ITEMS = sum(TOTAL_ITEMS, na.rm = TRUE),
-    TOTAL_ACTUAL_COST = sum(TOTAL_ACTUAL_COST, na.rm = TRUE),
-    TOTAL_NIC = sum(TOTAL_NIC, na.rm = TRUE),
     .groups = "drop"
   ) %>%
   rename(bnf_code = BNF_CODE)
 message("Hospital FP10: ", nrow(hospital_fp10_base), " rows after BNF aggregation")
 
-secondary_care_trusts <- read_csv(here("data", "secondary_care", "secondary_care_trusts.csv"), show_col_types = FALSE)
-trust_mapping <- secondary_care_trusts %>%
-  mutate(trust_code_prefix = substr(`Trust Code`, 1, 3)) %>%
-  transmute(
-    trust_code_prefix,
-    region = normalise_nhs_region(Region)
-  ) %>%
-  distinct(trust_code_prefix, .keep_all = TRUE)
-
-region_mapping <- c(
-  "RCE" = "North East and Yorkshire",
-  "RK7" = "North East and Yorkshire",
-  "RQ4" = "Midlands",
-  "RRQ" = "London",
-  "RNJ" = "London",
-  "RMK" = "North West",
-  "RNH" = "London",
-  "RGC" = "London", # Whipps Cross
-  "RNK" = "London", # Tavistock & Portman
-  "RWN" = "East of England" # South Essex Partnership
-)
+trust_mapping <- load_trust_region_mapping()
 
 message("Hospital FP10: ", nrow(hospital_fp10_base), " rows before product mapping join")
 n_unmapped <- nrow(hospital_fp10_base) - nrow(
@@ -77,10 +35,7 @@ hospital_fp10_dataset <- hospital_fp10_base %>%
   mutate(trust_code_prefix = substr(HOSPITAL_TRUST_CODE, 1, 3)) %>%
   left_join(trust_mapping, by = "trust_code_prefix") %>%
   mutate(
-    region = normalise_nhs_region(coalesce(
-      region,
-      region_mapping[trust_code_prefix]
-    )),
+    region = normalise_nhs_region(region),
     year = year(PERIOD)
   ) %>%
   filter(
@@ -109,6 +64,12 @@ message(
 # breakdowns.
 hospital_fp10_regional <- hospital_fp10_dataset %>%
   filter(trust_code_prefix != "Y99")
+
+stop_if_unmapped_regions(
+  hospital_fp10_regional,
+  id_cols = c("trust_code_prefix", "HOSPITAL_TRUST_CODE", "HOSPITAL_TRUST"),
+  entity_label = "trust"
+)
 
 message(
   "Hospital FP10: ",
@@ -151,11 +112,7 @@ hospital_fp10_line <- ggplot(hospital_fp10_DDD_by_year, aes(x = year, y = total_
     labels = scales::label_number(accuracy = 0.01)
   ) +
   scale_x_continuous(breaks = 2017:2024, expand = expansion(mult = c(0.02, 0.02))) +
-  theme_lithium(base_size = 13) +
-  theme(
-    axis.title.x = element_text(face = "bold"),
-    axis.title.y = element_text(face = "bold")
-  )
+  theme_lithium_trend_line()
 ggsave(here(plots_dir, "hospital_fp10_line_trends.png"), hospital_fp10_line, width = 8, height = 5, dpi = 300)
 
 hospital_fp10_DDD_by_year_region <- hospital_fp10_regional %>%
@@ -222,19 +179,7 @@ hospital_fp10_coverage_plot <- ggplot() +
       frame.linewidth = 0.35
     )
   ) +
-  theme_lithium() +
-  theme(
-    legend.position = coverage_map_legend_position,
-    legend.text = element_text(size = coverage_map_legend_text_size),
-    legend.title = element_text(size = coverage_map_legend_title_size),
-    panel.border = element_blank(),
-    panel.background = element_rect(fill = "white", colour = NA),
-    plot.background = element_rect(fill = "white", colour = NA),
-    axis.line = element_blank(),
-    axis.ticks = element_blank(),
-    axis.text = element_blank(),
-    plot.margin = margin(5.5, coverage_map_plot_margin_right, 5.5, 5.5)
-  ) +
+  theme_lithium_coverage_map() +
   coord_sf(datum = NA, clip = "off") +
   xlab("") +
   ylab("")
@@ -243,18 +188,13 @@ ggsave(here(plots_dir, "fp10_coverage_map.png"), hospital_fp10_coverage_plot, wi
 hospital_fp10_hist <- ggplot(hospital_fp10_DDD_by_region_2024, aes(x = region, y = DDDs_per_1000)) +
   geom_col(fill = colour_care_fp10) +
   geom_text(aes(label = sprintf("%.2f", DDDs_per_1000)), vjust = -0.3, size = 3.5) +
-  theme_lithium() +
   xlab("Region") +
   ylab("DDDs per 1,000 population") +
   scale_y_to_next_tick(
     values = hospital_fp10_DDD_by_region_2024$DDDs_per_1000,
     labels = scales::number_format(accuracy = 0.01)
   ) +
-  theme(
-    axis.text.x = element_text(angle = 45, hjust = 1, size = axis_tick_label_size),
-    axis.text.y = element_text(size = axis_tick_label_size),
-    plot.margin = margin(10, 10, 10, 10)
-  )
+  theme_lithium_region_hist()
 ggsave(here(plots_dir, "fp10_hist_ddd_pop.png"), hospital_fp10_hist, width = 8, height = 5, dpi = 300)
 
 write.csv(

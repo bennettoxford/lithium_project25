@@ -1,39 +1,44 @@
-# Import primary care dataset
-Practice_codes <- read_excel(
-  here("data", "primary_care", "practice_codes.xlsx"),
-  col_types = c(
-    rep("text", 11),
-    "numeric",
-    rep("text", 5)
-  )
-) %>%
-  distinct(code, .keep_all = TRUE)
+source(here::here("analysis", "01_setup.R"))
+
 product_mapping <- read.csv(
   here("data", "primary_care_fp10_products_strength.csv"),
   colClasses = c(bnf_code = "character")
 )
 
-prescribing_base <- read.csv(
-  gzfile(here("data", "primary_care", "primary_lithium.csv.gz")),
-  colClasses = c(bnf_code = "character")
-) %>%
-  mutate(month = as.Date(month)) %>%
-  group_by(month, practice, sicbl, icb, regional_team, bnf_code) %>%
+practice_periods <- load_ord_practice_periods()
+practice_regions <- load_ord_practice_regions()
+
+prescribing_base <- load_epd_lithium() %>%
+  mutate(
+    month = as.Date(paste0(YEAR_MONTH, "01"), format = "%Y%m%d"),
+    practice = PRACTICE_CODE,
+    bnf_code = BNF_CODE,
+    quantity = TOTAL_QUANTITY
+  ) %>%
+  group_by(month, practice, bnf_code) %>%
   summarise(
     quantity = sum(quantity, na.rm = TRUE),
-    items = sum(items, na.rm = TRUE),
-    actual_cost = sum(actual_cost, na.rm = TRUE),
     .groups = "drop"
   )
 
-message("Primary care: ", nrow(prescribing_base), " rows before practice codes join")
-after_practice <- prescribing_base %>%
-  left_join(Practice_codes, by = c("practice" = "code")) %>%
-  filter(setting == 4) # GP practices only
-message("Primary care: ", nrow(after_practice), " rows after practice codes join (GP only)")
+n_before_activity <- nrow(prescribing_base)
+prescribing_base <- filter_prescribing_by_practice_activity(prescribing_base, practice_periods)
+message(
+  "Primary care: ",
+  nrow(prescribing_base),
+  " rows after practice list + RO76 active-month filter (dropped ",
+  n_before_activity - nrow(prescribing_base),
+  " rows)"
+)
 
-message("Primary care: ", nrow(after_practice), " rows before product mapping join")
-after_product <- after_practice %>%
+prescribing_base <- prescribing_base %>%
+  left_join(
+    practice_regions %>% rename(practice = practice_code),
+    by = "practice"
+  )
+
+message("Primary care: ", nrow(prescribing_base), " rows before product mapping join")
+after_product <- prescribing_base %>%
   inner_join(
     product_mapping %>%
       select(bnf_code, bnf_name, nm, strnt_nmrtr_val, chemical),
@@ -41,10 +46,9 @@ after_product <- after_practice %>%
   ) %>%
   add_ddd_from_bnf_quantity("quantity") %>%
   mutate(
-    region = normalise_nhs_region(regional_team),
     year = year(month)
   )
-n_unmapped <- nrow(after_practice) - nrow(after_product)
+n_unmapped <- nrow(prescribing_base) - nrow(after_product)
 message(
   "Primary care: ",
   nrow(after_product),
@@ -66,6 +70,12 @@ message(
 if (nrow(PRIMARYCARE_dataset) == 0L) {
   stop("No primary care rows after filters.")
 }
+
+stop_if_unmapped_regions(
+  PRIMARYCARE_dataset,
+  id_cols = "practice",
+  entity_label = "practice"
+)
 
 Primary_DDD_by_year <- PRIMARYCARE_dataset %>%
   group_by(year) %>%
@@ -89,11 +99,7 @@ primary_line <- ggplot(Primary_DDD_by_year, aes(x = year, y = total_DDD / 1e6)) 
     labels = scales::label_number(accuracy = 0.1)
   ) +
   scale_x_continuous(breaks = 2015:2024, expand = expansion(mult = c(0.02, 0.02))) +
-  theme_lithium(base_size = 13) +
-  theme(
-    axis.title.x = element_text(face = "bold"),
-    axis.title.y = element_text(face = "bold")
-  )
+  theme_lithium_trend_line()
 ggsave(here(plots_dir, "primary_line_trends.png"), primary_line, width = 8, height = 5, dpi = 300)
 
 primary_bar <- ggplot(Primary_DDD_by_year, aes(x = as.factor(year), y = total_DDD / 1e6)) +
@@ -110,12 +116,7 @@ primary_bar <- ggplot(Primary_DDD_by_year, aes(x = as.factor(year), y = total_DD
     labels = function(x) format(x, scientific = FALSE, big.mark = ",")
   ) +
   scale_x_discrete(expand = expansion(mult = c(0.02, 0.02))) +
-  theme_lithium(base_size = 13) +
-  theme(
-    axis.title.x = element_text(face = "bold"),
-    axis.title.y = element_text(face = "bold"),
-    axis.text.x = element_text(face = "bold")
-  )
+  theme_lithium_trend_bar()
 ggsave(here(plots_dir, "primary_bar_trends.png"), primary_bar, width = 8, height = 5, dpi = 300)
 
 primary_lithium_df <- PRIMARYCARE_dataset %>%
@@ -178,19 +179,7 @@ primary_coverage_plot <- ggplot() +
       frame.linewidth = 0.35
     )
   ) +
-  theme_lithium() +
-  theme(
-    legend.position = coverage_map_legend_position,
-    legend.text = element_text(size = coverage_map_legend_text_size),
-    legend.title = element_text(size = coverage_map_legend_title_size),
-    panel.border = element_blank(),
-    panel.background = element_rect(fill = "white", colour = NA),
-    plot.background = element_rect(fill = "white", colour = NA),
-    axis.line = element_blank(),
-    axis.ticks = element_blank(),
-    axis.text = element_blank(),
-    plot.margin = margin(5.5, coverage_map_plot_margin_right, 5.5, 5.5)
-  ) +
+  theme_lithium_coverage_map() +
   coord_sf(datum = NA, clip = "off") +
   xlab("") +
   ylab("")
@@ -199,18 +188,13 @@ ggsave(here(plots_dir, "primary_coverage_map.png"), primary_coverage_plot, width
 primaryhist <- ggplot(primary_lithium_df, aes(x = region, y = DDDs_per_1000)) +
   geom_col(fill = colour_care_primary, color = colour_care_primary) +
   geom_text(aes(label = sprintf("%.2f", DDDs_per_1000)), vjust = -0.3, size = 3.5) +
-  theme_lithium() +
   xlab("Region") +
   ylab("DDDs per 1,000 population") +
   scale_y_to_next_tick(
     values = primary_lithium_df$DDDs_per_1000,
     labels = scales::number_format(accuracy = 0.01)
   ) +
-  theme(
-    axis.text.x = element_text(angle = 45, hjust = 1, size = axis_tick_label_size),
-    axis.text.y = element_text(size = axis_tick_label_size),
-    plot.margin = margin(10, 10, 10, 10)
-  )
+  theme_lithium_region_hist()
 ggsave(here(plots_dir, "primary_hist_ddd_pop.png"), primaryhist, width = 8, height = 5, dpi = 300)
 
 Primary_DDD_by_year_region <- PRIMARYCARE_dataset %>%
@@ -228,4 +212,4 @@ write.csv(primary_product_DDD, here(data_dir, "primary_product_DDD.csv"), row.na
 write.csv(primary_product_DDD_by_year, here(data_dir, "primary_product_DDD_by_year.csv"), row.names = FALSE)
 write.csv(primary_lithium_df, here(data_dir, "primary_lithium_by_region.csv"), row.names = FALSE)
 write.csv(Primary_DDD_by_year_region, here(data_dir, "primary_DDD_by_year_region.csv"), row.names = FALSE)
-message("Primary analysis complete. Outputs saved to ", output_dir)
+message("Primary care analysis complete. Outputs saved to ", output_dir)

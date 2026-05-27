@@ -64,14 +64,29 @@ def test_filter_lithium_uses_chemical_code_column() -> None:
     frame = pd.DataFrame(
         {
             "BNF_CHEMICAL_SUBSTANCE_CODE": ["0402030K0", "0402030Q0"],
-            "ITEMS": [1, 2],
+            "TOTAL_QUANTITY": [10, 20],
         }
     )
 
     filtered = fetch_epd.filter_lithium(frame)
 
     assert filtered["BNF_CHEMICAL_SUBSTANCE_CODE"].tolist() == ["0402030K0"]
-    assert filtered["ITEMS"].tolist() == [1]
+    assert filtered["TOTAL_QUANTITY"].tolist() == [10]
+
+
+def test_select_epd_output_columns_keeps_legacy_schema_only() -> None:
+    frame = pd.DataFrame(
+        {
+            "PRACTICE_CODE": ["A12345"],
+            "TOTAL_QUANTITY": [5],
+            "ITEMS": [1],
+            "ACTUAL_COST": [2.5],
+        }
+    )
+
+    selected = fetch_epd.select_epd_output_columns(frame)
+
+    assert list(selected.columns) == ["PRACTICE_CODE", "TOTAL_QUANTITY"]
 
 
 def test_normalize_snomed_to_legacy_maps_columns() -> None:
@@ -84,7 +99,7 @@ def test_normalize_snomed_to_legacy_maps_columns() -> None:
             "BNF_CHEMICAL_SUBSTANCE_CODE": ["0402030K0"],
             "ADQ_USAGE": [1.5],
             "PRACTICE_CODE": ["A12345"],
-            "ITEMS": [3],
+            "TOTAL_QUANTITY": [3],
         }
     )
 
@@ -105,8 +120,10 @@ def test_run_pipeline_filters_practices_and_writes_csv(tmp_path: Path) -> None:
     def fetch_month(_resource: fetch_epd.Resource) -> pd.DataFrame:
         return pd.DataFrame(
             {
+                "YEAR_MONTH": ["202401", "202401"],
                 "PRACTICE_CODE": ["A12345", "Z99999"],
-                "ITEMS": [1, 2],
+                "BNF_CODE": ["0402030K0123", "0402030K0123"],
+                "TOTAL_QUANTITY": [1, 2],
             }
         )
 
@@ -120,4 +137,4 @@ def test_run_pipeline_filters_practices_and_writes_csv(tmp_path: Path) -> None:
 
     output = pd.read_csv(tmp_path / "epd_lithium_202401.csv")
     assert output["PRACTICE_CODE"].tolist() == ["A12345"]
-    assert output["ITEMS"].tolist() == [1]
+    assert output["TOTAL_QUANTITY"].tolist() == [1]

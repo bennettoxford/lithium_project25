@@ -41,13 +41,45 @@ nhser_code_to_region <- c(
   "Y63" = "North East and Yorkshire"
 )
 
+legacy_four_region_labels <- c(
+  "North of England",
+  "Midlands and East of England",
+  "South of England"
+)
+
 normalise_nhs_region <- function(region) {
   cleaned <- str_squish(as.character(region))
   out <- unname(nhser_code_to_region[cleaned])
   needs_name_match <- is.na(out) & !is.na(cleaned) & cleaned != ""
   idx <- match(tolower(cleaned[needs_name_match]), tolower(region_levels_ordered))
   out[needs_name_match] <- region_levels_ordered[idx]
+  out[!is.na(out) & out %in% legacy_four_region_labels] <- NA_character_
   out
+}
+
+stop_if_unmapped_regions <- function(df, id_cols, entity_label = "entity") {
+  missing <- df %>% filter(is.na(.data$region))
+  n_rows <- nrow(missing)
+  if (n_rows == 0L) {
+    return(invisible(NULL))
+  }
+  summary <- missing %>%
+    group_by(across(all_of(id_cols))) %>%
+    summarise(total_DDD = sum(.data$DDD, na.rm = TRUE), .groups = "drop") %>%
+    arrange(desc(.data$total_DDD))
+  stop(
+    nrow(summary),
+    " ",
+    entity_label,
+    "(s) with no mapped NHS region (",
+    n_rows,
+    " row(s), ",
+    format(round(sum(missing$DDD, na.rm = TRUE), 1), nsmall = 1, big.mark = ","),
+    " DDD total). Top by DDD:\n",
+    paste(utils::capture.output(utils::head(summary, 10)), collapse = "\n"),
+    "\nAdd mappings in data/geography_region_lookup.csv or related lookup files.",
+    call. = FALSE
+  )
 }
 
 ensure_region_column <- function(df) {
@@ -161,6 +193,49 @@ theme_lithium <- function(base_size = 13) {
       axis.ticks.length = unit(2.5, "mm"),
       axis.text.x = element_text(size = axis_tick_label_size),
       axis.text.y = element_text(size = axis_tick_label_size)
+    )
+}
+
+theme_lithium_trend_line <- function(base_size = 13) {
+  theme_lithium(base_size = base_size) +
+    theme(
+      axis.title.x = element_text(face = "bold"),
+      axis.title.y = element_text(face = "bold")
+    )
+}
+
+theme_lithium_trend_bar <- function(base_size = 13) {
+  theme_lithium_trend_line(base_size = base_size) +
+    theme(axis.text.x = element_text(face = "bold"))
+}
+
+theme_lithium_trend_line_legend <- function(base_size = 13) {
+  theme_lithium_trend_line(base_size = base_size) +
+    theme(legend.title = element_text(face = "bold"))
+}
+
+theme_lithium_coverage_map <- function() {
+  theme_lithium() +
+    theme(
+      legend.position = coverage_map_legend_position,
+      legend.text = element_text(size = coverage_map_legend_text_size),
+      legend.title = element_text(size = coverage_map_legend_title_size),
+      panel.border = element_blank(),
+      panel.background = element_rect(fill = "white", colour = NA),
+      plot.background = element_rect(fill = "white", colour = NA),
+      axis.line = element_blank(),
+      axis.ticks = element_blank(),
+      axis.text = element_blank(),
+      plot.margin = margin(5.5, coverage_map_plot_margin_right, 5.5, 5.5)
+    )
+}
+
+theme_lithium_region_hist <- function() {
+  theme_lithium() +
+    theme(
+      axis.text.x = element_text(angle = 45, hjust = 1, size = axis_tick_label_size),
+      axis.text.y = element_text(size = axis_tick_label_size),
+      plot.margin = margin(10, 10, 10, 10)
     )
 }
 
@@ -332,4 +407,233 @@ read_ddd_by_year_export_csv <- function(path) {
     year = as.character(y),
     total_DDD = ddd
   )
+}
+
+read_monthly_csvs <- function(dir, file_pattern, select_cols = NULL) {
+  files <- sort(list.files(dir, pattern = file_pattern, full.names = TRUE))
+  if (length(files) == 0) {
+    stop("No files matching ", file_pattern, " in ", dir)
+  }
+  rbindlist(
+    lapply(files, function(f) {
+      if (is.null(select_cols)) {
+        fread(f)
+      } else {
+        fread(f, select = select_cols)
+      }
+    }),
+    use.names = TRUE,
+    fill = TRUE
+  ) %>%
+    as_tibble()
+}
+
+normalize_epd_geography <- function(df) {
+  if (!"ICB_CODE" %in% names(df) && "STP_CODE" %in% names(df)) {
+    df[["ICB_CODE"]] <- df[["STP_CODE"]]
+  }
+  if (!"ICB_NAME" %in% names(df) && "STP_NAME" %in% names(df)) {
+    df[["ICB_NAME"]] <- df[["STP_NAME"]]
+  }
+  df
+}
+
+load_epd_lithium <- function() {
+  files <- sort(list.files(
+    here("data", "primary_care"),
+    pattern = "^epd_lithium_\\d{6}\\.csv$",
+    full.names = TRUE
+  ))
+  if (length(files) == 0) {
+    stop("No epd_lithium_YYYYMM.csv files found in data/primary_care")
+  }
+
+  cols_needed <- c(
+    "YEAR_MONTH", "REGIONAL_OFFICE_CODE", "REGIONAL_OFFICE_NAME", "PCO_CODE", "ICB_CODE",
+    "PRACTICE_CODE", "BNF_CODE", "BNF_DESCRIPTION",
+    "TOTAL_QUANTITY"
+  )
+
+  rbindlist(
+    lapply(files, function(f) {
+      df <- normalize_epd_geography(fread(f))
+      missing_cols <- setdiff(cols_needed, names(df))
+      if (length(missing_cols) > 0) {
+        for (col in missing_cols) {
+          df[[col]] <- NA
+        }
+      }
+      df[, ..cols_needed]
+    }),
+    use.names = TRUE,
+    fill = TRUE
+  ) %>%
+    mutate(
+      YEAR_MONTH = as.character(YEAR_MONTH),
+      across(
+        c(
+          REGIONAL_OFFICE_CODE, REGIONAL_OFFICE_NAME, PCO_CODE, ICB_CODE, PRACTICE_CODE,
+          BNF_CODE, BNF_DESCRIPTION
+        ),
+        ~ trimws(as.character(.x))
+      ),
+      TOTAL_QUANTITY = as.numeric(TOTAL_QUANTITY)
+    )
+}
+
+ORD_RO76_PRACTICES_FILE <- here("output", "data", "ord_ro76_practices.csv")
+PRACTICE_RO76_PERIODS_FILE <- here("output", "data", "ord_ro76_practice_periods.csv")
+
+coerce_operational_date <- function(x) {
+  if (inherits(x, "Date")) {
+    return(x)
+  }
+  x <- as.character(x)
+  x[x == ""] <- NA_character_
+  as.Date(x)
+}
+
+load_ord_practice_periods <- function() {
+  if (!file.exists(PRACTICE_RO76_PERIODS_FILE)) {
+    stop(
+      "ord_ro76_practice_periods.csv not found at ", PRACTICE_RO76_PERIODS_FILE, ". "
+    )
+  }
+  read_csv(PRACTICE_RO76_PERIODS_FILE, show_col_types = FALSE) %>%
+    transmute(
+      practice_code = practice_code,
+      period_id = period_id,
+      status = role_status,
+      active_from = coerce_operational_date(operational_start),
+      active_to = coerce_operational_date(operational_end)
+    )
+}
+
+load_geography_region_lookup <- function() {
+  lookup_file <- here("data", "geography_region_lookup.csv")
+  if (!file.exists(lookup_file)) {
+    stop(
+      "geography_region_lookup.csv not found at ", lookup_file, ". ",
+      "Edit data/geography_region_lookup.csv to map ICB and sub-ICB codes to regions."
+    )
+  }
+  read_csv(lookup_file, show_col_types = FALSE) %>%
+    transmute(
+      geography_code = geography_code,
+      code_type = code_type,
+      region = normalise_nhs_region(region)
+    ) %>%
+    filter(
+      !is.na(geography_code),
+      geography_code != "",
+      !is.na(code_type),
+      code_type != "",
+      !is.na(region)
+    ) %>%
+    distinct(geography_code, code_type, .keep_all = TRUE)
+}
+
+load_ord_practice_regions <- function() {
+  if (!file.exists(ORD_RO76_PRACTICES_FILE)) {
+    stop(
+      "ord_ro76_practices.csv not found at ", ORD_RO76_PRACTICES_FILE, ". "
+    )
+  }
+
+  geography_lookup <- load_geography_region_lookup()
+  icb_lookup <- geography_lookup %>%
+    filter(code_type == "icb") %>%
+    transmute(region_code = geography_code, region_from_icb = region)
+  sub_icb_lookup <- geography_lookup %>%
+    filter(code_type == "sub_icb") %>%
+    transmute(sub_icb_code = geography_code, region_from_sub_icb = region)
+  practice_lookup <- geography_lookup %>%
+    filter(code_type == "practice") %>%
+    transmute(practice_code = geography_code, region_from_practice = region)
+
+  read_csv(ORD_RO76_PRACTICES_FILE, show_col_types = FALSE) %>%
+    left_join(icb_lookup, by = "region_code") %>%
+    left_join(sub_icb_lookup, by = "sub_icb_code") %>%
+    left_join(practice_lookup, by = "practice_code") %>%
+    transmute(
+      practice_code = practice_code,
+      region = coalesce(
+        normalise_nhs_region(region),
+        region_from_icb,
+        region_from_sub_icb,
+        region_from_practice
+      )
+    ) %>%
+    group_by(practice_code) %>%
+    summarise(
+      region = if (all(is.na(region))) NA_character_ else first(region[!is.na(region)]),
+      .groups = "drop"
+    )
+}
+
+#' Keep prescribing rows for in-scope practices in any RO76 active month
+filter_prescribing_by_practice_activity <- function(df, practice_periods) {
+  practice_codes <- unique(practice_periods$practice_code)
+  active_month_practice <- df %>%
+    distinct(month, practice) %>%
+    inner_join(practice_periods, by = c("practice" = "practice_code"), relationship = "many-to-many") %>%
+    filter(
+      is.na(active_from) | month >= floor_date(active_from, "month"),
+      is.na(active_to) | month <= floor_date(active_to, "month")
+    ) %>%
+    distinct(month, practice)
+
+  df %>%
+    filter(practice %in% practice_codes) %>%
+    semi_join(active_month_practice, by = c("month", "practice"))
+}
+
+load_fp10_monthly <- function() {
+  read_monthly_csvs(
+    here("data", "secondary_care_fp10"),
+    file_pattern = "^fp10_\\d{6}\\.csv$",
+    select_cols = c(
+      "PERIOD", "BNF_CODE", "BNF_NAME",
+      "HOSPITAL_TRUST_CODE", "HOSPITAL_TRUST",
+      "TOTAL_QUANTITY"
+    )
+  ) %>%
+    mutate(
+      PERIOD = as.Date(paste0(as.character(PERIOD), "01"), format = "%Y%m%d"),
+      across(
+        c(BNF_CODE, BNF_NAME, HOSPITAL_TRUST_CODE, HOSPITAL_TRUST),
+        ~ trimws(as.character(.x))
+      ),
+      TOTAL_QUANTITY = as.numeric(TOTAL_QUANTITY)
+    ) %>%
+    filter(!is.na(PERIOD))
+}
+
+load_ord_trust_region_mapping <- function() {
+  read_csv(here("data", "ord_trusts.csv"), show_col_types = FALSE) %>%
+    filter(!is.na(region_code), region_code != "") %>%
+    mutate(trust_code_prefix = substr(ods_code, 1, 3)) %>%
+    transmute(
+      trust_code_prefix,
+      region_from_ord = normalise_nhs_region(region_code)
+    ) %>%
+    distinct(trust_code_prefix, .keep_all = TRUE)
+}
+
+load_trust_region_mapping <- function() {
+  trust_overrides <- load_geography_region_lookup() %>%
+    filter(code_type == "trust") %>%
+    transmute(
+      trust_code_prefix = geography_code,
+      region_from_lookup = region
+    )
+
+  load_ord_trust_region_mapping() %>%
+    full_join(trust_overrides, by = "trust_code_prefix") %>%
+    transmute(
+      trust_code_prefix,
+      region = coalesce(region_from_lookup, region_from_ord)
+    ) %>%
+    filter(!is.na(region)) %>%
+    distinct(trust_code_prefix, .keep_all = TRUE)
 }
