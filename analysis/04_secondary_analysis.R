@@ -1,4 +1,4 @@
-source(here::here("analysis", "00_setup.R"))
+source(here::here("analysis", "01_setup.R"))
 
 secondary_care <- read_csv(
   here("data", "secondary_care", "secondary_care.csv"),
@@ -10,7 +10,11 @@ Lithium_SCMD <- secondary_care %>%
   mutate(
     year_month = as.Date(Date),
     year = year(year_month),
+    region_source = Region,
     region = normalise_nhs_region(Region),
+    trust_code = `Trust Code`,
+    trust_name = `Trust Name`,
+    icb = ICB,
     product_code = `VMP Code`,
     DDD = Value  # already in DDDs
   ) %>%
@@ -22,6 +26,12 @@ Lithium_SCMD <- secondary_care %>%
 if (nrow(Lithium_SCMD) == 0L) {
   stop("No secondary care rows after filters.")
 }
+
+stop_if_unmapped_regions(
+  Lithium_SCMD,
+  id_cols = c("trust_code", "trust_name", "region_source", "icb"),
+  entity_label = "trust"
+)
 
 Secondary_DDD_by_year <- Lithium_SCMD %>%
   group_by(year) %>%
@@ -46,11 +56,7 @@ secondary_line <- ggplot(Secondary_DDD_by_year, aes(x = year, y = total_DDD / 1e
     min_upper = 1.2
   ) +
   scale_x_continuous(breaks = 2019:2024, expand = expansion(mult = c(0.02, 0.02))) +
-  theme_lithium(base_size = 13) +
-  theme(
-    axis.title.x = element_text(face = "bold"),
-    axis.title.y = element_text(face = "bold")
-  )
+  theme_lithium_trend_line()
 ggsave(here(plots_dir, "secondary_line_trends.png"), secondary_line, width = 8, height = 5, dpi = 300)
 
 secondary_bar <- ggplot(Secondary_DDD_by_year, aes(x = as.factor(year), y = total_DDD / 1e6)) +
@@ -67,12 +73,7 @@ secondary_bar <- ggplot(Secondary_DDD_by_year, aes(x = as.factor(year), y = tota
     labels = function(x) format(x, scientific = FALSE, big.mark = ",")
   ) +
   scale_x_discrete(expand = expansion(mult = c(0.02, 0.02))) +
-  theme_lithium(base_size = 13) +
-  theme(
-    axis.title.x = element_text(face = "bold"),
-    axis.title.y = element_text(face = "bold"),
-    axis.text.x = element_text(face = "bold")
-  )
+  theme_lithium_trend_bar()
 ggsave(here(plots_dir, "secondary_bar_trends.png"), secondary_bar, width = 8, height = 5, dpi = 300)
 
 secondary_lithium_df <- Lithium_SCMD %>%
@@ -135,19 +136,7 @@ secondary_coverage_plot <- ggplot() +
       frame.linewidth = 0.35
     )
   ) +
-  theme_lithium() +
-  theme(
-    legend.position = coverage_map_legend_position,
-    legend.text = element_text(size = coverage_map_legend_text_size),
-    legend.title = element_text(size = coverage_map_legend_title_size),
-    panel.border = element_blank(),
-    panel.background = element_rect(fill = "white", colour = NA),
-    plot.background = element_rect(fill = "white", colour = NA),
-    axis.line = element_blank(),
-    axis.ticks = element_blank(),
-    axis.text = element_blank(),
-    plot.margin = margin(5.5, coverage_map_plot_margin_right, 5.5, 5.5)
-  ) +
+  theme_lithium_coverage_map() +
   coord_sf(datum = NA, clip = "off") +
   xlab("") +
   ylab("")
@@ -156,7 +145,6 @@ ggsave(here(plots_dir, "secondary_coverage_map.png"), secondary_coverage_plot, w
 secondaryhist <- ggplot(secondary_lithium_df, aes(x = region, y = DDDs_per_1000)) +
   geom_col(fill = colour_care_secondary, color = colour_care_secondary) +
   geom_text(aes(label = sprintf("%.2f", DDDs_per_1000)), vjust = -0.3, size = 3.5) +
-  theme_lithium() +
   xlab("Region") +
   ylab("DDDs per 1,000 population") +
   scale_y_to_next_tick(
@@ -164,11 +152,7 @@ secondaryhist <- ggplot(secondary_lithium_df, aes(x = region, y = DDDs_per_1000)
     labels = scales::number_format(accuracy = 0.01),
     min_upper = 30
   ) +
-  theme(
-    axis.text.x = element_text(angle = 45, hjust = 1, size = axis_tick_label_size),
-    axis.text.y = element_text(size = axis_tick_label_size),
-    plot.margin = margin(10, 10, 10, 10)
-  )
+  theme_lithium_region_hist()
 ggsave(here(plots_dir, "secondary_hist_ddd_pop.png"), secondaryhist, width = 8, height = 5, dpi = 300)
 
 Secondary_DDD_by_year_region <- Lithium_SCMD %>%
@@ -189,12 +173,7 @@ seven_region_secondary <- Secondary_DDD_by_year_region %>%
     min_upper = 30
   ) +
   scale_x_continuous(breaks = 2019:2024, expand = expansion(mult = c(0.02, 0.02))) +
-  theme_lithium(base_size = 13) +
-  theme(
-    axis.title.x = element_text(face = "bold"),
-    axis.title.y = element_text(face = "bold"),
-    legend.title = element_text(face = "bold")
-  )
+  theme_lithium_trend_line_legend()
 ggsave(here(plots_dir, "secondary_seven_region_trends.png"), seven_region_secondary, width = 10, height = 6, dpi = 300)
 
 write.csv(

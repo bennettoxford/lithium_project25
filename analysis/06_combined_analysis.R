@@ -1,4 +1,4 @@
-source(here::here("analysis", "00_setup.R"))
+source(here::here("analysis", "01_setup.R"))
 
 Primary_DDD_by_year <- read_ddd_by_year_export_csv(here(data_dir, "primary_DDD_by_year.csv"))
 Secondary_DDD_by_year <- read_ddd_by_year_export_csv(here(data_dir, "secondary_DDD_by_year.csv"))
@@ -519,6 +519,7 @@ national_ddd_plot <- ggplot(summed_data, aes(x = as.integer(year), y = total_DDD
   ) +
   scale_x_continuous(breaks = 2019:2024, expand = expansion(mult = c(0.02, 0.02))) +
   theme_lithium(base_size = 13)
+ggsave(here(plots_dir, "national_ddd_trends.png"), national_ddd_plot, width = 8, height = 5, dpi = 300)
 
 # Regional DDD trends
 Primary_clean_reg <- Primary_DDD_by_year_region %>%
