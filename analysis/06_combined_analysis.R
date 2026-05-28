@@ -232,6 +232,40 @@ lithium_products_DDD_summary_csv <- bind_rows(
   secondary_summary_rows
 )
 
+total_ddd_in_year <- function(by_year_df, yr) {
+  by_year_df %>%
+    filter(as.integer(.data$year) == yr) %>%
+    summarise(total = sum(.data$total_DDD, na.rm = TRUE), .groups = "drop") %>%
+    pull(total)
+}
+
+lithium_DDD_summary_by_source <- bind_rows(
+  tibble(
+    Source = "Primary care",
+    `Number of products` = n_distinct(as.character(primary_product_DDD$product_code)),
+    `First year` = primary_care_first_yr,
+    `Total DDDs (first year)` = total_ddd_in_year(Primary_DDD_by_year, primary_care_first_yr),
+    `Total DDDs (2024)` = total_ddd_in_year(Primary_DDD_by_year, primary_care_last_yr),
+    `Total DDDs (all years)` = sum(Primary_DDD_by_year$total_DDD, na.rm = TRUE)
+  ),
+  tibble(
+    Source = "Hospital FP10",
+    `Number of products` = n_distinct(as.character(hospital_fp10_product_DDD$product_code)),
+    `First year` = fp10_first_yr,
+    `Total DDDs (first year)` = total_ddd_in_year(hospital_fp10_DDD_by_year, fp10_first_yr),
+    `Total DDDs (2024)` = total_ddd_in_year(hospital_fp10_DDD_by_year, fp10_last_yr),
+    `Total DDDs (all years)` = sum(hospital_fp10_DDD_by_year$total_DDD, na.rm = TRUE)
+  ),
+  tibble(
+    Source = "Secondary care",
+    `Number of products` = n_distinct(as.character(secondary_product_DDD$product_code)),
+    `First year` = secondary_earliest_yr,
+    `Total DDDs (first year)` = total_ddd_in_year(Secondary_DDD_by_year, secondary_earliest_yr),
+    `Total DDDs (2024)` = total_ddd_in_year(Secondary_DDD_by_year, secondary_latest_yr),
+    `Total DDDs (all years)` = sum(Secondary_DDD_by_year$total_DDD, na.rm = TRUE)
+  )
+)
+
 # Combined primary + secondary trends
 primary_line <- ggplot(Primary_DDD_by_year, aes(x = as.integer(year), y = total_DDD / 1e6)) +
   geom_line(linewidth = 1.2, color = colour_care_primary) +
@@ -608,6 +642,11 @@ data.table::fwrite(
   here(data_dir, "lithium_products_DDD_summary.csv"),
   col.names = FALSE,
   na = ""
+)
+write.csv(
+  lithium_DDD_summary_by_source,
+  here(data_dir, "lithium_DDD_summary_by_source.csv"),
+  row.names = FALSE
 )
 write.csv(primary_fp10_product_DDD, here(data_dir, "primary_fp10_product_DDD.csv"), row.names = FALSE)
 message("Combined analysis complete. Outputs saved to ", output_dir)
