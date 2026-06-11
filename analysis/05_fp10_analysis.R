@@ -35,7 +35,7 @@ hospital_fp10_dataset <- hospital_fp10_base %>%
   mutate(trust_code_prefix = substr(HOSPITAL_TRUST_CODE, 1, 3)) %>%
   left_join(trust_mapping, by = "trust_code_prefix") %>%
   mutate(
-    region = normalise_nhs_region(region),
+    region = replace_na(normalise_nhs_region(region), "Unknown"),
     year = year(PERIOD)
   ) %>%
   filter(

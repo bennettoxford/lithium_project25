@@ -11,7 +11,7 @@ Lithium_SCMD <- secondary_care %>%
     year_month = as.Date(Date),
     year = year(year_month),
     region_source = Region,
-    region = normalise_nhs_region(Region),
+    region = replace_na(normalise_nhs_region(Region), "Unknown"),
     trust_code = `Trust Code`,
     trust_name = `Trust Name`,
     icb = ICB,

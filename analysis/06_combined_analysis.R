@@ -501,6 +501,7 @@ hospital_fp10_DDD_by_region_2024 <- hospital_fp10_DDD_by_region_2024 %>%
 
 combined_df_all <- bind_rows(primary_lithium_df, secondary_lithium_df, hospital_fp10_DDD_by_region_2024) %>%
   mutate(Source = factor(Source, levels = c("Primary", "Secondary", "Hospital FP10"))) %>%
+  mutate(region = coalesce(region, "Unknown")) %>%
   select(
     region,
     population,
