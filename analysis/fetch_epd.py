@@ -27,7 +27,6 @@ START_MONTH = 1
 END_YEAR = 2025
 END_MONTH = 12
 OUTPUT_DIR = PROJECT_ROOT / "data" / "primary_care"
-PRACTICE_CODES_FILE = PROJECT_ROOT / "output" / "data" / "ord_ro76_practices.csv"
 
 LITHIUM_PREFIXES = ("0402030K0", "0402030P0")
 RESOURCE_NAME_PATTERN = re.compile(rf"^{RESOURCE_PREFIX}(_SNOMED)?_(\d{{6}})$")
@@ -103,15 +102,6 @@ def paginate_records(
             break
         time.sleep(0.1)
     return all_records
-
-
-def load_practice_codes() -> set[str]:
-    if not PRACTICE_CODES_FILE.exists():
-        raise FileNotFoundError(
-            f"No ord_ro76_practices.csv found at {PRACTICE_CODES_FILE} - aborting"
-        )
-    codes = pd.read_csv(PRACTICE_CODES_FILE)
-    return set(codes["practice_code"].dropna().astype(str).unique())
 
 
 def resources_from_package_response(
@@ -355,14 +345,10 @@ def run_pipeline(
     *,
     resources: list[Resource] | None = None,
     output_dir: Path = OUTPUT_DIR,
-    practice_codes: set[str] | None = None,
     skip_existing: bool = True,
     fetch_month_func: Callable[[Resource], pd.DataFrame | None] = fetch_month,
     sleep_seconds: float = 0.2,
 ) -> None:
-    practice_codes = load_practice_codes() if practice_codes is None else practice_codes
-    print(f"Filtering to {len(practice_codes)} ORD RO76 practices", file=sys.stderr)
-
     resources = get_resources() if resources is None else resources
     output_dir.mkdir(parents=True, exist_ok=True)
     total = len(resources)
@@ -386,13 +372,6 @@ def run_pipeline(
             frame = fetch_month_func(resource)
             if frame is None or frame.empty:
                 print(f"  No lithium records for {yyyymm}", file=sys.stderr)
-                continue
-
-            n_before = len(frame)
-            frame = frame.loc[frame["PRACTICE_CODE"].astype(str).isin(practice_codes)].copy()
-            print(f"  Filtered {n_before} -> {len(frame)} rows (ORD practices only)", file=sys.stderr)
-            if frame.empty:
-                print(f"  No ORD practice records for {yyyymm}", file=sys.stderr)
                 continue
 
             frame.to_csv(output_path, index=False)

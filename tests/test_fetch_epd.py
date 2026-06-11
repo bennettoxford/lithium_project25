@@ -112,7 +112,7 @@ def test_normalize_snomed_to_legacy_maps_columns() -> None:
     assert normalized["ADQUSAGE"].tolist() == [1.5]
 
 
-def test_run_pipeline_filters_practices_and_writes_csv(tmp_path: Path) -> None:
+def test_run_pipeline_keeps_all_practices_and_writes_csv(tmp_path: Path) -> None:
     resources = [
         fetch_epd.Resource(resource_id="EPD_202401", yyyymm=202401, is_snomed=False),
     ]
@@ -130,11 +130,10 @@ def test_run_pipeline_filters_practices_and_writes_csv(tmp_path: Path) -> None:
     fetch_epd.run_pipeline(
         resources=resources,
         output_dir=tmp_path,
-        practice_codes={"A12345"},
         fetch_month_func=fetch_month,
         sleep_seconds=0,
     )
 
     output = pd.read_csv(tmp_path / "epd_lithium_202401.csv")
-    assert output["PRACTICE_CODE"].tolist() == ["A12345"]
-    assert output["TOTAL_QUANTITY"].tolist() == [1]
+    assert output["PRACTICE_CODE"].tolist() == ["A12345", "Z99999"]
+    assert output["TOTAL_QUANTITY"].tolist() == [1, 2]

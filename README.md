@@ -54,12 +54,12 @@ uv run python analysis/fetch_ord_practices.py
 
 Writes:
 
-- `output/data/ord_ro76_practices.csv`
+- `output/data/ord_practices.csv`
 - `output/data/ord_ro76_practice_periods.csv`
 
 ### 2. Primary care EPD
 
-Queries [NHSBSA open data](https://opendata.nhsbsa.net/) for BNF lithium carbonate (`0402030K0`) and citrate (`0402030P0`), then keeps rows for ORD RO76 practices only. Requires `output/data/ord_ro76_practices.csv` from step 1.
+Queries [NHSBSA open data](https://opendata.nhsbsa.net/) for BNF lithium carbonate (`0402030K0`) and citrate (`0402030P0`) and saves all lithium rows from EPD.
 
 ```
 uv run python analysis/fetch_epd.py
@@ -97,7 +97,7 @@ Pipeline order:
 1. `00_region_populations.R` — ONS population by NHS region → `output/data/ons_nhs_england_region_population_estimates.csv`  
 2. `01_setup.R` — shared libraries, region helpers, population joins  
 3. `02_unique_products.R` — product catalogue across sources  
-4. `03_primary_analysis.R` — primary care (EPD) DDD, 2015–2024, RO76 GP practices only  
+4. `03_primary_analysis.R` — primary care (EPD) DDD, 2015–2024 
 5. `04_secondary_analysis.R` — secondary care (SCMD) DDD, 2019–2024  
 6. `05_fp10_analysis.R` — hospital FP10 DDD, 2017–2024  
 7. `06_combined_analysis.R` — combined trends and maps (reads CSVs from steps 4–6)  

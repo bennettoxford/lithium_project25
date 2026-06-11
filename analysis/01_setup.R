@@ -481,33 +481,7 @@ load_epd_lithium <- function() {
     )
 }
 
-ORD_RO76_PRACTICES_FILE <- here("output", "data", "ord_ro76_practices.csv")
-PRACTICE_RO76_PERIODS_FILE <- here("output", "data", "ord_ro76_practice_periods.csv")
-
-coerce_operational_date <- function(x) {
-  if (inherits(x, "Date")) {
-    return(x)
-  }
-  x <- as.character(x)
-  x[x == ""] <- NA_character_
-  as.Date(x)
-}
-
-load_ord_practice_periods <- function() {
-  if (!file.exists(PRACTICE_RO76_PERIODS_FILE)) {
-    stop(
-      "ord_ro76_practice_periods.csv not found at ", PRACTICE_RO76_PERIODS_FILE, ". "
-    )
-  }
-  read_csv(PRACTICE_RO76_PERIODS_FILE, show_col_types = FALSE) %>%
-    transmute(
-      practice_code = practice_code,
-      period_id = period_id,
-      status = role_status,
-      active_from = coerce_operational_date(operational_start),
-      active_to = coerce_operational_date(operational_end)
-    )
-}
+ORD_PRACTICES_FILE <- here("output", "data", "ord_practices.csv")
 
 load_geography_region_lookup <- function() {
   lookup_file <- here("data", "geography_region_lookup.csv")
@@ -534,9 +508,9 @@ load_geography_region_lookup <- function() {
 }
 
 load_ord_practice_regions <- function() {
-  if (!file.exists(ORD_RO76_PRACTICES_FILE)) {
+  if (!file.exists(ORD_PRACTICES_FILE)) {
     stop(
-      "ord_ro76_practices.csv not found at ", ORD_RO76_PRACTICES_FILE, ". "
+      "ord_practices.csv not found at ", ORD_PRACTICES_FILE, ". "
     )
   }
 
@@ -551,7 +525,7 @@ load_ord_practice_regions <- function() {
     filter(code_type == "practice") %>%
     transmute(practice_code = geography_code, region_from_practice = region)
 
-  read_csv(ORD_RO76_PRACTICES_FILE, show_col_types = FALSE) %>%
+  read_csv(ORD_PRACTICES_FILE, show_col_types = FALSE) %>%
     left_join(icb_lookup, by = "region_code") %>%
     left_join(sub_icb_lookup, by = "sub_icb_code") %>%
     left_join(practice_lookup, by = "practice_code") %>%
@@ -569,23 +543,6 @@ load_ord_practice_regions <- function() {
       region = if (all(is.na(region))) NA_character_ else first(region[!is.na(region)]),
       .groups = "drop"
     )
-}
-
-#' Keep prescribing rows for in-scope practices in any RO76 active month
-filter_prescribing_by_practice_activity <- function(df, practice_periods) {
-  practice_codes <- unique(practice_periods$practice_code)
-  active_month_practice <- df %>%
-    distinct(month, practice) %>%
-    inner_join(practice_periods, by = c("practice" = "practice_code"), relationship = "many-to-many") %>%
-    filter(
-      is.na(active_from) | month >= floor_date(active_from, "month"),
-      is.na(active_to) | month <= floor_date(active_to, "month")
-    ) %>%
-    distinct(month, practice)
-
-  df %>%
-    filter(practice %in% practice_codes) %>%
-    semi_join(active_month_practice, by = c("month", "practice"))
 }
 
 load_fp10_monthly <- function() {

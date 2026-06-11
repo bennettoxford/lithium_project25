@@ -13,7 +13,7 @@ PROJECT_ROOT = Path(__file__).resolve().parents[1]
 DATA_DIR = PROJECT_ROOT / "data" / "trud"
 OUT_DIR = PROJECT_ROOT / "output" / "data"
 
-PRACTICES_CSV = OUT_DIR / "ord_ro76_practices.csv"
+PRACTICES_CSV = OUT_DIR / "ord_practices.csv"
 PERIODS_CSV = OUT_DIR / "ord_ro76_practice_periods.csv"
 
 GP_PRACTICE_ROLE = "RO76"
