@@ -219,7 +219,7 @@ def parse_organisation(organisation: ET.Element, source: str) -> tuple[dict[str,
 
     periods = parse_ro76_periods(organisation, practice_code)
     org_row["_has_ro76"] = bool(periods)
-    if not periods or not is_included_country(country) or not practice_code:
+    if not is_included_country(country) or not practice_code:
         return None, org_row
 
     sub_icb_code = re6.get("target_org", "") if re6.get("target_role") == COMMISSIONER_ROLE else ""
@@ -238,7 +238,7 @@ def parse_organisation(organisation: ET.Element, source: str) -> tuple[dict[str,
 
 
 def stream_organisations(path: Path, label: str, progress_every: int = 50_000) -> dict[str, list[dict[str, object]]]:
-    """Stream a HSCOrgRefData XML file and collect English RO76 practices."""
+    """Stream a HSCOrgRefData XML file and collect English organisations."""
     if not path.exists():
         raise FileNotFoundError(f"XML file not found: {path}")
 
@@ -248,7 +248,7 @@ def stream_organisations(path: Path, label: str, progress_every: int = 50_000) -
     practices: list[dict[str, object]] = []
     org_rows: list[dict[str, object]] = []
     org_count = 0
-    ro76_non_england = 0
+    non_england_count = 0
 
     for _event, element in ET.iterparse(path, events=("end",)):
         if element.tag != "Organisation":
@@ -259,22 +259,22 @@ def stream_organisations(path: Path, label: str, progress_every: int = 50_000) -
         org_rows.append(org_row)
         if parsed is not None:
             practices.append(parsed)
-        elif org_row["_has_ro76"] and not is_included_country(str(org_row["country"])):
-            ro76_non_england += 1
+        elif not is_included_country(str(org_row["country"])):
+            non_england_count += 1
 
         if org_count % progress_every == 0:
             elapsed_minutes = (time.monotonic() - started) / 60
             print(
                 f"  {label}: {org_count:,} organisations read "
-                f"({len(practices):,} ENGLAND RO76, {elapsed_minutes:.1f}m)",
+                f"({len(practices):,} ENGLAND orgs, {elapsed_minutes:.1f}m)",
                 file=sys.stderr,
             )
 
         element.clear()
 
     print(
-        f"  {label} done: {len(practices):,} ENGLAND RO76 orgs "
-        f"(excluded {ro76_non_england:,} non-England) from {org_count:,} organisation blocks",
+        f"  {label} done: {len(practices):,} ENGLAND orgs "
+        f"(excluded {non_england_count:,} non-England) from {org_count:,} organisation blocks",
         file=sys.stderr,
     )
     return {"practices": practices, "org_rows": org_rows}
@@ -407,7 +407,7 @@ def run_pipeline(
     full_xml: Path | None = None,
     archive_xml: Path | None = None,
 ) -> tuple[list[dict[str, object]], list[dict[str, object]]]:
-    """Run the ORD RO76 extraction and write both output CSVs."""
+    """Run the ORD practice extraction and write both output CSVs."""
     full_path = resolve_trud_xml("Full", full_xml)
     archive_path = resolve_trud_xml("Archive", archive_xml)
     print(f"Using Full XML: {full_path}", file=sys.stderr)
@@ -424,7 +424,7 @@ def run_pipeline(
 
 def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     parser = argparse.ArgumentParser(
-        description="Extract RO76 GP practices and operational periods from TRUD ODS XML."
+        description="Extract English organisations and RO76 role periods from TRUD ODS XML."
     )
     parser.add_argument(
         "--full",
