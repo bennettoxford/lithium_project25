@@ -177,13 +177,16 @@ primary_coverage_plot <- ggplot() +
   ylab("")
 ggsave(here(plots_dir, "primary_coverage_map.png"), primary_coverage_plot, width = 8, height = 6, dpi = 300)
 
-primaryhist <- ggplot(primary_lithium_df, aes(x = region, y = DDDs_per_1000)) +
+primary_lithium_plot_df <- primary_lithium_df %>%
+  filter(is.finite(DDDs_per_1000))
+
+primaryhist <- ggplot(primary_lithium_plot_df, aes(x = region, y = DDDs_per_1000)) +
   geom_col(fill = colour_care_primary, color = colour_care_primary) +
   geom_text(aes(label = sprintf("%.2f", DDDs_per_1000)), vjust = -0.3, size = 3.5) +
   xlab("Region") +
   ylab("DDDs per 1,000 population") +
   scale_y_to_next_tick(
-    values = primary_lithium_df$DDDs_per_1000,
+    values = primary_lithium_plot_df$DDDs_per_1000,
     labels = scales::number_format(accuracy = 0.01)
   ) +
   theme_lithium_region_hist()

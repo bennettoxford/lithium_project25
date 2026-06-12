@@ -510,7 +510,10 @@ combined_df_all <- bind_rows(primary_lithium_df, secondary_lithium_df, hospital_
     Source
   )
 
-stacked_bar_plot <- ggplot(combined_df_all, aes(x = region, y = DDDs_per_1000, fill = Source)) +
+combined_df_plot <- combined_df_all %>%
+  filter(is.finite(DDDs_per_1000))
+
+stacked_bar_plot <- ggplot(combined_df_plot, aes(x = region, y = DDDs_per_1000, fill = Source)) +
   geom_col(color = "black") +
   scale_y_continuous(labels = scales::label_number(accuracy = 0.01)) +
   scale_fill_manual(

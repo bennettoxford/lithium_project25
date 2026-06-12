@@ -185,13 +185,16 @@ hospital_fp10_coverage_plot <- ggplot() +
   ylab("")
 ggsave(here(plots_dir, "fp10_coverage_map.png"), hospital_fp10_coverage_plot, width = 8, height = 6, dpi = 300)
 
-hospital_fp10_hist <- ggplot(hospital_fp10_DDD_by_region_2024, aes(x = region, y = DDDs_per_1000)) +
+hospital_fp10_plot_df <- hospital_fp10_DDD_by_region_2024 %>%
+  filter(is.finite(DDDs_per_1000))
+
+hospital_fp10_hist <- ggplot(hospital_fp10_plot_df, aes(x = region, y = DDDs_per_1000)) +
   geom_col(fill = colour_care_fp10) +
   geom_text(aes(label = sprintf("%.2f", DDDs_per_1000)), vjust = -0.3, size = 3.5) +
   xlab("Region") +
   ylab("DDDs per 1,000 population") +
   scale_y_to_next_tick(
-    values = hospital_fp10_DDD_by_region_2024$DDDs_per_1000,
+    values = hospital_fp10_plot_df$DDDs_per_1000,
     labels = scales::number_format(accuracy = 0.01)
   ) +
   theme_lithium_region_hist()
