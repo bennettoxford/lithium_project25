@@ -5,6 +5,7 @@ import time
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Callable
+from urllib.error import HTTPError
 from urllib.parse import quote
 from urllib.request import Request, urlopen
 
@@ -30,6 +31,15 @@ OUTPUT_DIR = PROJECT_ROOT / "data" / "primary_care"
 
 LITHIUM_PREFIXES = ("0402030K0", "0402030P0")
 RESOURCE_NAME_PATTERN = re.compile(rf"^{RESOURCE_PREFIX}(_SNOMED)?_(\d{{6}})$")
+
+LEGACY_SQL_ORDER_BY = (
+    "YEAR_MONTH, PRACTICE_CODE, BNF_CODE, QUANTITY, ITEMS, TOTAL_QUANTITY, NIC, "
+    "ACTUAL_COST, BNF_DESCRIPTION"
+)
+SNOMED_SQL_ORDER_BY = (
+    "YEAR_MONTH, PRACTICE_CODE, BNF_PRESENTATION_CODE, QUANTITY, ITEMS, TOTAL_QUANTITY, "
+    "NIC, ACTUAL_COST, BNF_PRESENTATION_NAME"
+)
 
 LEGACY_COLUMNS = [
     "YEAR_MONTH",
@@ -183,15 +193,6 @@ def get_resources() -> list[Resource]:
     return resources
 
 
-def build_sql(resource_id: str, offset: int = 0) -> str:
-    in_list = ", ".join(f"'{prefix}'" for prefix in LITHIUM_PREFIXES)
-    return (
-        f"SELECT * FROM `{resource_id}` "
-        f"WHERE BNF_CHEMICAL_SUBSTANCE IN ({in_list}) "
-        f"LIMIT {SQL_LIMIT} OFFSET {offset}"
-    )
-
-
 def extract_legacy_records(page: dict[str, object]) -> list[dict[str, object]] | None:
     result = page.get("result")
     if not isinstance(result, dict):
@@ -208,7 +209,33 @@ def extract_legacy_records(page: dict[str, object]) -> list[dict[str, object]] |
     return records
 
 
-def fetch_page_legacy(resource_id: str, offset: int = 0) -> dict[str, object]:
+def build_sql(
+    resource_id: str,
+    offset: int = 0,
+) -> str:
+    in_list = ", ".join(f"'{prefix}'" for prefix in LITHIUM_PREFIXES)
+    return (
+        f"SELECT * FROM `{resource_id}` "
+        f"WHERE BNF_CHEMICAL_SUBSTANCE IN ({in_list}) "
+        f"ORDER BY {LEGACY_SQL_ORDER_BY} "
+        f"LIMIT {SQL_LIMIT} OFFSET {offset}"
+    )
+
+
+def build_snomed_sql(resource_id: str, offset: int = 0) -> str:
+    in_list = ", ".join(f"'{prefix}'" for prefix in LITHIUM_PREFIXES)
+    return (
+        f"SELECT * FROM `{resource_id}` "
+        f"WHERE BNF_CHEMICAL_SUBSTANCE_CODE IN ({in_list}) "
+        f"ORDER BY {SNOMED_SQL_ORDER_BY} "
+        f"LIMIT {SQL_LIMIT} OFFSET {offset}"
+    )
+
+
+def fetch_page_legacy(
+    resource_id: str,
+    offset: int = 0,
+) -> dict[str, object]:
     sql = build_sql(resource_id, offset)
     url = (
         f"{BASE_URL}/datastore_search_sql?"
@@ -219,61 +246,51 @@ def fetch_page_legacy(resource_id: str, offset: int = 0) -> dict[str, object]:
 
 
 def fetch_month_legacy(resource_id: str) -> pd.DataFrame | None:
-    records = paginate_records(
-        lambda offset: fetch_page_legacy(resource_id, offset),
-        extract_legacy_records,
-    )
+    try:
+        records = paginate_records(
+            lambda offset: fetch_page_legacy(resource_id, offset),
+            extract_legacy_records,
+        )
+    except HTTPError as exc:
+        raise RuntimeError(
+            f"Legacy EPD query failed for resource {resource_id}."
+        ) from exc
+
     if not records:
         return None
-    return pd.DataFrame(records)
+    frame = pd.DataFrame(records)
+    duplicate_rows = frame.duplicated(keep=False)
+    if duplicate_rows.any():
+        raise RuntimeError(
+            "Duplicate rows returned across paginated results"
+            f"Resource: {resource_id}. Duplicate rows: {int(duplicate_rows.sum())}."
+        )
+    return frame
 
 
-def fetch_page_snomed(
+def fetch_page_snomed_sql(
     resource_id: str,
-    chemical_code: str,
     offset: int = 0,
-    *,
-    query: str = "filters",
 ) -> dict[str, object]:
-    payload = json.dumps({"BNF_CHEMICAL_SUBSTANCE_CODE": chemical_code})
-    param = "filters" if query == "filters" else "q"
+    sql = build_snomed_sql(resource_id, offset)
     url = (
-        f"{BASE_URL}/datastore_search?"
+        f"{BASE_URL}/datastore_search_sql?"
         f"resource_id={quote(resource_id, safe='')}"
-        f"&limit={SQL_LIMIT}"
-        f"&offset={offset}"
-        f"&{param}={quote(payload, safe='')}"
+        f"&sql={quote(sql, safe='')}"
     )
     return parse_ckan_response(request_json(url))
 
 
-def extract_snomed_records(page: dict[str, object]) -> list[dict[str, object]] | None:
-    result = page.get("result")
-    if not isinstance(result, dict):
-        return None
-    records = result.get("records")
-    if not records or not isinstance(records, list):
-        return None
-    return records
-
-
-def fetch_snomed_chemicals(resource_id: str, query: str) -> list[dict[str, object]]:
-    all_records: list[dict[str, object]] = []
-    for chemical in LITHIUM_PREFIXES:
-        records = paginate_records(
-            lambda offset, chemical=chemical: fetch_page_snomed(
-                resource_id, chemical, offset, query=query
-            ),
-            extract_snomed_records,
-        )
-        all_records.extend(records)
-    return all_records
-
-
 def fetch_month_snomed(resource_id: str) -> pd.DataFrame | None:
-    records = fetch_snomed_chemicals(resource_id, "filters")
-    if not records:
-        records = fetch_snomed_chemicals(resource_id, "q")
+    try:
+        records = paginate_records(
+            lambda offset: fetch_page_snomed_sql(resource_id, offset),
+            extract_legacy_records,
+        )
+    except HTTPError as exc:
+        raise RuntimeError(
+            f"SNOMED EPD query failed for resource {resource_id}."
+        ) from exc
     if not records:
         return None
     return pd.DataFrame(records)
@@ -370,17 +387,19 @@ def run_pipeline(
         print(f"[{index}/{total}] Querying {yyyymm} ({source}) ...", file=sys.stderr)
         try:
             frame = fetch_month_func(resource)
-            if frame is None or frame.empty:
-                print(f"  No lithium records for {yyyymm}", file=sys.stderr)
-                continue
-
-            frame.to_csv(output_path, index=False)
-            print(f"  Saved {len(frame)} rows to {output_path.name}", file=sys.stderr)
         except Exception as exc:
-            print(f"  ERROR: {exc}", file=sys.stderr)
+            raise RuntimeError(
+                f"Failed to fetch {yyyymm} ({source}) for resource {resource.resource_id}: {exc}"
+            ) from exc
+
+        if frame is None or frame.empty:
+            print(f"  No lithium records for {yyyymm}", file=sys.stderr)
+            continue
+
+        frame.to_csv(output_path, index=False)
+        print(f"  Saved {len(frame)} rows to {output_path.name}", file=sys.stderr)
         time.sleep(sleep_seconds)
 
-    print(f"Done. Data saved to {output_dir}", file=sys.stderr)
 
 
 if __name__ == "__main__":
