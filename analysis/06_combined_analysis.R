@@ -540,6 +540,12 @@ summed_data <- combined_data %>%
   group_by(year) %>%
   summarise(total_DDD_sum = sum(total_DDD, na.rm = TRUE), .groups = "drop")
 
+# Summed across all available years (secondary/FP10 contribute only where data exists)
+summed_data_all_years <- combined_data %>%
+  group_by(year) %>%
+  summarise(total_DDD_sum = sum(total_DDD, na.rm = TRUE)) %>%
+  arrange(year)
+
 national_ddd_plot <- ggplot(summed_data, aes(x = as.integer(year), y = total_DDD_sum / 1e6)) +
   geom_line(color = colour_care_combined_aggregate, linewidth = 1.2) +
   geom_point(color = colour_care_combined_aggregate, size = 3) +
@@ -584,7 +590,7 @@ regional_trends_plot <- ggplot(summed_by_region, aes(x = year, y = DDDs_per_1000
   theme_lithium(base_size = 13)
 ggsave(here(plots_dir, "regional_ddd_trends.png"), regional_trends_plot, width = 10, height = 6, dpi = 300)
 
-national_ddd_summed_export <- summed_data %>%
+national_ddd_summed_export <- summed_data_all_years %>%
   transmute(
     Year = year,
     `Total DDDs` = format(
