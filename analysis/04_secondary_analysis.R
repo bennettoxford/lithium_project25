@@ -11,7 +11,7 @@ Lithium_SCMD <- secondary_care %>%
     year_month = as.Date(Date),
     year = year(year_month),
     region_source = Region,
-    region = normalise_nhs_region(Region),
+    region = replace_na(normalise_nhs_region(Region), "Unknown"),
     trust_code = `Trust Code`,
     trust_name = `Trust Name`,
     icb = ICB,
@@ -142,13 +142,16 @@ secondary_coverage_plot <- ggplot() +
   ylab("")
 ggsave(here(plots_dir, "secondary_coverage_map.png"), secondary_coverage_plot, width = 8, height = 6, dpi = 300)
 
-secondaryhist <- ggplot(secondary_lithium_df, aes(x = region, y = DDDs_per_1000)) +
+secondary_lithium_plot_df <- secondary_lithium_df %>%
+  filter(is.finite(DDDs_per_1000))
+
+secondaryhist <- ggplot(secondary_lithium_plot_df, aes(x = region, y = DDDs_per_1000)) +
   geom_col(fill = colour_care_secondary, color = colour_care_secondary) +
   geom_text(aes(label = sprintf("%.2f", DDDs_per_1000)), vjust = -0.3, size = 3.5) +
   xlab("Region") +
   ylab("DDDs per 1,000 population") +
   scale_y_to_next_tick(
-    values = secondary_lithium_df$DDDs_per_1000,
+    values = secondary_lithium_plot_df$DDDs_per_1000,
     labels = scales::number_format(accuracy = 0.01),
     min_upper = 30
   ) +

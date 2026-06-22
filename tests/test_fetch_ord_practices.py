@@ -120,6 +120,21 @@ def test_stream_filters_non_english_ro76_practices(tmp_path: Path) -> None:
     assert result["org_rows"][0]["org_code"] == "W12345"
 
 
+def test_stream_includes_english_org_without_ro76_role(tmp_path: Path) -> None:
+    xml_path = tmp_path / "full.xml"
+    write_xml(
+        xml_path,
+        organisation("A99999", "NO RO76 PRACTICE", include_ro76=False, re5_target="REG1", re5_role="RO261"),
+    )
+
+    result = fetch_ord_practices.stream_organisations(xml_path, "Full", progress_every=10)
+
+    assert len(result["practices"]) == 1
+    parsed = result["practices"][0]
+    assert parsed["practice"]["practice_code"] == "A99999"
+    assert parsed["periods"] == []
+
+
 def test_merge_prefers_full_practice_and_marks_codes_seen_in_both() -> None:
     full_item = {
         "practice": {

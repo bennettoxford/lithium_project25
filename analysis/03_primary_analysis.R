@@ -5,36 +5,28 @@ product_mapping <- read.csv(
   colClasses = c(bnf_code = "character")
 )
 
-practice_periods <- load_ord_practice_periods()
-practice_regions <- load_ord_practice_regions()
+practice_regions <- load_ord_practice_regions() %>%
+  rename(practice = practice_code)
 
 prescribing_base <- load_epd_lithium() %>%
   mutate(
     month = as.Date(paste0(YEAR_MONTH, "01"), format = "%Y%m%d"),
     practice = PRACTICE_CODE,
     bnf_code = BNF_CODE,
-    quantity = TOTAL_QUANTITY
+    quantity = TOTAL_QUANTITY,
+    epd_region = coalesce(
+      normalise_nhs_region(REGIONAL_OFFICE_CODE),
+      normalise_nhs_region(REGIONAL_OFFICE_NAME)
+    )
   ) %>%
-  group_by(month, practice, bnf_code) %>%
+  left_join(practice_regions, by = "practice") %>%
+  mutate(
+    region = coalesce(region, epd_region, "Unknown")
+  ) %>%
+  group_by(month, practice, bnf_code, region) %>%
   summarise(
     quantity = sum(quantity, na.rm = TRUE),
     .groups = "drop"
-  )
-
-n_before_activity <- nrow(prescribing_base)
-prescribing_base <- filter_prescribing_by_practice_activity(prescribing_base, practice_periods)
-message(
-  "Primary care: ",
-  nrow(prescribing_base),
-  " rows after practice list + RO76 active-month filter (dropped ",
-  n_before_activity - nrow(prescribing_base),
-  " rows)"
-)
-
-prescribing_base <- prescribing_base %>%
-  left_join(
-    practice_regions %>% rename(practice = practice_code),
-    by = "practice"
   )
 
 message("Primary care: ", nrow(prescribing_base), " rows before product mapping join")
@@ -185,13 +177,16 @@ primary_coverage_plot <- ggplot() +
   ylab("")
 ggsave(here(plots_dir, "primary_coverage_map.png"), primary_coverage_plot, width = 8, height = 6, dpi = 300)
 
-primaryhist <- ggplot(primary_lithium_df, aes(x = region, y = DDDs_per_1000)) +
+primary_lithium_plot_df <- primary_lithium_df %>%
+  filter(is.finite(DDDs_per_1000))
+
+primaryhist <- ggplot(primary_lithium_plot_df, aes(x = region, y = DDDs_per_1000)) +
   geom_col(fill = colour_care_primary, color = colour_care_primary) +
   geom_text(aes(label = sprintf("%.2f", DDDs_per_1000)), vjust = -0.3, size = 3.5) +
   xlab("Region") +
   ylab("DDDs per 1,000 population") +
   scale_y_to_next_tick(
-    values = primary_lithium_df$DDDs_per_1000,
+    values = primary_lithium_plot_df$DDDs_per_1000,
     labels = scales::number_format(accuracy = 0.01)
   ) +
   theme_lithium_region_hist()

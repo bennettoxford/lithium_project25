@@ -35,7 +35,7 @@ hospital_fp10_dataset <- hospital_fp10_base %>%
   mutate(trust_code_prefix = substr(HOSPITAL_TRUST_CODE, 1, 3)) %>%
   left_join(trust_mapping, by = "trust_code_prefix") %>%
   mutate(
-    region = normalise_nhs_region(region),
+    region = replace_na(normalise_nhs_region(region), "Unknown"),
     year = year(PERIOD)
   ) %>%
   filter(
@@ -60,13 +60,9 @@ message(
 )
 
 # Y999666 ("UNIDENTIFIED TRUST") is a placeholder for FP10 items that could not be
-# matched to a hospital trust. Included in national totals; excluded from regional
-# breakdowns.
-hospital_fp10_regional <- hospital_fp10_dataset %>%
-  filter(trust_code_prefix != "Y99")
-
+# matched to a hospital trust. Keep it in regional breakdowns as "Unknown".
 stop_if_unmapped_regions(
-  hospital_fp10_regional,
+  hospital_fp10_dataset,
   id_cols = c("trust_code_prefix", "HOSPITAL_TRUST_CODE", "HOSPITAL_TRUST"),
   entity_label = "trust"
 )
@@ -83,7 +79,7 @@ message(
     ),
     nsmall = 1
   ),
-  " DDD from unidentified trust (Y999666); included in national totals only"
+  " DDD from unidentified trust (Y999666); included as Unknown region"
 )
 
 if (nrow(hospital_fp10_dataset) == 0L) {
@@ -115,7 +111,7 @@ hospital_fp10_line <- ggplot(hospital_fp10_DDD_by_year, aes(x = year, y = total_
   theme_lithium_trend_line()
 ggsave(here(plots_dir, "hospital_fp10_line_trends.png"), hospital_fp10_line, width = 8, height = 5, dpi = 300)
 
-hospital_fp10_DDD_by_year_region <- hospital_fp10_regional %>%
+hospital_fp10_DDD_by_year_region <- hospital_fp10_dataset %>%
   group_by(year, region) %>%
   summarise(total_DDD = sum(DDD, na.rm = TRUE), .groups = "drop") %>%
   add_population_by_year(year_col = "year", region_col = "region") %>%
@@ -185,13 +181,16 @@ hospital_fp10_coverage_plot <- ggplot() +
   ylab("")
 ggsave(here(plots_dir, "fp10_coverage_map.png"), hospital_fp10_coverage_plot, width = 8, height = 6, dpi = 300)
 
-hospital_fp10_hist <- ggplot(hospital_fp10_DDD_by_region_2024, aes(x = region, y = DDDs_per_1000)) +
+hospital_fp10_plot_df <- hospital_fp10_DDD_by_region_2024 %>%
+  filter(is.finite(DDDs_per_1000))
+
+hospital_fp10_hist <- ggplot(hospital_fp10_plot_df, aes(x = region, y = DDDs_per_1000)) +
   geom_col(fill = colour_care_fp10) +
   geom_text(aes(label = sprintf("%.2f", DDDs_per_1000)), vjust = -0.3, size = 3.5) +
   xlab("Region") +
   ylab("DDDs per 1,000 population") +
   scale_y_to_next_tick(
-    values = hospital_fp10_DDD_by_region_2024$DDDs_per_1000,
+    values = hospital_fp10_plot_df$DDDs_per_1000,
     labels = scales::number_format(accuracy = 0.01)
   ) +
   theme_lithium_region_hist()
