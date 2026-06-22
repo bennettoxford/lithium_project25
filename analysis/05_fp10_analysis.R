@@ -60,13 +60,9 @@ message(
 )
 
 # Y999666 ("UNIDENTIFIED TRUST") is a placeholder for FP10 items that could not be
-# matched to a hospital trust. Included in national totals; excluded from regional
-# breakdowns.
-hospital_fp10_regional <- hospital_fp10_dataset %>%
-  filter(trust_code_prefix != "Y99")
-
+# matched to a hospital trust. Keep it in regional breakdowns as "Unknown".
 stop_if_unmapped_regions(
-  hospital_fp10_regional,
+  hospital_fp10_dataset,
   id_cols = c("trust_code_prefix", "HOSPITAL_TRUST_CODE", "HOSPITAL_TRUST"),
   entity_label = "trust"
 )
@@ -83,7 +79,7 @@ message(
     ),
     nsmall = 1
   ),
-  " DDD from unidentified trust (Y999666); included in national totals only"
+  " DDD from unidentified trust (Y999666); included as Unknown region"
 )
 
 if (nrow(hospital_fp10_dataset) == 0L) {
@@ -115,7 +111,7 @@ hospital_fp10_line <- ggplot(hospital_fp10_DDD_by_year, aes(x = year, y = total_
   theme_lithium_trend_line()
 ggsave(here(plots_dir, "hospital_fp10_line_trends.png"), hospital_fp10_line, width = 8, height = 5, dpi = 300)
 
-hospital_fp10_DDD_by_year_region <- hospital_fp10_regional %>%
+hospital_fp10_DDD_by_year_region <- hospital_fp10_dataset %>%
   group_by(year, region) %>%
   summarise(total_DDD = sum(DDD, na.rm = TRUE), .groups = "drop") %>%
   add_population_by_year(year_col = "year", region_col = "region") %>%

@@ -529,23 +529,16 @@ stacked_bar_plot <- ggplot(combined_df_plot, aes(x = region, y = DDDs_per_1000, 
 ggsave(here(plots_dir, "stacked_bar_regional_by_care.png"), stacked_bar_plot, width = 10, height = 6, dpi = 300)
 
 # National DDD trends
-Primary_clean <- Primary_DDD_by_year_region %>%
+combined_data <- bind_rows(
+  Primary_DDD_by_year,
+  Secondary_DDD_by_year,
+  hospital_fp10_DDD_by_year %>% select(year, total_DDD)
+)
+summed_data <- combined_data %>%
   mutate(year = as.integer(year)) %>%
-  select(year, region, total_DDD, population, DDDs_per_1000)
-
-Secondary_clean <- Secondary_DDD_by_year_region %>%
-  mutate(year = as.integer(year)) %>%
-  select(year, region, total_DDD, population, DDDs_per_1000)
-
-Hospital_clean <- hospital_fp10_DDD_by_year_region %>%
-  mutate(year = as.integer(year)) %>%
-  select(year, region, total_DDD, population, DDDs_per_1000)
-
-combined_data <- bind_rows(Primary_clean, Secondary_clean, Hospital_clean)
-filtered_data <- combined_data %>% filter(year >= 2019, year <= 2024)
-summed_data <- filtered_data %>%
+  filter(year >= 2019, year <= 2024) %>%
   group_by(year) %>%
-  summarise(total_DDD_sum = sum(total_DDD, na.rm = TRUE))
+  summarise(total_DDD_sum = sum(total_DDD, na.rm = TRUE), .groups = "drop")
 
 national_ddd_plot <- ggplot(summed_data, aes(x = as.integer(year), y = total_DDD_sum / 1e6)) +
   geom_line(color = colour_care_combined_aggregate, linewidth = 1.2) +
