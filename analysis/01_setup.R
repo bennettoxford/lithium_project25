@@ -399,6 +399,38 @@ format_ddd_by_year_for_export <- function(df, year_col, ddd_col = "total_DDD") {
     )
 }
 
+format_ddd_per_1000_region_year_wide_for_export <- function(
+    df,
+    year_col = "year",
+    region_col = "region",
+    value_col = "DDDs_per_1000"
+) {
+  region_levels_present <- intersect(
+    region_levels_ordered,
+    unique(as.character(df[[region_col]]))
+  )
+
+  df %>%
+    transmute(
+      region = as.character(.data[[region_col]]),
+      year = as.integer(.data[[year_col]]),
+      DDDs_per_1000 = .data[[value_col]]
+    ) %>%
+    mutate(
+      region = if (length(region_levels_present) > 0) {
+        factor(region, levels = c(region_levels_present, setdiff(sort(unique(region)), region_levels_present)))
+      } else {
+        factor(region, levels = sort(unique(region)))
+      }
+    ) %>%
+    arrange(region, year) %>%
+    pivot_wider(
+      names_from = year,
+      values_from = DDDs_per_1000
+    ) %>%
+    mutate(region = as.character(region))
+}
+
 read_ddd_by_year_export_csv <- function(path) {
   raw <- read.csv(path, check.names = FALSE, stringsAsFactors = FALSE)
   y <- as.integer(gsub(",", "", trimws(as.character(raw[["Year"]]))))
