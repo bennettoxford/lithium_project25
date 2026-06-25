@@ -576,6 +576,10 @@ summed_by_region <- filtered_data_reg %>%
   summarise(DDDs_per_1000 = round(sum(DDDs_per_1000, na.rm = TRUE), 2), .groups = "drop") %>%
   filter(!is.na(region))
 
+regional_DDD_trends_wide <- format_ddd_per_1000_region_year_wide_for_export(
+  summed_by_region
+)
+
 regional_trends_plot <- ggplot(summed_by_region, aes(x = year, y = DDDs_per_1000, color = region)) +
   geom_line(linewidth = 1.2) +
   geom_point(size = 3) +
@@ -602,6 +606,7 @@ national_ddd_summed_export <- summed_data_all_years %>%
   )
 write.csv(national_ddd_summed_export, here(data_dir, "national_DDD_summed.csv"), row.names = FALSE)
 write.csv(summed_by_region, here(data_dir, "regional_DDD_trends.csv"), row.names = FALSE)
+write.csv(regional_DDD_trends_wide, here(data_dir, "regional_DDD_trends_wide.csv"), row.names = FALSE)
 
 combined_regional_by_care_for_export <- combined_df_all %>%
   mutate(
