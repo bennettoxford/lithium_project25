@@ -198,6 +198,10 @@ Primary_DDD_by_year_region <- PRIMARYCARE_dataset %>%
   add_population_by_year(year_col = "year", region_col = "region") %>%
   mutate(DDDs_per_1000 = round(total_DDD / population * 1000, 2))
 
+Primary_DDD_by_year_region_wide <- format_ddd_per_1000_region_year_wide_for_export(
+  Primary_DDD_by_year_region
+)
+
 write.csv(
   format_ddd_by_year_for_export(Primary_DDD_by_year, "year"),
   here(data_dir, "primary_DDD_by_year.csv"),
@@ -207,4 +211,5 @@ write.csv(primary_product_DDD, here(data_dir, "primary_product_DDD.csv"), row.na
 write.csv(primary_product_DDD_by_year, here(data_dir, "primary_product_DDD_by_year.csv"), row.names = FALSE)
 write.csv(primary_lithium_df, here(data_dir, "primary_lithium_by_region.csv"), row.names = FALSE)
 write.csv(Primary_DDD_by_year_region, here(data_dir, "primary_DDD_by_year_region.csv"), row.names = FALSE)
+write.csv(Primary_DDD_by_year_region_wide, here(data_dir, "primary_DDD_by_year_region_wide.csv"), row.names = FALSE)
 message("Primary care analysis complete. Outputs saved to ", output_dir)

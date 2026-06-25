@@ -117,6 +117,10 @@ hospital_fp10_DDD_by_year_region <- hospital_fp10_dataset %>%
   add_population_by_year(year_col = "year", region_col = "region") %>%
   mutate(DDDs_per_1000 = round(total_DDD / population * 1000, 2))
 
+hospital_fp10_DDD_by_year_region_wide <- format_ddd_per_1000_region_year_wide_for_export(
+  hospital_fp10_DDD_by_year_region
+)
+
 hospital_fp10_DDD_by_region_2024 <- hospital_fp10_DDD_by_year_region %>%
   filter(year == 2024L) %>%
   transmute(
@@ -205,4 +209,5 @@ write.csv(hospital_fp10_product_DDD, here(data_dir, "hospital_fp10_product_DDD.c
 write.csv(hospital_fp10_product_DDD_by_year, here(data_dir, "hospital_fp10_product_DDD_by_year.csv"), row.names = FALSE)
 write.csv(hospital_fp10_DDD_by_region_2024, here(data_dir, "hospital_fp10_DDD_by_region_2024.csv"), row.names = FALSE)
 write.csv(hospital_fp10_DDD_by_year_region, here(data_dir, "hospital_fp10_DDD_by_year_region.csv"), row.names = FALSE)
+write.csv(hospital_fp10_DDD_by_year_region_wide, here(data_dir, "hospital_fp10_DDD_by_year_region_wide.csv"), row.names = FALSE)
 message("FP10 analysis complete. Outputs saved to ", output_dir)
